@@ -19,11 +19,11 @@ public class MapManager : Singleton<MapManager>
 
     private void Awake()
     {
-        if (_instance == null)  _instance = this;
+        if (_instance == null) _instance = this;
 
         //플레이어 인원 받아서 할당하기
         playerCount = 4;
-        if(playerCount > 4) playerCount = 4;//혹시 네트워크에러? 등으로 최대인원보다 많게될 시 예외처리
+        if (playerCount > 4) playerCount = 4;//혹시 네트워크에러? 등으로 최대인원보다 많게될 시 예외처리
 
         mapSizeX=10;//임시로 맵사이즈용 변수 지정
         mapSizeY=10;//임시로 맵사이즈용 변수 지정
@@ -60,38 +60,38 @@ public class MapManager : Singleton<MapManager>
             }
         }
 
-        for(int i=0; i<playerCount; ++i)
+        for (int i = 0; i < playerCount; ++i)
         {
-            Character objPlayer = Instantiate(player,playerSpawnPos[i],Quaternion.identity);
-            if(i==0)
+            Character objPlayer = Instantiate(player, playerSpawnPos[i], Quaternion.identity);
+            if (i == 0)
             {
                 objPlayer.isLocal = true;
                 CinemachineVirtualCamera virCam = GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>();
                 virCam.Follow = objPlayer.transform;
                 objPlayer.characterStatus.curPositionX = 0;
                 objPlayer.characterStatus.curPositionY = 0;
-                
+
             }
-            else if(i==1)
+            else if (i == 1)
             {
-                objPlayer.characterStatus.curPositionX = mapSizeX-1;
-                objPlayer.characterStatus.curPositionY = mapSizeY-1;
+                objPlayer.characterStatus.curPositionX = mapSizeX - 1;
+                objPlayer.characterStatus.curPositionY = mapSizeY - 1;
             }
-            else if(i==2)
+            else if (i == 2)
             {
-                objPlayer.characterStatus.curPositionX = mapSizeX-1;
+                objPlayer.characterStatus.curPositionX = mapSizeX - 1;
                 objPlayer.characterStatus.curPositionY = 0;
             }
-            else if(i==3)
+            else if (i == 3)
             {
                 objPlayer.characterStatus.curPositionX = 0;
-                objPlayer.characterStatus.curPositionY = mapSizeY-1;
+                objPlayer.characterStatus.curPositionY = mapSizeY - 1;
             }
             //해당 노드를 플레이어 점유 타일로 변경
             grid[objPlayer.characterStatus.curPositionX,objPlayer.characterStatus.curPositionY].eOnTileObject 
                 = eTileOccupation.PLAYER;
         }
-         
+
 
     }
     public bool BoundaryCheck(int y, int x, Vector2 vec)
