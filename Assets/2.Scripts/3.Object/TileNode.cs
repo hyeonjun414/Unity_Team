@@ -11,7 +11,8 @@ public enum eTileOccupation
 }
 public class TileNode : MonoBehaviour
 {
-    public eTileOccupation onTileObject;
+    public GameObject objectOnTile;
+    public eTileOccupation eOnTileObject;
     public int posX;
     public int posY;
 }

@@ -53,7 +53,7 @@ public class MapManager : Singleton<MapManager>
             for(int j=0; j<mapSizeY; ++j)
             {
                 grid[i,j] = Instantiate(prefNode,new Vector3(i*spaceBetweenTiles,0,j*spaceBetweenTiles),Quaternion.identity);
-                grid[i,j].onTileObject = eTileOccupation.EMPTY;
+                grid[i,j].eOnTileObject = eTileOccupation.EMPTY;
                 grid[i,j].posX = i;
                 grid[i,j].posY = j;
                 grid[i,j].transform.SetParent(obj.transform);
@@ -88,7 +88,7 @@ public class MapManager : Singleton<MapManager>
                 objPlayer.characterStatus.curPositionY = mapSizeY-1;
             }
             //해당 노드를 플레이어 점유 타일로 변경
-            grid[objPlayer.characterStatus.curPositionX,objPlayer.characterStatus.curPositionY].onTileObject 
+            grid[objPlayer.characterStatus.curPositionX,objPlayer.characterStatus.curPositionY].eOnTileObject 
                 = eTileOccupation.PLAYER;
         }
          

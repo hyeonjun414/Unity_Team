@@ -9,7 +9,7 @@ public class CharacterMove : MoveCommand
 
     private void Start()
     {
-        DirectionCheck();
+        //DirectionCheck();
     }
     public override void Execute()
     {
@@ -58,11 +58,12 @@ public class CharacterMove : MoveCommand
     }
     private void RightRotateCommand()
     {
-        DirectionCheck();
+
+        SetPlayerDirection();
     }
     private void LeftRotateCommand()
     {
-        DirectionCheck();
+
     }
     private void Move()
     {
@@ -71,20 +72,17 @@ public class CharacterMove : MoveCommand
         
     }
 
-    private void DirectionCheck()
+    private void SetPlayerDirection()
     {
-        if(player.transform.rotation.y == 0)
-        {
-            
-        }
+
     }
     public IEnumerator WaitForNextInput()
     {
         yield return new WaitForSeconds(0.3f);
         transform.position = new Vector3
-            ((player.characterStatus.curPositionX*MapManager.spaceBetweenTiles),//spaceBetweenTiles),
+            ((player.characterStatus.curPositionX*MapManager.spaceBetweenTiles),
             transform.position.y,
-             (player.characterStatus.curPositionY*MapManager.spaceBetweenTiles));//spaceBetweenTiles));
+             (player.characterStatus.curPositionY*MapManager.spaceBetweenTiles));
     }
     
 }

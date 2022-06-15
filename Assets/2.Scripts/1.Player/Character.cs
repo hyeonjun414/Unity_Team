@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class characterStatus
+public class CharacterStatus
 {
+    public int damage;
     public int hp;
     public int curPositionX;
     public int curPositionY;
@@ -12,23 +13,37 @@ public class characterStatus
     public int killCount;
     public int deathCount;
 }
+public enum ePlayerInput
+{
+    NULL,
+    MOVE,
+    ROTATE,
+    ATTACK,
+    BLOCK,
+    USE_ITEM,
+    CHANGE_ITEM_SLOT,
+}
 
 public class Character : MonoBehaviour
 {
+    public bool isInputAvailable = false;
     [HideInInspector]
     public bool isLocal = false;
     public Transform[] rayPos;
-    
-    public characterStatus characterStatus;
+    public ePlayerInput playerInput = ePlayerInput.NULL;
+    public CharacterStatus characterStatus;
     [HideInInspector]
     public Animator anim;
-    private MoveCommand moveCommand;
-    private ActionCommand actionCommand;
+    [HideInInspector]
+    public MoveCommand moveCommand;
+    [HideInInspector]
+    public ActionCommand actionCommand;
     private int[,] spawnPoint;
     private float beatCoolTime;
     private void Awake()
     {
         anim = GetComponent<Animator>();
+ 
         moveCommand = gameObject.AddComponent<CharacterMove>();
         moveCommand.SetUp(this);
         actionCommand = gameObject.AddComponent<CharacterAction>();
@@ -43,7 +58,7 @@ public class Character : MonoBehaviour
     private void Update()
     {
         if(!isLocal)return;
-
+        if(!isInputAvailable)return;
         CheckAvailability();
         Move();
         Action();
@@ -51,13 +66,15 @@ public class Character : MonoBehaviour
 
     public void CharacterReset()
     {
-        characterStatus = new characterStatus();
+        characterStatus = new CharacterStatus();
+        characterStatus.damage = 1;
         characterStatus.hp = 5;
         characterStatus.curPositionX = 0;//(int)spawnPoint.x;
         characterStatus.curPositionY = 0;//(int)spawnPoint.y;
         characterStatus.currentCombo = 0;
         characterStatus.killCount = 0;
         characterStatus.deathCount = 0;
+         
     }
     public void Move()
     {
@@ -66,6 +83,23 @@ public class Character : MonoBehaviour
     public void Action()
     {
         actionCommand?.Execute();
+    }
+    public void Damaged(int damageInt)
+    {
+        characterStatus.hp -= damageInt;
+        anim.SetTrigger("Take Damage");
+        if(characterStatus.hp <=0)
+        {
+            Die();
+        }
+    }
+    private void Die()
+    {
+        anim.SetTrigger("Die");
+        MapManager.Instance.grid[characterStatus.curPositionX,characterStatus.curPositionY].objectOnTile=null;
+        MapManager.Instance.grid[characterStatus.curPositionX,characterStatus.curPositionY].eOnTileObject=eTileOccupation.EMPTY;
+        Destroy(gameObject);
+
     }
     public void CheckAvailability()
     {
