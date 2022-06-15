@@ -63,7 +63,7 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
                     while (true)
                     {
                         SpawnEmptyCheck();
-                        if (MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].onTileObject == eTileOccupation.EMPTY)
+                        if (MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].eOnTileObject == eTileOccupation.EMPTY)
                         {
                             break;
                         }
@@ -91,13 +91,13 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
         spawnItemNum = Random.Range(0, spawnItem.Length);
 
         //해당 노드를 아이템 점유 타일로 변경
-        MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].onTileObject = eTileOccupation.ITEM;
+        MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].eOnTileObject = eTileOccupation.ITEM;
         return spawnItem[spawnItemNum];
     }
 
     public void SpawnEmptyCheck()
     {
-        if (MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].onTileObject != eTileOccupation.EMPTY)
+        if (MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].eOnTileObject != eTileOccupation.EMPTY)
         {
             GetSpawnPos();
         }

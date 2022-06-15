@@ -100,6 +100,43 @@ public class CharacterMove : MoveCommand
             yield return null;
         }
     }
+    private IEnumerator MoveRoutine2(Vector2 resultDir)
+    {
+        yield return null;
+        //player.anim.SetTrigger("Jump");
+        TileNode originNode = MapManager_verStatic.Instance.map.GetTileNode(player.characterStatus.curPositionY,
+            player.characterStatus.curPositionX);
+
+
+        if (MapManager_verStatic.Instance.BoundaryCheck(player.characterStatus.curPositionY,
+            player.characterStatus.curPositionX, resultDir))
+        {
+            player.characterStatus.curPositionY += (int)resultDir.y;
+            player.characterStatus.curPositionX += (int)resultDir.x;
+        }
+
+        TileNode destNode = MapManager_verStatic.Instance.map.GetTileNode(player.characterStatus.curPositionY,
+            player.characterStatus.curPositionX);
+
+        print($"{player.characterStatus.curPositionY}, {player.characterStatus.curPositionX}");
+
+        Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
+        Vector3 offset = Vector3.up * 0.5f;
+        float curTime = 0;
+        while (true)
+        {
+            if (curTime > 0.2f)
+                break;
+            curTime += Time.deltaTime;
+            transform.position = GetBezierPos(
+                originNode.transform.position + offset,
+                middlePos + offset,
+                destNode.transform.position + offset, 
+                curTime / 0.2f);
+
+            yield return null;
+        }
+    }
     private void MoveCalculate(PlayerDir dir, Vector2 moveVec)
     {
         Vector2 resultDir = Vector2.zero;
@@ -119,7 +156,7 @@ public class CharacterMove : MoveCommand
 
                 break;
         }
-        StartCoroutine(MoveRoutine(resultDir));
+        StartCoroutine(MoveRoutine2(resultDir));
     }
     private Vector3 GetBezierPos(Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {

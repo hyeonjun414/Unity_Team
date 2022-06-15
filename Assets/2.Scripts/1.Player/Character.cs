@@ -78,9 +78,18 @@ public class Character : MonoBehaviour
         actionCommand.SetUp(this);
         
         Dir = PlayerDir.Right;
-        CharacterReset();
 
     }
+    public void SetUp(TileNode tile)
+    {
+        curNode = tile;
+        CharacterReset();
+        characterStatus.curPositionX = tile.posX;
+        characterStatus.curPositionY = tile.posY;
+        transform.position = tile.transform.position + Vector3.up * 0.5f;
+
+    }
+
     private void Update()
     {
         if(!isLocal)return;

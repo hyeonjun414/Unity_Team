@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    private characterStatus cplayer;
+    private CharacterStatus cPlayer;
 
-        public void HealPotion(){
+
+
+    public void HealPotion(){
         //라이프가 2개 늘어남
-        cplayer.hp = 2 + cplayer.hp;
+        cPlayer.hp = 2 + cPlayer.hp;
         //늘어난 라이프가 5개 이상일 경우 5개로 고정해줌
-        if(cplayer.hp > 5){
-            cplayer.hp = 5;
+        if(cPlayer.hp > 5){
+            cPlayer.hp = 5;
         }
     }
 
