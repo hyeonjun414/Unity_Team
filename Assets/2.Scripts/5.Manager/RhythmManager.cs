@@ -6,22 +6,24 @@ using UnityEngine.UI;
 public class RhythmManager : Singleton<RhythmManager>
 {
     [Header("UI")]
-    public Text hitText;
+    public Text         hitText;
 
     [Header("Beat")]
-    public float bpm;
-    public float timing;
-    public float accuBeat;
-    public float accuBeatInterval;
+    public float        bpm;
+    public float        hitAreaRate;
 
     [Header("Rhythm")]
-    public RhythmBox  rhythmBox;
-    public RhythmNote rhythmNote;
-    public Transform[] notePos;
+    public RhythmBox    rhythmBox;
+    public RhythmNote   rhythmNote;
+    public Transform[]  notePos;
+
+    [Header("Note")]
+    public float        noteSpeed;
+
 
     [Header("Sound")]
-    public AudioSource audioSource;
-    public AudioClip beatsfx;
+    public AudioSource  audioSource;
+    public AudioClip    beatsfx;
 
 
     private void Awake()
@@ -33,6 +35,7 @@ public class RhythmManager : Singleton<RhythmManager>
 
     private void Start()
     {
+        rhythmBox.SetHitArea(hitAreaRate);
         StartCoroutine("RhythmRoutine");
     }
 
@@ -40,19 +43,21 @@ public class RhythmManager : Singleton<RhythmManager>
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            BitCheck(timing);
+            BitCheck();
         }
     }
 
-    public void BitCheck(float time)
+    public void BitCheck()
     {
-        if(accuBeat - accuBeatInterval < time && time < accuBeat + accuBeatInterval)
+        if(rhythmBox.isBeat)
         {
             hitText.text = "HIT";
+            print("HIT");
         }
         else
         {
             hitText.text = "MISS";
+            print("MISS");
         }
     }
 
@@ -64,23 +69,12 @@ public class RhythmManager : Singleton<RhythmManager>
         {
             if (bpm < 10) bpm = 10;
             RhythmNote note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
-            note.SetUp(rhythmBox.gameObject, 60 / bpm, accuBeat);
+            note.SetUp(rhythmBox.gameObject, 1f/ noteSpeed);
             
-            yield return StartCoroutine(TimeCheckRoutine(60f/bpm));
+
+            yield return new WaitForSeconds(60f/ bpm); // 1/60의 곱셈값
+            //yield return StartCoroutine(TimeCheckRoutine(60f/bpm));
         }
-    }
-    IEnumerator TimeCheckRoutine(float time)
-    {
-        float curTime = 0f;
-        while(true)
-        {
-            if (curTime > time)
-                break;
-            curTime += Time.deltaTime;
-            timing = curTime / time;
-            yield return null;
-        }
-        
     }
 
 

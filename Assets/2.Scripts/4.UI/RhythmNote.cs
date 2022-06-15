@@ -9,11 +9,10 @@ public class RhythmNote : MonoBehaviour
     public float timing;
     Vector3 destPos;
 
-    public void SetUp(GameObject dest, float time, float timing)
+    public void SetUp(GameObject dest, float time)
     {
         destPos = dest.transform.position;
         this.time = time;
-        this.timing = timing;
         StartCoroutine("MoveRoutine");
     }
 
@@ -22,8 +21,6 @@ public class RhythmNote : MonoBehaviour
         yield return null;
 
         float curTime = 0;
-        bool isTiming = false;
-        float timingtemp;
         Vector3 originPos = transform.position;
         while(true)
         {
@@ -31,13 +28,7 @@ public class RhythmNote : MonoBehaviour
             if (curTime >= time)
                 break;
             curTime += Time.deltaTime;
-            timingtemp = curTime / time;
-            if(!isTiming && timingtemp >= timing)
-            {
-                isTiming = true;
-                RhythmManager.Instance.rhythmBox.RhythmHit();
-            }
-            transform.position = Vector3.Lerp(originPos, destPos, timingtemp);
+            transform.position = Vector3.Lerp(originPos, destPos, curTime/time);
             yield return null;
         }
 

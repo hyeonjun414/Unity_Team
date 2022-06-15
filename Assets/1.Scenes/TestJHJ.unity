@@ -167,16 +167,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitText: {fileID: 785648673}
   bpm: 60
-  timing: 0
-  accuBeat: 0.9
-  accuBeatInterval: 0.2
-  rhythmBar: {fileID: 1198146815}
+  hitAreaRate: 1.4
   rhythmBox: {fileID: 212827366}
   rhythmNote: {fileID: 1564230472269872857, guid: 908e3c6fc7ab1d44fba4623937ba3104,
     type: 3}
   notePos:
   - {fileID: 1981924218}
   - {fileID: 1119318454}
+  noteSpeed: 1
   audioSource: {fileID: 211671989}
   beatsfx: {fileID: 8300000, guid: 6b8745f1367db6f4da5bb068f1e87848, type: 3}
 --- !u!82 &211671989
@@ -288,6 +286,8 @@ GameObject:
   - component: {fileID: 212827363}
   - component: {fileID: 212827365}
   - component: {fileID: 212827366}
+  - component: {fileID: 212827367}
+  - component: {fileID: 212827368}
   m_Layer: 5
   m_Name: Rhythm Box
   m_TagString: Untagged
@@ -383,6 +383,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 212827365}
+  coll: {fileID: 212827367}
+  isBeat: 0
+--- !u!61 &212827367
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212827361}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 100, y: 100}
+  m_EdgeRadius: 0
+--- !u!50 &212827368
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212827361}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &654986001
 GameObject:
   m_ObjectHideFlags: 0
