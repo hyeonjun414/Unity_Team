@@ -53,7 +53,7 @@ public class MapManager : Singleton<MapManager>
             for(int j=0; j<mapSizeX; ++j)
             {
                 grid[i,j] = Instantiate(prefNode,new Vector3(j*spaceBetweenTiles,0,-i*spaceBetweenTiles),Quaternion.identity);
-                grid[i,j].onTileObject = eTileOccupation.EMPTY;
+                grid[i,j].eOnTileObject = eTileOccupation.EMPTY;
                 grid[i,j].posX = j;
                 grid[i,j].posY = i;
                 grid[i,j].transform.SetParent(obj.transform);

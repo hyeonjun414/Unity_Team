@@ -40,7 +40,7 @@ public class Character : MonoBehaviour
     public TileNode curNode;
 
 
-    public bool isInputAvailable = false;
+    public bool isInputAvailable = true;
     [HideInInspector]
     public bool isLocal = false;
     public Transform[] rayPos;
@@ -50,8 +50,8 @@ public class Character : MonoBehaviour
     public Animator anim;
 
     [Header("Command")]
-    private MoveCommand moveCommand;
-    private ActionCommand actionCommand;
+    public MoveCommand moveCommand;
+    public ActionCommand actionCommand;
 
     private PlayerDir dir;
     public PlayerDir Dir
@@ -84,7 +84,7 @@ public class Character : MonoBehaviour
     private void Update()
     {
         if(!isLocal)return;
-        if(!isInputAvailable)return;
+        //if(!isInputAvailable)return;
         CheckAvailability();
         Move();
         Action();

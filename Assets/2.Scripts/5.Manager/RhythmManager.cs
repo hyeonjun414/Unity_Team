@@ -40,9 +40,6 @@ public class RhythmManager : Singleton<RhythmManager>
         StartCoroutine("RhythmRoutine");
     }
 
-    private void Update()
-    {
-    }
 
     public bool BitCheck()
     {
