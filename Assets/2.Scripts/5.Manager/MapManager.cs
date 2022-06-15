@@ -88,7 +88,7 @@ public class MapManager : Singleton<MapManager>
                 objPlayer.characterStatus.curPositionY = mapSizeY-1;
             }
             //해당 노드를 플레이어 점유 타일로 변경
-            grid[objPlayer.characterStatus.curPositionX,objPlayer.characterStatus.curPositionY].onTileObject 
+            grid[objPlayer.characterStatus.curPositionX,objPlayer.characterStatus.curPositionY].eOnTileObject 
                 = eTileOccupation.PLAYER;
         }
          
