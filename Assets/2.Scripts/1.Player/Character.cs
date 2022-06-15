@@ -13,8 +13,22 @@ public class characterStatus
     public int deathCount;
 }
 
+public enum PlayerDir
+{
+    Start,
+    Up,
+    Right,
+    Down,
+    Left,
+    End
+}
+
 public class Character : MonoBehaviour
 {
+    [Header("Node")]
+    public TileNode curNode;
+
+
     [HideInInspector]
     public bool isLocal = false;
     public Transform[] rayPos;
@@ -22,10 +36,26 @@ public class Character : MonoBehaviour
     public characterStatus characterStatus;
     [HideInInspector]
     public Animator anim;
+
+    [Header("Command")]
     private MoveCommand moveCommand;
     private ActionCommand actionCommand;
-    private int[,] spawnPoint;
-    private float beatCoolTime;
+
+    private PlayerDir dir;
+    public PlayerDir Dir
+    {
+        get { return dir; }
+        set 
+        { 
+            dir = value;
+            if (dir == PlayerDir.Start)
+                dir = PlayerDir.Left;
+            else if (dir == PlayerDir.End)
+                dir = PlayerDir.Up;
+
+            SetDirection();
+        }    
+    }
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -34,10 +64,8 @@ public class Character : MonoBehaviour
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
         
-        spawnPoint = new int[10,10];
-        spawnPoint[0,0] = 3;//임시
+        Dir = PlayerDir.Right;
         CharacterReset();
-        beatCoolTime = 1f;// 임시 RhythmManager.instance.beat;
 
     }
     private void Update()
@@ -67,6 +95,41 @@ public class Character : MonoBehaviour
     {
         actionCommand?.Execute();
     }
+
+    public void SetDirection()
+    {
+        float angle = 0f;
+        switch(Dir)
+        {
+            case PlayerDir.Up:
+                angle = 0f;
+                break;
+            case PlayerDir.Right:
+                angle = 90f;
+                break;
+            case PlayerDir.Down:
+                angle = 180f;
+                break;
+            case PlayerDir.Left:
+                angle = 270f;
+                break;
+        }
+        StartCoroutine(RotateRoutine(Quaternion.AngleAxis(angle, Vector3.up)));
+    }
+    IEnumerator RotateRoutine(Quaternion destRot)
+    {
+        Quaternion originRot = transform.rotation;
+        float curTime = 0;
+        while(true)
+        {
+            if (curTime > 0.2f)
+                break;
+            curTime += Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(originRot, destRot, curTime / 0.2f);
+            yield return null;
+        }
+    }
+
     public void CheckAvailability()
     {
         //적이 사방에 있으면 해당 방향으로는 move 를 할 수 없게 예외처리

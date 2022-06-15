@@ -11,6 +11,7 @@ public class RhythmManager : Singleton<RhythmManager>
     [Header("Beat")]
     public float        bpm;
     public float        hitAreaRate;
+    public bool isBeat;
 
     [Header("Rhythm")]
     public RhythmBox    rhythmBox;
@@ -41,23 +42,23 @@ public class RhythmManager : Singleton<RhythmManager>
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            BitCheck();
-        }
     }
 
-    public void BitCheck()
+    public bool BitCheck()
     {
-        if(rhythmBox.isBeat)
+        if(rhythmBox.isBeat && isBeat)
         {
             hitText.text = "HIT";
             print("HIT");
+            isBeat = false;
+            return true;
         }
         else
         {
             hitText.text = "MISS";
             print("MISS");
+            isBeat = false;
+            return false;
         }
     }
 
@@ -70,8 +71,7 @@ public class RhythmManager : Singleton<RhythmManager>
             if (bpm < 10) bpm = 10;
             RhythmNote note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
             note.SetUp(rhythmBox.gameObject, 1f/ noteSpeed);
-            
-
+            rhythmBox.RhythmHit();
             yield return new WaitForSeconds(60f/ bpm); // 1/60의 곱셈값
             //yield return StartCoroutine(TimeCheckRoutine(60f/bpm));
         }

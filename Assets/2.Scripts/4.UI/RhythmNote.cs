@@ -7,13 +7,19 @@ public class RhythmNote : MonoBehaviour
 
     public float time;
     public float timing;
+    public Animator anim;
     Vector3 destPos;
 
     public void SetUp(GameObject dest, float time)
     {
         destPos = dest.transform.position;
         this.time = time;
-        StartCoroutine("MoveRoutine");
+        //StartCoroutine("MoveRoutine");
+    }
+
+    private void Update()
+    {
+        transform.Translate(Vector3.right * 200 * Time.deltaTime);
     }
 
     IEnumerator MoveRoutine()
@@ -24,7 +30,6 @@ public class RhythmNote : MonoBehaviour
         Vector3 originPos = transform.position;
         while(true)
         {
-            
             if (curTime >= time)
                 break;
             curTime += Time.deltaTime;
@@ -35,8 +40,19 @@ public class RhythmNote : MonoBehaviour
         DestroySelf();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "NoteInit")
+        {
+            DestroySelf();
+        }
+    }
+
     public void DestroySelf()
     {
+        RhythmManager.Instance.isBeat = true;
         Destroy(gameObject);
     }
+
+
 }

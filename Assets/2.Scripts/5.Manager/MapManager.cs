@@ -27,13 +27,13 @@ public class MapManager : Singleton<MapManager>
 
         mapSizeX=10;//임시로 맵사이즈용 변수 지정
         mapSizeY=10;//임시로 맵사이즈용 변수 지정
-        grid = new TileNode[mapSizeX,mapSizeY];
+        grid = new TileNode[mapSizeY,mapSizeX];
 
         Vector3 basePlayerPos = new Vector3(0f,0.25f,0f);
         playerSpawnPos[0] = new Vector3(spaceBetweenTiles*0,           basePlayerPos.y,    spaceBetweenTiles*0);
-        playerSpawnPos[1] = new Vector3(spaceBetweenTiles*(mapSizeX-1),basePlayerPos.y,    spaceBetweenTiles*(mapSizeY-1));
+        playerSpawnPos[1] = new Vector3(spaceBetweenTiles*(mapSizeX-1),basePlayerPos.y,    -spaceBetweenTiles*(mapSizeY-1));
         playerSpawnPos[2] = new Vector3(spaceBetweenTiles*(mapSizeX-1),basePlayerPos.y,    spaceBetweenTiles*0);
-        playerSpawnPos[3] = new Vector3(spaceBetweenTiles*0,           basePlayerPos.y,    spaceBetweenTiles*(mapSizeY-1));
+        playerSpawnPos[3] = new Vector3(spaceBetweenTiles*0,           basePlayerPos.y,    -spaceBetweenTiles*(mapSizeY-1));
 
 
 
@@ -48,14 +48,14 @@ public class MapManager : Singleton<MapManager>
     {
         GameObject obj = new GameObject("Tiles");
         Debug.Log(mapSizeX);
-        for(int i=0; i<mapSizeX; ++i)
+        for(int i=0; i<mapSizeY; ++i)
         {
-            for(int j=0; j<mapSizeY; ++j)
+            for(int j=0; j<mapSizeX; ++j)
             {
-                grid[i,j] = Instantiate(prefNode,new Vector3(i*spaceBetweenTiles,0,j*spaceBetweenTiles),Quaternion.identity);
+                grid[i,j] = Instantiate(prefNode,new Vector3(j*spaceBetweenTiles,0,-i*spaceBetweenTiles),Quaternion.identity);
                 grid[i,j].onTileObject = eTileOccupation.EMPTY;
-                grid[i,j].posX = i;
-                grid[i,j].posY = j;
+                grid[i,j].posX = j;
+                grid[i,j].posY = i;
                 grid[i,j].transform.SetParent(obj.transform);
             }
         }
@@ -93,6 +93,16 @@ public class MapManager : Singleton<MapManager>
         }
          
 
+    }
+    public bool BoundaryCheck(int y, int x, Vector2 vec)
+    {
+        x += (int)vec.x;
+        y += (int)vec.y;
+        if (x < 0 || mapSizeX <= x ||
+            y < 0 || mapSizeY <= y)
+            return false;
+        else
+            return true;
     }
     public void ReadRoomData()
     {

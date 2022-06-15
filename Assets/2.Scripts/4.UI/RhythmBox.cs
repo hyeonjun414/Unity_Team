@@ -7,6 +7,7 @@ public class RhythmBox : MonoBehaviour
     public Animator anim;
     public BoxCollider2D coll;
     public bool isBeat = false;
+    private RhythmNote curNote;
 
     public void RhythmHit()
     {
@@ -23,7 +24,8 @@ public class RhythmBox : MonoBehaviour
     {
         if (collision.tag == "Note")
         {
-            RhythmHit();
+            //RhythmHit();
+            curNote = collision.GetComponent<RhythmNote>();
             isBeat = true;
         }
     }
@@ -31,7 +33,17 @@ public class RhythmBox : MonoBehaviour
     {
         if (collision.tag == "Note")
         {
+            curNote = null;
             isBeat = false; 
+        }
+    }
+
+    public void NoteHit()
+    {
+        if(curNote != null)
+        {
+            curNote.anim.SetTrigger("Hit");
+            curNote = null;
         }
     }
 }
