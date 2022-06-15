@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CharacterAction : ActionCommand
 {
-    Character player;
-    public CharacterAction(Character player)
-    {
-        this.player = player;
-    }
+   // Character player;
+    // public CharacterAction(Character player)
+    // {
+    //     this.player = player;
+    // }
     public override void Execute()
     {
         Attack();

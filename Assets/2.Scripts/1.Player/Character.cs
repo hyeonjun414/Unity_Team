@@ -11,31 +11,40 @@ public class characterStatus
     public int currentCombo;
     public int killCount;
     public int deathCount;
-
 }
 
 public class Character : MonoBehaviour
 {
-    public Transform rayPos;
-    private int[,] grid;
+    [HideInInspector]
+    public bool isLocal = false;
+    public Transform[] rayPos;
+    
     public characterStatus characterStatus;
-    private Animator anim;
+    [HideInInspector]
+    public Animator anim;
     private MoveCommand moveCommand;
     private ActionCommand actionCommand;
-    private Vector3 spawnPoint;
+    private int[,] spawnPoint;
     private float beatCoolTime;
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        moveCommand = gameObject.AddComponent<CharacterMove>();
+        moveCommand.SetUp(this);
+        actionCommand = gameObject.AddComponent<CharacterAction>();
+        actionCommand.SetUp(this);
         
+        spawnPoint = new int[10,10];
+        spawnPoint[0,0] = 3;//임시
         CharacterReset();
         beatCoolTime = 1f;// 임시 RhythmManager.instance.beat;
-      //  int mapSizeX=0;//임시로 맵사이즈용 변수 지정
-      //  int mapSizeY=0;//임시로 맵사이즈용 변수 지정
-      //  grid = new int[mapSizeX,mapSizeY];
+
     }
     private void Update()
     {
+        if(!isLocal)return;
+
+        CheckAvailability();
         Move();
         Action();
     }
@@ -44,8 +53,8 @@ public class Character : MonoBehaviour
     {
         characterStatus = new characterStatus();
         characterStatus.hp = 5;
-        characterStatus.curPositionX = (int)spawnPoint.x;
-        characterStatus.curPositionY = (int)spawnPoint.y;
+        characterStatus.curPositionX = 0;//(int)spawnPoint.x;
+        characterStatus.curPositionY = 0;//(int)spawnPoint.y;
         characterStatus.currentCombo = 0;
         characterStatus.killCount = 0;
         characterStatus.deathCount = 0;
@@ -58,11 +67,25 @@ public class Character : MonoBehaviour
     {
         actionCommand?.Execute();
     }
+    public void CheckAvailability()
+    {
+        //적이 사방에 있으면 해당 방향으로는 move 를 할 수 없게 예외처리
+        //사방에 벽이 있으면 해당 방향으로는 move를 할 수 없게 예외처리
+        //사방에 노드가 없는 큐브가 있으면 그 방향으로는 move를 할 수 없게 예외처리
+
+       // MapManager.Instance.mapSizeX
+       
+    }
     private void OnDrawGizmos()
     {
         Vector3 playerPos = new Vector3(transform.position.x,transform.position.y+1f,transform.position.z);
-        Debug.DrawLine(playerPos,rayPos.position,Color.red);
+        for(int i=0; i<4; ++i)
+        {
+            Debug.DrawLine(playerPos,rayPos[i].position,Color.red);
+        }
+        
         //Debug.DrawRay(playerPos,rayPos.position,Color.red);
     }
+
 
 }
