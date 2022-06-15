@@ -7,10 +7,10 @@ public class Potion : MonoBehaviour
     private Character cplayer;
 
 
-    void private void OnCollisionEnter(Collision other) {
+    private void OnCollisionEnter(Collision other) {
         if(other.gameObject.name == "Player"){
-            var contactedPlayer = collision.gameObject;
-            Debug.Log(contactedPlayer + "랑 충돌!")
+            //var contactedPlayer = collision.gameObject;
+            //Debug.Log(contactedPlayer + "랑 충돌!");
 
         }
     }
@@ -26,11 +26,11 @@ public class Potion : MonoBehaviour
 
     public void HPPotion(){
         //라이프가 2개 늘어남
-        cplayer.hp = 2 + cplayer.hp;
+        //cplayer.hp = 2 + cplayer.hp;
         //늘어난 라이프가 5개 이상일 경우 5개로 고정해줌
-        if(cplayer.hp >5){
-            cplayer.hp = 5;
-        }
+        //if(cplayer.hp >5){
+        //    cplayer.hp = 5;
+        //}
 
 
     }

@@ -6,10 +6,10 @@ public class Trap : MonoBehaviour
 {
       private Character cplayer;
 
-      void private void OnCollisionEnter(Collision other) {
+      private void OnCollisionEnter(Collision other) {
          if(other.gameObject.name == "Player"){
-            var contactedPlayer = collision.gameObject;
-            Debug.Log(contactedPlayer + "랑 충돌!")
+            //var contactedPlayer = collision.gameObject;
+            //Debug.Log(contactedPlayer + "랑 충돌!");
         }
     }
 
@@ -18,7 +18,7 @@ public class Trap : MonoBehaviour
 
    //가시 트랩: 해당 블럭 진입시 라이프 1개 감소
    public void ThornTrap(){
-      cplayer.hp = cplayer.hp - 1;
+      //cplayer.hp = cplayer.hp - 1;
 
    }
 
