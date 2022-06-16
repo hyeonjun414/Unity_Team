@@ -8,7 +8,7 @@ using Cinemachine;
 
 public class MapManager_verStatic : Singleton<MapManager_verStatic>
 {
-    public int playerCount;
+    public int playerCount=0;
     public Character player;
     public Map map;
     private void Awake()

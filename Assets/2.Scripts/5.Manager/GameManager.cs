@@ -10,10 +10,10 @@ using Photon.Pun.UtilityScripts;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    public static GameManager Instance { get; private set; } // ½Ì±ÛÅæ º¯¼ö
+    public static GameManager Instance { get; private set; } // ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public Text infoText;
-    public Transform[] spawnPos; // ÇÃ·¹ÀÌ¾î ½ºÆù Æ÷Áö¼Ç
+    public Transform[] spawnPos; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private void Awake()
     {
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void Start()
     {
-        // ·ÎÄÃ ÇÃ·¹ÀÌ¾îÀÇ ·Îµå ¿©ºÎ¸¦ true·Î ¹Ù²ã Ä¿½ºÅÒ ÇÁ·ÎÆÛÆ¼ º¯°æÀ» ÅëÇØ ´Ù¸¥ ÇÃ·¹ÀÌ¾î¿¡°Ô ¾Ë¸°´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ trueï¿½ï¿½ ï¿½Ù²ï¿½ Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½Ë¸ï¿½ï¿½ï¿½.
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_LOAD, true } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
@@ -31,32 +31,32 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        // ¿¬°áÀÌ ²÷°åÀ» ¶§ ·Îºñ ¾ÀÀ¸·Î ÀÌµ¿ÇÑ´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ñ´ï¿½.
         Debug.Log("Disconnected : " + cause.ToString());
         SceneManager.LoadScene("LobbyScene");
     }
 
     public override void OnLeftRoom()
     {
-        // ¹æÀ» ¶°³¯¶§ ¿¬°áÀ» ²÷´Â´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
         PhotonNetwork.Disconnect();
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        // ÇÃ·¹ÀÌ¾îÀÇ ÇÁ·ÎÆÛÆ¼°¡ °»½ÅµÉ¶§ ÀÛµ¿ÇÏ´Â ÄÝ¹éÇÔ¼ö
-        // ·Îµå°¡ ¿Ï·á‰ç´Ù°í È®ÀÎµÉ ¶§
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ÅµÉ¶ï¿½ ï¿½Ûµï¿½ï¿½Ï´ï¿½ ï¿½Ý¹ï¿½ï¿½Ô¼ï¿½
+        // ï¿½Îµå°¡ ï¿½Ï·ï¿½ï¿½Ù°ï¿½ È®ï¿½Îµï¿½ ï¿½ï¿½
         if (changedProps.ContainsKey(GameData.PLAYER_LOAD))
         {
-            // ¸ðµç ÇÃ·¹ÀÌ¾î°¡ ·Îµå°¡ ¿Ï·áµÇ¾úÀ» ¶§, °ÔÀÓ ½ÃÀÛ ·çÆ¾À» ½ÇÇà½ÃÅ²´Ù.
+            // ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Îµå°¡ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å²ï¿½ï¿½.
             if (CheckAllPlayerLoadLevel())
             {
                 StartCoroutine(StartCountDown());
             }
-            // ·Îµå°¡ ¿Ï·áµÇÁö ¾Ê¾ÒÀ»¶§
+            // ï¿½Îµå°¡ ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½
             else
             {
-                // ´ë±â ÇöÈ²À» ¾Ë¸°´Ù.
+                // ï¿½ï¿½ï¿½ ï¿½ï¿½È²ï¿½ï¿½ ï¿½Ë¸ï¿½ï¿½ï¿½.
                 PrintInfo("wait players " + PlayersLoadLevel() + " / " + PhotonNetwork.PlayerList.Length);
             }
         }
@@ -66,11 +66,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private IEnumerator StartCountDown()
     {
-        // °ÔÀÓ ½ÃÀÛ ·çÆ¾
+//        yield return new WaitUntil(()=>InputCheckManager.Instance.isReadyCount >= MapManager_verStatic.Instance.playerCount);
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¾
         PrintInfo("All Player Loaded, Start Count Down");
         yield return new WaitForSeconds(1.0f);
 
-        // Ä«¿îÆ® ´Ù¿î
+        // Ä«ï¿½ï¿½Æ® ï¿½Ù¿ï¿½
         for (int i = GameData.COUNTDOWN; i > 0; i--)
         {
             PrintInfo("Count Down " + i);
@@ -84,22 +85,22 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private bool CheckAllPlayerLoadLevel()
     {
-        // ¸ðµÎ ·Îµå°¡ ¿Ï·áµÈ »óÅÂ¶ó¸é true, ¾Æ´Ï¸é false¸¦ ¹ÝÈ¯
+        // ï¿½ï¿½ï¿½ ï¿½Îµå°¡ ï¿½Ï·ï¿½ï¿½ ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ true, ï¿½Æ´Ï¸ï¿½ falseï¿½ï¿½ ï¿½ï¿½È¯
         return PlayersLoadLevel() == PhotonNetwork.PlayerList.Length;
     }
 
     private int PlayersLoadLevel()
     {
-        // ÇöÀç ·Îµå°¡ ¿Ï·áµÈ ÇÃ·¹ÀÌ¾î¸¦ ÆÄ¾ÇÇÏ´Â ÇÔ¼ö
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå°¡ ï¿½Ï·ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ä¾ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
         int count = 0;
-        // ÇÃ·¹ÀÌ¾î ¸®½ºÆ®¸¦ °¡Á®¿Í °¢°¢ÀÇ ÇÃ·¹ÀÌ¾î¿¡ ´ëÇØ ·Îµå ÇÁ·ÎÆÛÆ¼¸¦ È®ÀÎÇÑ´Ù.
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½.
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             object playerLoadedLevel;
 
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_LOAD, out playerLoadedLevel))
             {
-                // ·Îµå ÇÁ·ÎÆÛÆ¼°¡ ¿Ï·á »óÅÂÀÌ¸é Ä«¿îÆ®¸¦ ´Ã¸°´Ù.
+                // ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ Ä«ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½.
                 if ((bool)playerLoadedLevel)
                 {
                     count++;
@@ -112,7 +113,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void PrintInfo(string info)
     {
-        // Á¤º¸ Àü´Þ¿ë UI
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Þ¿ï¿½ UI
         Debug.Log(info);
         infoText.text = info;
     }
