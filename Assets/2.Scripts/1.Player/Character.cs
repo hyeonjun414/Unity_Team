@@ -104,9 +104,9 @@ public class Character : MonoBehaviourPun
         
 
         RhythmManager.Instance.ResisterPlayer(this);
-        }
-        if(PhotonNetwork.IsMasterClient)
-            InputCheckManager.Instance.ResisterPlayer(this);
+
+        //if(PhotonNetwork.IsMasterClient)
+            //InputCheckManager.Instance.ResisterPlayer(this);
 
 
         Map map = MapManager_verStatic.Instance.map;
