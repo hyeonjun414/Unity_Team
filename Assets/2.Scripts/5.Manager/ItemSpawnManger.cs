@@ -94,7 +94,7 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
         {
             for (int j = 0; j < MapManager.Instance.mapSizeY; ++j)
             {
-                if (MapManager.Instance.grid[i, j].onTileObject == eTileOccupation.EMPTY)
+                if (MapManager.Instance.grid[i, j].eOnTileObject == eTileOccupation.EMPTY)
                 {
                     emptyTileCheckList[i, j] = true;
                 }

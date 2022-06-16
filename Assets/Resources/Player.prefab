@@ -489,6 +489,9 @@ MonoBehaviour:
   anim: {fileID: 0}
   moveCommand: {fileID: 0}
   actionCommand: {fileID: 0}
+  playerHeadingPos: {x: 0, y: 0}
+  isMoving: 1
+  isCrashing: 0
 --- !u!114 &4095130721716653487
 MonoBehaviour:
   m_ObjectHideFlags: 0
