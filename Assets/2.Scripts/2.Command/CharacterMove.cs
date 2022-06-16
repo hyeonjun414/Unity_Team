@@ -82,6 +82,8 @@ public class CharacterMove : MoveCommand
     private IEnumerator MoveRoutine2(Vector2 resultDir)
     {
         yield return null;
+        yield return new WaitUntil(()=>player.isInputAvailable);
+        if(!player.isMoving)yield break;
         //player.anim.SetTrigger("Jump");
         TileNode originNode = MapManager_verStatic.Instance.map.GetTileNode(player.characterStatus.curPositionY,
             player.characterStatus.curPositionX);
@@ -135,6 +137,7 @@ public class CharacterMove : MoveCommand
 
                 break;
         }
+        player.playerHeadingPos = resultDir;
         StartCoroutine(MoveRoutine2(resultDir));
     }
     private Vector3 GetBezierPos(Vector3 p1, Vector3 p2, Vector3 p3, float t)

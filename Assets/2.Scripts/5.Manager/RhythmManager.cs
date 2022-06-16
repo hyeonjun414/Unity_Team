@@ -26,13 +26,19 @@ public class RhythmManager : Singleton<RhythmManager>
     public AudioSource  audioSource;
     public AudioClip    beatsfx;
 
+    [HideInInspector]
+    public Character player;
 
     private void Awake()
     {
         if (_instance == null)
             _instance = this;
+        
     }
-
+    public void ResisterPlayer(Character player)
+    {
+        this.player = player;
+    }
 
     private void Start()
     {
@@ -43,18 +49,20 @@ public class RhythmManager : Singleton<RhythmManager>
 
     public bool BitCheck()
     {
-        if(rhythmBox.isBeat && isBeat)
+        if(rhythmBox.isBeat && player.isInputAvailable)
         {
             hitText.text = "HIT";
             print("HIT");
-            isBeat = false;
+            player.isInputAvailable = false;
+            //isBeat = false;
             return true;
         }
         else
         {
             hitText.text = "MISS";
             print("MISS");
-            isBeat = false;
+            player.isInputAvailable = false;
+            //isBeat = false;
             return false;
         }
     }
@@ -62,7 +70,7 @@ public class RhythmManager : Singleton<RhythmManager>
     IEnumerator RhythmRoutine()
     {
         yield return null;
-
+        //yield return new WaitUntil(()=>InputCheckManager.Instance.isReadyCount >= MapManager_verStatic.Instance.playerCount);
         while (true)
         {
             if (bpm < 10) bpm = 10;

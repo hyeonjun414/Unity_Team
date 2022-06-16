@@ -84,12 +84,31 @@ public class Character : MonoBehaviourPun
         
         Dir = PlayerDir.Right;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
+
+        object[] obj = new object[2]{"aa", 1};
+        photonView.RPC("Click",RpcTarget.AllBuffered, obj);
+        
     }
+
+    [PunRPC]
+    public void Click(string command , int a)
+    {
+
+    }
+
     [PunRPC]
     public void SetUp()
     {
         if(photonView.IsMine)
+        {
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
+        
+
+        RhythmManager.Instance.ResisterPlayer(this);
+        }
+        if(PhotonNetwork.IsMasterClient)
+            InputCheckManager.Instance.ResisterPlayer(this);
+
 
         Map map = MapManager_verStatic.Instance.map;
         Vector2 vec = map.startPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
@@ -178,8 +197,8 @@ public class Character : MonoBehaviourPun
     private void Die()
     {
         anim.SetTrigger("Die");
-        MapManager.Instance.grid[characterStatus.curPositionX,characterStatus.curPositionY].objectOnTile=null;
-        MapManager.Instance.grid[characterStatus.curPositionX,characterStatus.curPositionY].eOnTileObject=eTileOccupation.EMPTY;
+        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
+        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
         Destroy(gameObject);
 
     }
