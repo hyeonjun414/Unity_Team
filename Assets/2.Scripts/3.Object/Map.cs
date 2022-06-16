@@ -37,4 +37,8 @@ public class Map : MonoBehaviour
         print(grid[mapSize * y + x]);
         return grid[mapSize * y + x];
     }
+    public TileNode GetTileNode(Vector2 vec)
+    {
+        return grid[mapSize * (int)vec.y + (int)vec.x];
+    }
 }

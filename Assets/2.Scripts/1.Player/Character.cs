@@ -1,6 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
+using Cinemachine;
+
 
 
 public class CharacterStatus
@@ -34,15 +39,13 @@ public enum PlayerDir
     End
 }
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviourPun
 {
     [Header("Node")]
     public TileNode curNode;
 
 
     public bool isInputAvailable = true;
-    [HideInInspector]
-    public bool isLocal = false;
     public Transform[] rayPos;
     public ePlayerInput playerInput = ePlayerInput.NULL;
     public CharacterStatus characterStatus;
@@ -78,10 +81,17 @@ public class Character : MonoBehaviour
         actionCommand.SetUp(this);
         
         Dir = PlayerDir.Right;
-
+        photonView.RPC("SetUp", RpcTarget.AllBuffered);
     }
-    public void SetUp(TileNode tile)
+    [PunRPC]
+    public void SetUp()
     {
+        if(photonView.IsMine)
+            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
+
+        Map map = MapManager_verStatic.Instance.map;
+        Vector2 vec = map.startPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
+        TileNode tile = map.GetTileNode(vec);
         curNode = tile;
         CharacterReset();
         characterStatus.curPositionX = tile.posX;
@@ -92,7 +102,7 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        if(!isLocal)return;
+        if(!photonView.IsMine) return;
         //if(!isInputAvailable)return;
         CheckAvailability();
         Move();
@@ -190,6 +200,5 @@ public class Character : MonoBehaviour
         
         //Debug.DrawRay(playerPos,rayPos.position,Color.red);
     }
-
 
 }

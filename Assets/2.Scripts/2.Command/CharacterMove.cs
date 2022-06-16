@@ -10,60 +10,36 @@ public class CharacterMove : MoveCommand
         if(Input.anyKeyDown && RhythmManager.Instance.BitCheck())
         {
             RhythmManager.Instance.rhythmBox.NoteHit();
-            LeftCommand();
-            RightCommand();
-            UpCommand();
-            DownCommand();
-            RightRotateCommand();
-            LeftRotateCommand();
+            InputCommand();
         }
-
     }
-    private void LeftCommand()
+    private void InputCommand()
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
             MoveCalculate(player.Dir, new Vector2(-1, 0));
         }
-        
-    }
-    private void RightCommand()
-    {
-        if(Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             MoveCalculate(player.Dir, new Vector2(1, 0));
         }
-        
-    }
-    private void UpCommand()
-    {
-        if(Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W))
         {
             MoveCalculate(player.Dir, new Vector2(0, -1));
         }
-        
-    }
-    private void DownCommand()
-    {
-        if(Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             MoveCalculate(player.Dir, new Vector2(0, 1));
         }
-        
-    }
-    private void RightRotateCommand()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             player.Dir++;
         }
-    }
-    private void LeftRotateCommand()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             player.Dir--;
         }
+
     }
     private IEnumerator MoveRoutine(Vector2 resultDir)
     {

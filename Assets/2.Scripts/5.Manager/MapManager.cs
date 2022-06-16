@@ -65,23 +65,23 @@ public class MapManager : Singleton<MapManager>
             Character objPlayer = Instantiate(player, playerSpawnPos[i], Quaternion.identity);
             if (i == 0)
             {
-                objPlayer.isLocal = true;
+               // objPlayer.isLocal = true;
                 CinemachineVirtualCamera virCam = GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>();
                 virCam.Follow = objPlayer.transform;
-                objPlayer.SetUp(grid[0, 0]);
+                //objPlayer.SetUp(grid[0, 0]);
 
             }
             else if (i == 1)
             {
-                objPlayer.SetUp(grid[mapSizeX - 1, mapSizeX - 1]);
+               // objPlayer.SetUp(grid[mapSizeX - 1, mapSizeX - 1]);
             }
             else if (i == 2)
             {
-                objPlayer.SetUp(grid[0, mapSizeX - 1]);
+               // objPlayer.SetUp(grid[0, mapSizeX - 1]);
             }
             else if (i == 3)
             {
-                objPlayer.SetUp(grid[mapSizeX - 1, 0]);
+                //objPlayer.SetUp(grid[mapSizeX - 1, 0]);
             }
             //해당 노드를 플레이어 점유 타일로 변경
             grid[objPlayer.characterStatus.curPositionX,objPlayer.characterStatus.curPositionY].eOnTileObject 
