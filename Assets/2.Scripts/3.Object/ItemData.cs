@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public enum ItemType { HEAL, POWERUP, DASH, SEEINGTHORUGH, };
 
 
 [CreateAssetMenu(fileName = "ItemData", menuName = "Item/ItemData")]
 
 public class ItemData : ScriptableObject 
 {
-    public enum Type { HEAL, POWERUP, DASH, SEEINGTHORUGH, };
 
     new public string name;
     public string Description;
+    public ItemType itemType;
 
     
 
