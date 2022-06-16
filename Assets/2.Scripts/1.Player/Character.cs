@@ -40,7 +40,7 @@ public class Character : MonoBehaviour
     public TileNode curNode;
 
 
-    public bool isInputAvailable = true;
+    public bool isInputAvailable = false;
     [HideInInspector]
     public bool isLocal = false;
     public Transform[] rayPos;
@@ -52,7 +52,9 @@ public class Character : MonoBehaviour
     [Header("Command")]
     public MoveCommand moveCommand;
     public ActionCommand actionCommand;
-
+    public Vector2 playerHeadingPos = Vector2.zero;
+    public bool isMoving = true; //임시
+    public bool isCrashing = false; //임시
     private PlayerDir dir;
     public PlayerDir Dir
     {
