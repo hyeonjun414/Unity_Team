@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84f45cb51cb80c644ac9a407ebe1dbef, type: 3}
-  m_Name: PowerUpPotion
+  m_Name: HealPotion
   m_EditorClassIdentifier: 
-  name: PowerUpPotion
-  Description: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  name: HealPotion
+  Description: Add 2 Lives
+  itemType: 0
+  icon: {fileID: 21300000, guid: e447bc2dc3ed4f14392d794b3b000985, type: 3}
+  prefab: {fileID: 3259875531834139843, guid: c6ea1dac8a927134a80c648cde28093c, type: 3}

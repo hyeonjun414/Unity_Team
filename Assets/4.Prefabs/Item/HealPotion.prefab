@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1136769634438546412}
   - component: {fileID: 3985409690708873606}
   m_Layer: 0
-  m_Name: Heart_Up
+  m_Name: HealPotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
