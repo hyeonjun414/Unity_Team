@@ -15,27 +15,39 @@ public class Item : MonoBehaviour
         }
     }
     public ItemData data;
+    private ItemManager itemManager;
+
+    private void Awake() {
+        itemManager = GetComponent<ItemManager>();
+     //   itemManager = GameObject.Find("ItemManager").GetComponent<ItemManager>();
+    }
 
     //아이템의 타입
     enum Type { HEAL, POWERUP, DASH, SEEINGTHORUGH, };
 
-    private void TestFunc() {
+    //아이템을 먹었을 때의 효과
+    private void ItemEffect() {
         Type itemType = Type.HEAL;
 
         if(itemType == Type.HEAL){
-            //ItemManager의 HealPotion 함수 가져오기
+            //ItemManager의 HealPotion 함수 
+            itemManager.HealPotion();
+
 
         }
         else if(itemType == Type.POWERUP){
-            //ItemManager의 PowerUpPotion 함수 가져오기
+            //ItemManager의 PowerUpPotion 함수 
+            itemManager.PowerUpPotion();
 
         }
         else if(itemType == Type.DASH){
-            //ItemManager의 Dash 함수 가져오기
+            //ItemManager의 Dash 함수 
+            itemManager.DashItem();
 
         }
         else if(itemType == Type.SEEINGTHORUGH){
-            //ItemManager의 SeeingThrough 함수 가져오기
+            //ItemManager의 SeeingThrough 함수 
+            itemManager.SeeingThrough();
 
         }
 

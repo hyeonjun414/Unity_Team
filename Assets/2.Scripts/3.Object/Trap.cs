@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿//Trap과 Item의 차이점: Trap은 부딪히자마자 즉시 발현.
+//Item의 경우 ItemManager에서 기능을 구현해줬지만 Trap의 경우 Trap 스크립트를 일단 유지
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,6 +24,7 @@ public class Trap : MonoBehaviour
    //가시 트랩: 해당 블럭 진입시 라이프 1개 감소
    public void ThornTrap(){
       //cplayer.hp = cplayer.hp - 1;
+      
 
    }
 
