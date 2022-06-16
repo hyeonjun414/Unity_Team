@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    ItemData itemData;
     private void OnCollisionEnter(Collision other) {
 
         //아이템과 충돌한 플레이어 알려주기
-        if(other.gameObject.name == "Player"){
-            var contactedPlayer = other.gameObject;
+        if(other.gameObject.tag == "Player"){
+            var contactedPlayer = other.gameObject.GetComponent<Character>();
             Debug.Log(contactedPlayer + "랑 충돌!");
             //플레이어와 충돌한 아이템 삭제
-            Destroy(gameObject);
+           // contactedPlayer.AddItem(itemData)
+            //Destroy(gameObject);
         }
     }
     public ItemData data;
     private ItemManager itemManager;
+
+    //TODO: 충돌한 플레이어를 인식해서 그 플레이어의 수치를 가져오기 
+
 
     private void Awake() {
         itemManager = GetComponent<ItemManager>();
@@ -23,9 +28,12 @@ public class Item : MonoBehaviour
     }
 
     //아이템의 타입
-    enum Type { HEAL, POWERUP, DASH, SEEINGTHORUGH, };
 
     //아이템을 먹었을 때의 효과
+
+
+
+    /*
     private void ItemEffect() {
         Type itemType = Type.HEAL;
 
@@ -53,7 +61,7 @@ public class Item : MonoBehaviour
 
     }
 
-
+*/
 
 
 
