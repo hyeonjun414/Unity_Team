@@ -759,6 +759,7 @@ GameObject:
   - component: {fileID: 211671989}
   - component: {fileID: 211671990}
   - component: {fileID: 211671991}
+  - component: {fileID: 211671992}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -930,6 +931,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   infoText: {fileID: 160096979}
   spawnPos: []
+--- !u!114 &211671992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211671986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f224bbe1016d0740850c59f19ddbff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnItemType:
+  - {fileID: 7383845993650290242, guid: b2d39d6ce1d3bc24b8a0c48d3a215f33, type: 3}
+  - {fileID: 2458423231331669697, guid: 9d9f1a0e83c85de44b23af6a874b4689, type: 3}
+  maxItemCount: 25
+  curItemCount: 0
+  maxSpawnItemCount: 3
+  curSpawnItemCount: 0
+  emptyTileCheckList: 
+  spawnCountDown: 5
+  countdown: 5
+  spawnOffset: {x: 0, y: 1.5, z: 0}
 --- !u!1 &212827361
 GameObject:
   m_ObjectHideFlags: 0

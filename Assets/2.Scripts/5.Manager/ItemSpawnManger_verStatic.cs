@@ -2,28 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemSpawnManger : Singleton<ItemSpawnManger>
+public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 {
-    public GameObject[] spawnItemType;             // 스폰될 아이템
+    public Item[] spawnItemType;                // 스폰될 아이템 타입
     int spawnItemTypeNum;
 
-    public int maxItemCount = 25;   // 맵에 최대 소환될 수 있는 아이템 개수
+
+    public int maxItemCount = 25;           // 맵에 최대 소환될 수 있는 아이템 개수
     public int curItemCount = 0;
 
-    public int maxSpawnItemCount = 10;       // 쿨타임 마다 스폰할 아이템 개수
+    public int maxSpawnItemCount = 3;       // 쿨타임 마다 스폰할 아이템 개수
     public int curSpawnItemCount = 0;
 
-    public bool[,] emptyTileCheckList;
+    public bool[] emptyTileCheckList;
 
-    public float spawnCountDown = 5.0f;          // 스폰 쿨타임
-    public float countdown = 5.0f;        // 시간 계산용 쿨타임
-    public float itemLife = 5.0f;         // 아이템 수명
+    public float spawnCountDown = 5.0f;     // 스폰 쿨타임
+    public float countdown = 5.0f;          // 시간 계산용 쿨타임
 
     public Vector3 spawnOffset = new Vector3(0, 1.5f, 0);       // 타일로부터 스폰 위치 차이
 
-    int itemSpawnTileX;                   // 아이템 스폰될 타일의 X축 좌표
-    int itemSpawnTileY;                   // 아이템 스폰될 타일의 Y축 좌표
-    Vector3 curItemSpawnPos;                 // 아이템 스폰될 위치
+    int itemSpawnTileNum;                   // 아이템 스폰될 타일 번호
+    Vector3 curItemSpawnPos;                // 아이템 스폰될 위치
 
     private void Awake()
     {
@@ -32,18 +31,16 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
 
     private void Start()
     {
-        maxItemCount = MapManager.Instance.mapSizeX * MapManager.Instance.mapSizeY - 4;
-        emptyTileCheckList = new bool[MapManager.Instance.mapSizeX, MapManager.Instance.mapSizeY];
+        maxItemCount = MapManager_verStatic.Instance.map.grid.Length;
+        emptyTileCheckList = new bool[MapManager_verStatic.Instance.map.grid.Length];
         MakeSpawnEmptyCheckList();
     }
 
     private void Update()
     {
-        MakeSpawnEmptyCheckList();
         SpawnTimer();
         Spawn();
     }
-
 
     private void SpawnTimer()
     {
@@ -56,6 +53,8 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
             countdown -= Time.deltaTime;
         }
     }
+
+
 
     private void Spawn()
     {
@@ -83,52 +82,52 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
                     Instantiate(spawnItemType[spawnItemTypeNum], curItemSpawnPos, Quaternion.identity);
 
                     curItemCount++;
-                    emptyTileCheckList[itemSpawnTileX, itemSpawnTileY] = false;
+                    emptyTileCheckList[itemSpawnTileNum] = false;
+
                 }
             }
         }
     }
 
-
-    public GameObject SetSpawnItem()
+    public Item SetSpawnItem()
     {
         spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
 
         //해당 노드를 아이템 점유 타일로 변경
-        MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].eOnTileObject = eTileOccupation.ITEM;
+        MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].eOnTileObject = eTileOccupation.EMPTY;
         return spawnItemType[spawnItemTypeNum];
     }
 
+
     public void MakeSpawnEmptyCheckList()
+    // 비어있는 칸 체크용 bool행렬 만들기
     {
-        for (int i = 0; i < MapManager.Instance.mapSizeX; ++i)
+
+        for (int i = 0; i < MapManager_verStatic.Instance.map.grid.Length; ++i)
         {
-            for (int j = 0; j < MapManager.Instance.mapSizeY; ++j)
+            if (MapManager_verStatic.Instance.map.grid[i].eOnTileObject == eTileOccupation.EMPTY)
             {
-                if (MapManager.Instance.grid[i, j].eOnTileObject == eTileOccupation.EMPTY)
-                {
-                    emptyTileCheckList[i, j] = true;
-                }
-                else
-                {
-                    emptyTileCheckList[i, j] = false;
-                }
+                emptyTileCheckList[i] = true;
+            }
+            else
+            {
+                emptyTileCheckList[i] = false;
             }
         }
     }
 
 
     public Vector3 SetSpawnPos()
+    // 좌표 만들기
     {
         int check = 0;
-        while (!emptyTileCheckList[itemSpawnTileX, itemSpawnTileY] == true)     // 비어있는 타일이 아닐경우 계속 랜덤 좌표 계산
+        while (!emptyTileCheckList[itemSpawnTileNum] == true)     // 비어있는 타일이 아닐경우 계속 랜덤 좌표 계산
         {
             Debug.Log("반복횟수" + check++);
-            itemSpawnTileX = Random.Range(0, MapManager.Instance.mapSizeX);
-            itemSpawnTileY = Random.Range(0, MapManager.Instance.mapSizeY);
+            itemSpawnTileNum = Random.Range(0, MapManager_verStatic.Instance.map.grid.Length);
         }
 
-        curItemSpawnPos = MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].transform.position + spawnOffset;
+        curItemSpawnPos = MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].transform.position + spawnOffset;
 
         return curItemSpawnPos;
     }

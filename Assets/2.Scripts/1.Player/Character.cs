@@ -62,8 +62,8 @@ public class Character : MonoBehaviourPun
     public PlayerDir Dir
     {
         get { return dir; }
-        set 
-        { 
+        set
+        {
             dir = value;
             if (dir == PlayerDir.Start)
                 dir = PlayerDir.Left;
@@ -71,24 +71,24 @@ public class Character : MonoBehaviourPun
                 dir = PlayerDir.Up;
 
             SetDirection();
-        }    
+        }
     }
     private void Awake()
     {
         anim = GetComponent<Animator>();
- 
+
         moveCommand = gameObject.AddComponent<CharacterMove>();
         moveCommand.SetUp(this);
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
-        
+
         Dir = PlayerDir.Right;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
     }
     [PunRPC]
     public void SetUp()
     {
-        if(photonView.IsMine)
+        if (photonView.IsMine)
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
 
         Map map = MapManager_verStatic.Instance.map;
@@ -104,7 +104,7 @@ public class Character : MonoBehaviourPun
 
     private void Update()
     {
-        if(!photonView.IsMine) return;
+        if (!photonView.IsMine) return;
         //if(!isInputAvailable)return;
         CheckAvailability();
         Move();
@@ -121,7 +121,7 @@ public class Character : MonoBehaviourPun
         characterStatus.currentCombo = 0;
         characterStatus.killCount = 0;
         characterStatus.deathCount = 0;
-         
+
     }
     public void Move()
     {
@@ -135,7 +135,7 @@ public class Character : MonoBehaviourPun
     public void SetDirection()
     {
         float angle = 0f;
-        switch(Dir)
+        switch (Dir)
         {
             case PlayerDir.Up:
                 angle = 0f;
@@ -156,7 +156,7 @@ public class Character : MonoBehaviourPun
     {
         Quaternion originRot = transform.rotation;
         float curTime = 0;
-        while(true)
+        while (true)
         {
             if (curTime > 0.2f)
                 break;
@@ -170,7 +170,7 @@ public class Character : MonoBehaviourPun
     {
         characterStatus.hp -= damageInt;
         anim.SetTrigger("Take Damage");
-        if(characterStatus.hp <=0)
+        if (characterStatus.hp <= 0)
         {
             Die();
         }
@@ -178,8 +178,8 @@ public class Character : MonoBehaviourPun
     private void Die()
     {
         anim.SetTrigger("Die");
-        MapManager.Instance.grid[characterStatus.curPositionX,characterStatus.curPositionY].objectOnTile=null;
-        MapManager.Instance.grid[characterStatus.curPositionX,characterStatus.curPositionY].eOnTileObject=eTileOccupation.EMPTY;
+        MapManager.Instance.grid[characterStatus.curPositionX, characterStatus.curPositionY].objectOnTile = null;
+        MapManager.Instance.grid[characterStatus.curPositionX, characterStatus.curPositionY].eOnTileObject = eTileOccupation.EMPTY;
         Destroy(gameObject);
 
     }
@@ -189,17 +189,17 @@ public class Character : MonoBehaviourPun
         //사방에 벽이 있으면 해당 방향으로는 move를 할 수 없게 예외처리
         //사방에 노드가 없는 큐브가 있으면 그 방향으로는 move를 할 수 없게 예외처리
 
-       // MapManager.Instance.mapSizeX
-       
+        // MapManager.Instance.mapSizeX
+
     }
     private void OnDrawGizmos()
     {
-        Vector3 playerPos = new Vector3(transform.position.x,transform.position.y+1f,transform.position.z);
-        for(int i=0; i<4; ++i)
+        Vector3 playerPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+        for (int i = 0; i < 4; ++i)
         {
-            Debug.DrawLine(playerPos,rayPos[i].position,Color.red);
+            Debug.DrawLine(playerPos, rayPos[i].position, Color.red);
         }
-        
+
         //Debug.DrawRay(playerPos,rayPos.position,Color.red);
     }
 

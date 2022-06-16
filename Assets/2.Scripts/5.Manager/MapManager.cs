@@ -25,15 +25,15 @@ public class MapManager : Singleton<MapManager>
         playerCount = 4;
         if (playerCount > 4) playerCount = 4;//혹시 네트워크에러? 등으로 최대인원보다 많게될 시 예외처리
 
-        mapSizeX=10;//임시로 맵사이즈용 변수 지정
-        mapSizeY=10;//임시로 맵사이즈용 변수 지정
-        grid = new TileNode[mapSizeY,mapSizeX];
+        mapSizeX = 10;//임시로 맵사이즈용 변수 지정
+        mapSizeY = 10;//임시로 맵사이즈용 변수 지정
+        grid = new TileNode[mapSizeY, mapSizeX];
 
-        Vector3 basePlayerPos = new Vector3(0f,0.25f,0f);
-        playerSpawnPos[0] = new Vector3(spaceBetweenTiles*0,           basePlayerPos.y,    spaceBetweenTiles*0);
-        playerSpawnPos[1] = new Vector3(spaceBetweenTiles*(mapSizeX-1),basePlayerPos.y,    -spaceBetweenTiles*(mapSizeY-1));
-        playerSpawnPos[2] = new Vector3(spaceBetweenTiles*(mapSizeX-1),basePlayerPos.y,    spaceBetweenTiles*0);
-        playerSpawnPos[3] = new Vector3(spaceBetweenTiles*0,           basePlayerPos.y,    -spaceBetweenTiles*(mapSizeY-1));
+        Vector3 basePlayerPos = new Vector3(0f, 0.25f, 0f);
+        playerSpawnPos[0] = new Vector3(spaceBetweenTiles * 0, basePlayerPos.y, spaceBetweenTiles * 0);
+        playerSpawnPos[1] = new Vector3(spaceBetweenTiles * (mapSizeX - 1), basePlayerPos.y, -spaceBetweenTiles * (mapSizeY - 1));
+        playerSpawnPos[2] = new Vector3(spaceBetweenTiles * (mapSizeX - 1), basePlayerPos.y, spaceBetweenTiles * 0);
+        playerSpawnPos[3] = new Vector3(spaceBetweenTiles * 0, basePlayerPos.y, -spaceBetweenTiles * (mapSizeY - 1));
 
 
 
@@ -49,15 +49,15 @@ public class MapManager : Singleton<MapManager>
     {
         GameObject obj = new GameObject("Tiles");
         Debug.Log(mapSizeX);
-        for(int i=0; i<mapSizeY; ++i)
+        for (int i = 0; i < mapSizeY; ++i)
         {
-            for(int j=0; j<mapSizeX; ++j)
+            for (int j = 0; j < mapSizeX; ++j)
             {
-                grid[i,j] = Instantiate(prefNode,new Vector3(j*spaceBetweenTiles,0,-i*spaceBetweenTiles),Quaternion.identity);
-                grid[i,j].eOnTileObject = eTileOccupation.EMPTY;
-                grid[i,j].posX = j;
-                grid[i,j].posY = i;
-                grid[i,j].transform.SetParent(obj.transform);
+                grid[i, j] = Instantiate(prefNode, new Vector3(j * spaceBetweenTiles, 0, -i * spaceBetweenTiles), Quaternion.identity);
+                grid[i, j].eOnTileObject = eTileOccupation.EMPTY;
+                grid[i, j].posX = j;
+                grid[i, j].posY = i;
+                grid[i, j].transform.SetParent(obj.transform);
             }
         }
 
@@ -66,7 +66,7 @@ public class MapManager : Singleton<MapManager>
             Character objPlayer = Instantiate(player, playerSpawnPos[i], Quaternion.identity);
             if (i == 0)
             {
-               // objPlayer.isLocal = true;
+                // objPlayer.isLocal = true;
                 CinemachineVirtualCamera virCam = GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>();
                 virCam.Follow = objPlayer.transform;
                 //objPlayer.SetUp(grid[0, 0]);
@@ -74,19 +74,19 @@ public class MapManager : Singleton<MapManager>
             }
             else if (i == 1)
             {
-               // objPlayer.SetUp(grid[mapSizeX - 1, mapSizeX - 1]);
+                // objPlayer.SetUp(grid[mapSizeX - 1, mapSizeX - 1]);
             }
             else if (i == 2)
             {
-               // objPlayer.SetUp(grid[0, mapSizeX - 1]);
+                // objPlayer.SetUp(grid[0, mapSizeX - 1]);
             }
             else if (i == 3)
             {
                 //objPlayer.SetUp(grid[mapSizeX - 1, 0]);
             }
             //해당 노드를 플레이어 점유 타일로 변경
-            grid[objPlayer.characterStatus.curPositionX,objPlayer.characterStatus.curPositionY].eOnTileObject 
-                = eTileOccupation.PLAYER;
+            grid[objPlayer.characterStatus.curPositionX, objPlayer.characterStatus.curPositionY].eOnTileObject = eTileOccupation.PLAYER;
+            ItemSpawnManger.Instance.emptyTileCheckList[objPlayer.characterStatus.curPositionX, objPlayer.characterStatus.curPositionY] = false;
         }
 
 

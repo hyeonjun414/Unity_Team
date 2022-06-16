@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6773476691000948668}
   - component: {fileID: 8783372086458385270}
   - component: {fileID: 7936850805911918764}
-  - component: {fileID: 3250405823241596292}
+  - component: {fileID: 7383845993650290242}
   m_Layer: 0
   m_Name: Dash
   m_TagString: Untagged
@@ -97,7 +97,7 @@ MonoBehaviour:
   bounceSpeed: 8
   bounceAmplitude: 0.05
   rotationSpeed: 90
---- !u!114 &3250405823241596292
+--- !u!114 &7383845993650290242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,9 +106,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7125875556347847331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2ad833deb1b7334d80a7c85a2fbda01, type: 3}
+  m_Script: {fileID: 11500000, guid: e5232c1a0fc697b4c9d69e3810c6702e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 0}
+  holdingTime: 5
 --- !u!1001 &2228012695615453576
 PrefabInstance:
   m_ObjectHideFlags: 0
