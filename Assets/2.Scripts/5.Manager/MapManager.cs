@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +44,7 @@ public class MapManager : Singleton<MapManager>
 
 
     }
+
     public void GenerateMap()
     {
         GameObject obj = new GameObject("Tiles");
