@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84f45cb51cb80c644ac9a407ebe1dbef, type: 3}
-  m_Name: PowerUpPotion
+  m_Name: DashItem
   m_EditorClassIdentifier: 
-  name: PowerUpPotion
-  Description: Double offense power
-  itemType: 1
-  icon: {fileID: 21300000, guid: 65a1928224b8541439b433a52ea9c3d9, type: 3}
-  prefab: {fileID: 7699674279000733108, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+  name: DashItem
+  Description: Move 2 blocks
+  itemType: 2
+  icon: {fileID: 21300000, guid: 98bd4c9b1471720489f5411c44702ab1, type: 3}
+  prefab: {fileID: 1314381847075644517, guid: 38e0ffa2ab1fa2e44917e99b750170b6, type: 3}

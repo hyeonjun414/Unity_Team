@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84f45cb51cb80c644ac9a407ebe1dbef, type: 3}
-  m_Name: PowerUpPotion
+  m_Name: SeeingThrough
   m_EditorClassIdentifier: 
-  name: PowerUpPotion
-  Description: Double offense power
-  itemType: 1
-  icon: {fileID: 21300000, guid: 65a1928224b8541439b433a52ea9c3d9, type: 3}
-  prefab: {fileID: 7699674279000733108, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+  name: SeeingThrough
+  Description: See through the walls
+  itemType: 3
+  icon: {fileID: 21300000, guid: dd6a4f1b48fdfa24795480dd2bce1661, type: 3}
+  prefab: {fileID: 2744038572444704473, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}

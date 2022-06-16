@@ -8,12 +8,10 @@ using UnityEngine;
 
 public class ItemManager : Singleton<ItemManager>
 {
-    private Character character;
-   // private CharacterMove characterMove;
-    
-
     private void Awake() {
-        
+        if (_instance == null){
+            _instance = this;
+        } 
     }
 
 public void UseItem(Character player, ItemData data){
@@ -22,20 +20,20 @@ public void UseItem(Character player, ItemData data){
             HealPotion(player);
             break; 
         case ItemType.POWERUP:
+            PowerUpPotion(player);
             break;
         case ItemType.DASH:
+            DashItem(player);
             break;
         case ItemType.SEEINGTHORUGH:
+            SeeingThrough(player);
             break;
-
-
     }
-
 }
 
         public void HealPotion(Character player){
        
-        //라이프가 2개 늘어남
+        //생명이 2개 늘어남
         player.characterStatus.hp = 2 + player.characterStatus.hp;
 
         //테스트용 디버그 로그
@@ -47,19 +45,14 @@ public void UseItem(Character player, ItemData data){
 
             //테스트용 디버그 로그
             Debug.Log("플레이어의 체력이 이미 최대입니다!");
-
         }
-
+        Debug.Log(player.characterStatus.hp);
     }
 
 
     public void PowerUpPotion(Character player){
         //공격력이 2배로 증가
         Debug.Log("공격력이 두 배로 증가합니다.");
-
-
-
-
     }
 
     public void DashItem(Character player){
@@ -69,15 +62,12 @@ public void UseItem(Character player, ItemData data){
 
         //현 아이템이 사용 되면
         Debug.Log("이동이 두 배로 증가합니다.");
-
-
     }
 
     public void SeeingThrough(Character player){
         //벽 투시
         //오브젝트 알파값
         Debug.Log("벽을 투시합니다.");
-
     }
 
 

@@ -6,7 +6,7 @@ public class Item : MonoBehaviour
 {
     public ItemData data;
     //public int holdingTime = 5;
-
+   
     private void OnTriggerEnter(Collider other){
 
         //아이템과 충돌한 플레이어 알려주기
@@ -17,6 +17,7 @@ public class Item : MonoBehaviour
 
             //플레이어와 충돌한 아이템 삭제
             Destroy(gameObject);
+            ItemManager.Instance.UseItem(contactedPlayer, data);
         }
     }
 

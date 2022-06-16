@@ -15,5 +15,5 @@ MonoBehaviour:
   name: HealPotion
   Description: Add 2 Lives
   itemType: 0
-  icon: {fileID: 21300000, guid: e447bc2dc3ed4f14392d794b3b000985, type: 3}
-  prefab: {fileID: 3259875531834139843, guid: c6ea1dac8a927134a80c648cde28093c, type: 3}
+  icon: {fileID: 21300000, guid: a40e131b61d22ba42b2955962e636ca4, type: 3}
+  prefab: {fileID: -8886247432955739418, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
