@@ -13,18 +13,13 @@ public class ItemData : ScriptableObject
     public string Description;
     public ItemType itemType;
 
-    
-
-
-    
 
     [Header("Item UI")]
     public Sprite icon;
     public Item prefab;
 
 
-    [Header("Item Function")]
-    public bool Heal;
+  //  [Header("Item Function")]
 
    
 
