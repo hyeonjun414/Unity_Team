@@ -55,7 +55,9 @@ public class Character : MonoBehaviourPun
     [Header("Command")]
     public MoveCommand moveCommand;
     public ActionCommand actionCommand;
-
+    public Vector2 playerHeadingPos = Vector2.zero;
+    public bool isMoving = true; //임시
+    public bool isCrashing = false; //임시
     private PlayerDir dir;
     public PlayerDir Dir
     {

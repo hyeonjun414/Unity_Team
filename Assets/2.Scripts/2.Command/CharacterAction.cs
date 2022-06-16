@@ -29,8 +29,6 @@ public class CharacterAction : ActionCommand
         {
             //애니메이션추가
             player.playerInput = ePlayerInput.BLOCK;
-            
-
         }
         
    

@@ -43,6 +43,8 @@ public class CharacterMove : MoveCommand
     }
     private IEnumerator MoveRoutine(Vector2 resultDir)
     {
+        //yield return new WaitUntil(()=>player.isInputAvailable);
+        //if(adsasd)break;
         yield return null;
         //player.anim.SetTrigger("Jump");
         TileNode originNode = MapManager.Instance.grid[
@@ -66,6 +68,7 @@ public class CharacterMove : MoveCommand
         Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
         
         float curTime = 0;
+        yield return new WaitUntil(()=>player.isInputAvailable);
         while (true)
         {
             if (curTime > 0.2f)
