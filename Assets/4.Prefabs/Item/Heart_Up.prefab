@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1830103258818322185}
   - component: {fileID: 4503919028489055171}
   - component: {fileID: 1136769634438546412}
-  - component: {fileID: 7645487453224870599}
+  - component: {fileID: 3985409690708873606}
   m_Layer: 0
   m_Name: Heart_Up
   m_TagString: Untagged
@@ -97,7 +97,7 @@ MonoBehaviour:
   bounceSpeed: 8
   bounceAmplitude: 0.05
   rotationSpeed: 90
---- !u!114 &7645487453224870599
+--- !u!114 &3985409690708873606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2702685404864825878}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5232c1a0fc697b4c9d69e3810c6702e, type: 3}
+  m_Script: {fileID: 11500000, guid: c2ad833deb1b7334d80a7c85a2fbda01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8444878677719619899

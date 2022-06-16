@@ -13,7 +13,7 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
     public int maxSpawnItemCount = 10;       // 쿨타임 마다 스폰할 아이템 개수
     public int curSpawnItemCount = 0;
 
-    //    public bool[] emptyTileCheck;
+    public bool[,] emptyTileCheckList;
 
     public float countdown = 5.0f;        // 스폰 쿨타임
     public float itemLife = 5.0f;         // 아이템 수명
@@ -22,7 +22,7 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
 
     int itemSpawnTileX;                   // 아이템 스폰될 타일의 X축 좌표
     int itemSpawnTileY;                   // 아이템 스폰될 타일의 Y축 좌표
-    Vector3 itemSpawnPos;                 // 아이템 스폰될 위치
+    Vector3 curItemSpawnPos;                 // 아이템 스폰될 위치
 
     private void Awake()
     {
@@ -32,6 +32,8 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
     private void Start()
     {
         maxItemCount = MapManager.Instance.mapSizeX * MapManager.Instance.mapSizeY - 4;
+        emptyTileCheckList = new bool[MapManager.Instance.mapSizeX, MapManager.Instance.mapSizeY];
+        MakeSpawnEmptyCheckList();
     }
 
     private void Update()
@@ -60,18 +62,9 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
 
                 for (int i = 0; i < curSpawnItemCount; i++)     // 소환할 아이템 갯수만큼 아이템 소환
                 {
-                    while (true)
-                    {
-                        SpawnEmptyCheck();
-                        if (MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].eOnTileObject == eTileOccupation.EMPTY)
-                        {
-                            break;
-                        }
-                    }
-
                     GetSpawnPos();                              // 아이템 좌표 가져오기
                     GetSpawnItem();                             // 소환할 아이템 종류 가져오기
-                    Instantiate(spawnItem[spawnItemNum], itemSpawnPos, Quaternion.identity);
+                    Instantiate(spawnItem[spawnItemNum], curItemSpawnPos, Quaternion.identity);
 
                     curItemCount++;
                 }
@@ -95,21 +88,39 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
         return spawnItem[spawnItemNum];
     }
 
-    public void SpawnEmptyCheck()
+    public void MakeSpawnEmptyCheckList()
     {
-        if (MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].eOnTileObject != eTileOccupation.EMPTY)
+        for (int i = 0; i < MapManager.Instance.mapSizeX; ++i)
         {
-            GetSpawnPos();
+            for (int j = 0; j < MapManager.Instance.mapSizeY; ++j)
+            {
+                if (MapManager.Instance.grid[i, j].onTileObject == eTileOccupation.EMPTY)
+                {
+                    emptyTileCheckList[i, j] = true;
+                }
+                else
+                {
+                    emptyTileCheckList[i, j] = false;
+                }
+            }
         }
     }
 
+
     public Vector3 GetSpawnPos()
     {
-        itemSpawnTileX = Random.Range(0, MapManager.Instance.mapSizeX);
-        itemSpawnTileY = Random.Range(0, MapManager.Instance.mapSizeY);
-        itemSpawnPos = MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].transform.position + spawnOffset;
-        return itemSpawnPos;
+        int check = 0;
+        while (!emptyTileCheckList[itemSpawnTileX, itemSpawnTileY] == true)
+        {
+            Debug.Log("반복횟수" + check++);
+            itemSpawnTileX = Random.Range(0, MapManager.Instance.mapSizeX);
+            itemSpawnTileY = Random.Range(0, MapManager.Instance.mapSizeY);
+        }
 
+        curItemSpawnPos = MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].transform.position + spawnOffset;
+
+        emptyTileCheckList[itemSpawnTileX, itemSpawnTileY] = false;
+        return curItemSpawnPos;
     }
 
     public void DeleteItem()
