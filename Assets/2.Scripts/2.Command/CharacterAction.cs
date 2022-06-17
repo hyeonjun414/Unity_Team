@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterAction : ActionCommand
 {
     public TileNode tileFront;
+    //public Character player;
     public override void Execute()
     {
         Attack();
@@ -38,6 +39,10 @@ public class CharacterAction : ActionCommand
         if (Input.GetKeyDown(KeyCode.N))
         {
             player.playerInput = ePlayerInput.USE_ITEM;
+            //Debug.Log("아이템을 사용합니다.");
+            ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
+            ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
+
         }
     }
     private void ChangeItemSlot()

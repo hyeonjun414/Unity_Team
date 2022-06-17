@@ -18,12 +18,21 @@ public class Item : MonoBehaviour
 
             //플레이어와 충돌한 아이템 삭제
             Destroy(gameObject);
-            ItemManager.Instance.UseItem(contactedPlayer, data);
+            //플레이어의 보관함에 아이템 넣어줌
+            PickedUp(contactedPlayer);
         }
     }
+    //아이템을 슬롯에 넣어줌
+    private void PickedUp(Character player){
+        if(ItemManager.Instance.AddNum(data)){
+            Debug.Log(player.name + "가 " + data.name + "을 아이템 보관함에 넣었습니다!");
+        }
+        else{
+            Debug.Log("아이템을 둘 자리가 없습니다!");
 
-
-
+        }
+    }
+   
 
 
 
