@@ -4,17 +4,37 @@ using Photon.Pun;
 using System.Collections.Generic;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using TMPro;
 
 public class NewInRoomPanel : MonoBehaviour
 {
+    [HideInInspector]
+    public bool isEnterKeyEnabled=false;
+    [Header("RoomPanel")]
+    public GameObject RoomPanel;
+    public TMP_Text[] ChatText;
+    public TMP_InputField ChatInput;
+    
+    
     public GameObject playerListContent;
     public Button startGameButton;
     public GameObject playerEntryPrefab;
 
     private Dictionary<int, GameObject> playerListEntries;
 
+    private void Update()
+    {
+        if(!isEnterKeyEnabled)return;
+        
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            NewLobbyManager.instance.Send();
+        }
+    }
     private void OnEnable()
     {
+        ChatInput.Select();
+        isEnterKeyEnabled = true;
         if (playerListEntries == null)
         {
             playerListEntries = new Dictionary<int, GameObject>();
@@ -45,8 +65,10 @@ public class NewInRoomPanel : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
 
+
     private void OnDisable()
     {
+        isEnterKeyEnabled = false;
         foreach (GameObject entry in playerListEntries.Values)
         {
             Destroy(entry.gameObject);
@@ -54,6 +76,10 @@ public class NewInRoomPanel : MonoBehaviour
 
         playerListEntries.Clear();
         playerListEntries = null;
+    }
+    public void RoomRenewal()
+    {
+
     }
 
     public void OnLeaveRoomClicked()

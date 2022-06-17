@@ -47,4 +47,7 @@ public class PlayerEntry : MonoBehaviour
     {
         playerReadyImage.color = playerReady ? Color.green : Color.red;
     }
+
+
+
 }

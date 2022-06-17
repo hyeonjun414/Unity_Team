@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -39,12 +40,12 @@ public enum PlayerDir
     End
 }
 
-public class Character : MonoBehaviourPun
+public class Character : MonoBehaviourPun,IPunObservable
 {
     [Header("Node")]
     public TileNode curNode;
 
-
+    public int playerNumber;
     public bool isInputAvailable = true;
     public Transform[] rayPos;
     public ePlayerInput playerInput = ePlayerInput.NULL;
@@ -76,19 +77,25 @@ public class Character : MonoBehaviourPun
     private void Awake()
     {
         anim = GetComponent<Animator>();
-
+        
         moveCommand = gameObject.AddComponent<CharacterMove>();
         moveCommand.SetUp(this);
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
+
+        InputCheckManager.Instance.ResisterPlayer(this);
+
+
         Dir = PlayerDir.Right;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
 
-        object[] obj = new object[2]{"aa", 1};
-        photonView.RPC("Click",RpcTarget.AllBuffered, obj);
+        // object[] obj = new object[2]{"aa", 1};
+        // photonView.RPC("Click",RpcTarget.AllBuffered, obj);
+        //photonView.RPC()
         
     }
+
 
     [PunRPC]
     public void Click(string command , int a)
@@ -102,7 +109,8 @@ public class Character : MonoBehaviourPun
         if (photonView.IsMine)
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
         
-
+        
+        //InputCheckManager.Instance.players.Add(gameObject.GetComponent<Character>());
         RhythmManager.Instance.ResisterPlayer(this);
 
         //if(PhotonNetwork.IsMasterClient)
@@ -195,11 +203,22 @@ public class Character : MonoBehaviourPun
     }
     private void Die()
     {
-        anim.SetTrigger("Die");
-        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
-        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
-        Destroy(gameObject);
-
+        // anim.SetTrigger("Die");
+        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
+        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
+        // Destroy(gameObject);
+        
+        var builder = new StringBuilder();
+        builder.Append(PhotonNetwork.LocalPlayer.NickName);
+        builder.Append(" 이 사망하였습니다");
+        string deadString = builder.ToString();
+        photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+    }
+    
+    [PunRPC]
+    public void SendLogToPlayers(string msg)
+    {
+        GameLogManager.Instance.AddQueue(msg);
     }
     public void CheckAvailability()
     {
@@ -219,6 +238,21 @@ public class Character : MonoBehaviourPun
         }
 
         //Debug.DrawRay(playerPos,rayPos.position,Color.red);
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // if (stream.IsWriting)
+        // {
+        //     stream.SendNext(characterStatus.curPositionX);
+        //     stream.SendNext(characterStatus.curPositionY);
+        //     stream.SendNext(Dir);
+        // }
+        // else
+        // {
+        //     characterStatus.curPositionX    = (int)stream.ReceiveNext();
+        //     characterStatus.curPositionY    = (int)stream.ReceiveNext();
+        //     Dir                             = (PlayerDir)stream.ReceiveNext();
+        // }
     }
 
 }
