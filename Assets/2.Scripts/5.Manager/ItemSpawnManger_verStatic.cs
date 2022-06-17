@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
 
 public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 {
-    public Item[] spawnItemType;                // 스폰될 아이템 타입
+    PhotonView photonView;
+    public string[] spawnItemType;                // 스폰될 아이템 타입
+    // public Item[] spawnItemType;                // 스폰될 아이템 타입
+
     int spawnItemTypeNum;
     public Item[] item;
 
@@ -34,14 +40,30 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 
     private void Start()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
+        // spawnItemType = new Item[System.Enum.GetValues(typeof(ItemData)).Length];
+        spawnItemType[0] = "Bottle_Endurance";
+        spawnItemType[1] = "Bottle_Health";
+        spawnItemType[2] = "Bottle_Mana";
+
         item = new Item[MapManager_verStatic.Instance.map.grid.Length];
         maxItemCount = MapManager_verStatic.Instance.map.grid.Length;
         emptyTileCheckList = new bool[MapManager_verStatic.Instance.map.grid.Length];
+
         MakeSpawnEmptyCheckList();
     }
 
     private void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
         SpawnTimer();
         Spawn();
     }
@@ -57,8 +79,6 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
             countdown -= Time.deltaTime;
         }
     }
-
-
 
     private void Spawn()
     {
@@ -82,7 +102,7 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
                 for (int i = 0; i < curSpawnItemCount; i++)     // 소환할 아이템 갯수만큼 아이템 소환
                 {
                     MakeSpawnEmptyCheckList();
-                    SetSpawnPos();                              // 아이템 좌표 가져오기
+                    // 아이템 좌표 가져오기
                     SetSpawnItemType();                             // 소환할 아이템 종류 가져오기
                     SpawnItem();                                // 아이템 스폰
                 }
@@ -92,27 +112,34 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 
     public void SpawnItem()
     {
-        item[itemSpawnTileNum] = Instantiate(spawnItemType[spawnItemTypeNum], curItemSpawnPos, Quaternion.identity);
-
-        item[itemSpawnTileNum].posX = itemSpawnTileX;
-        item[itemSpawnTileNum].posY = itemSpawnTileY;
+        // PhotonNetwork.Instantiate(spawnItemType[spawnItemTypeNum].name, curItemSpawnPos, Quaternion.identity);
+        PhotonNetwork.Instantiate(spawnItemType[spawnItemTypeNum], SetSpawnPos(), Quaternion.identity);
+        // item[curSpawnItemCount].posX = itemSpawnTileX;
+        // item[curSpawnItemCount].posY = itemSpawnTileY;
 
         //해당 노드를 아이템 점유 타일로 변경
         MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].eOnTileObject = eTileOccupation.ITEM;
         curItemCount++;
     }
 
-    public Item SetSpawnItemType()
+    public string SetSpawnItemType()
     {
         spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
 
         return spawnItemType[spawnItemTypeNum];
     }
 
+    // public Item SetSpawnItemType()
+    // {
+    //     spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
+
+    //     return spawnItemType[spawnItemTypeNum];
+    // }
 
     public void MakeSpawnEmptyCheckList()
     // 비어있는 칸 체크
     {
+
         for (int i = 0; i < MapManager_verStatic.Instance.map.grid.Length; ++i)
         {
             if (MapManager_verStatic.Instance.map.grid[i].eOnTileObject == eTileOccupation.EMPTY)
@@ -125,7 +152,6 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
             }
         }
     }
-
 
     public Vector3 SetSpawnPos()
     // 좌표 만들기

@@ -945,9 +945,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnItemType:
-  - {fileID: 7699674279000733108, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
-  - {fileID: -8886247432955739418, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
-  - {fileID: 2744038572444704473, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+  - 
+  - 
+  - 
+  item: []
   maxItemCount: 25
   curItemCount: 0
   maxSpawnItemCount: 3
