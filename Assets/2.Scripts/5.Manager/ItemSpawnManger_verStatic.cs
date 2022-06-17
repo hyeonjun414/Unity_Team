@@ -6,7 +6,7 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 {
     public Item[] spawnItemType;                // 스폰될 아이템 타입
     int spawnItemTypeNum;
-
+    public Item[] item;
 
     public int maxItemCount = 25;           // 맵에 최대 소환될 수 있는 아이템 개수
     public int curItemCount = 0;
@@ -21,7 +21,10 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 
     public Vector3 spawnOffset = new Vector3(0, 1.5f, 0);       // 타일로부터 스폰 위치 차이
 
+    int itemSpawnTileX;                   // 아이템 스폰될 타일의 X축 좌표
+    int itemSpawnTileY;                   // 아이템 스폰될 타일의 Y축 좌표
     int itemSpawnTileNum;                   // 아이템 스폰될 타일 번호
+    int itemSpawnTileCheckNum;
     Vector3 curItemSpawnPos;                // 아이템 스폰될 위치
 
     private void Awake()
@@ -31,6 +34,7 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 
     private void Start()
     {
+        item = new Item[MapManager_verStatic.Instance.map.grid.Length];
         maxItemCount = MapManager_verStatic.Instance.map.grid.Length;
         emptyTileCheckList = new bool[MapManager_verStatic.Instance.map.grid.Length];
         MakeSpawnEmptyCheckList();
@@ -77,32 +81,38 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 
                 for (int i = 0; i < curSpawnItemCount; i++)     // 소환할 아이템 갯수만큼 아이템 소환
                 {
+                    MakeSpawnEmptyCheckList();
                     SetSpawnPos();                              // 아이템 좌표 가져오기
-                    SetSpawnItem();                             // 소환할 아이템 종류 가져오기
-                    Instantiate(spawnItemType[spawnItemTypeNum], curItemSpawnPos, Quaternion.identity);
-
-                    curItemCount++;
-                    emptyTileCheckList[itemSpawnTileNum] = false;
-
+                    SetSpawnItemType();                             // 소환할 아이템 종류 가져오기
+                    SpawnItem();                                // 아이템 스폰
                 }
             }
         }
     }
 
-    public Item SetSpawnItem()
+    public void SpawnItem()
+    {
+        item[itemSpawnTileNum] = Instantiate(spawnItemType[spawnItemTypeNum], curItemSpawnPos, Quaternion.identity);
+
+        item[itemSpawnTileNum].posX = itemSpawnTileX;
+        item[itemSpawnTileNum].posY = itemSpawnTileY;
+
+        //해당 노드를 아이템 점유 타일로 변경
+        MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].eOnTileObject = eTileOccupation.ITEM;
+        curItemCount++;
+    }
+
+    public Item SetSpawnItemType()
     {
         spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
 
-        //해당 노드를 아이템 점유 타일로 변경
-        MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].eOnTileObject = eTileOccupation.EMPTY;
         return spawnItemType[spawnItemTypeNum];
     }
 
 
     public void MakeSpawnEmptyCheckList()
-    // 비어있는 칸 체크용 bool행렬 만들기
+    // 비어있는 칸 체크
     {
-
         for (int i = 0; i < MapManager_verStatic.Instance.map.grid.Length; ++i)
         {
             if (MapManager_verStatic.Instance.map.grid[i].eOnTileObject == eTileOccupation.EMPTY)
@@ -120,11 +130,12 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
     public Vector3 SetSpawnPos()
     // 좌표 만들기
     {
-        int check = 0;
+        int mapSize = MapManager_verStatic.Instance.map.mapSize;
         while (!emptyTileCheckList[itemSpawnTileNum] == true)     // 비어있는 타일이 아닐경우 계속 랜덤 좌표 계산
         {
-            Debug.Log("반복횟수" + check++);
-            itemSpawnTileNum = Random.Range(0, MapManager_verStatic.Instance.map.grid.Length);
+            itemSpawnTileX = Random.Range(0, mapSize);
+            itemSpawnTileY = Random.Range(0, mapSize);
+            itemSpawnTileNum = mapSize * itemSpawnTileX + itemSpawnTileY;
         }
 
         curItemSpawnPos = MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].transform.position + spawnOffset;
@@ -132,8 +143,4 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
         return curItemSpawnPos;
     }
 
-    public void DeleteItem()
-    {
-
-    }
 }

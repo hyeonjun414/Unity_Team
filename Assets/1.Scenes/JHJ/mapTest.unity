@@ -945,8 +945,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnItemType:
-  - {fileID: 7383845993650290242, guid: b2d39d6ce1d3bc24b8a0c48d3a215f33, type: 3}
-  - {fileID: 2458423231331669697, guid: 9d9f1a0e83c85de44b23af6a874b4689, type: 3}
+  - {fileID: 7699674279000733108, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+  - {fileID: -8886247432955739418, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+  - {fileID: 2744038572444704473, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
   maxItemCount: 25
   curItemCount: 0
   maxSpawnItemCount: 3
@@ -954,7 +955,7 @@ MonoBehaviour:
   emptyTileCheckList: 
   spawnCountDown: 5
   countdown: 5
-  spawnOffset: {x: 0, y: 1.5, z: 0}
+  spawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &212827361
 GameObject:
   m_ObjectHideFlags: 0

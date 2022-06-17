@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ItemSpawnManger : Singleton<ItemSpawnManger>
 {
-    public GameObject[] spawnItemType;             // 스폰될 아이템
+    public Item[] spawnItemType;             // 스폰할 아이템 타입
     int spawnItemTypeNum;
+    public Item[,] item;
+
 
     public int maxItemCount = 25;   // 맵에 최대 소환될 수 있는 아이템 개수
     public int curItemCount = 0;
@@ -34,12 +36,12 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
     {
         maxItemCount = MapManager.Instance.mapSizeX * MapManager.Instance.mapSizeY - 4;
         emptyTileCheckList = new bool[MapManager.Instance.mapSizeX, MapManager.Instance.mapSizeY];
+        item = new Item[MapManager.Instance.mapSizeX, MapManager.Instance.mapSizeY];
         MakeSpawnEmptyCheckList();
     }
 
     private void Update()
     {
-        MakeSpawnEmptyCheckList();
         SpawnTimer();
         Spawn();
     }
@@ -67,6 +69,7 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
             }
             else
             {
+
                 if (maxItemCount - curItemCount < curSpawnItemCount)    // 비어있는 타일이 소환할 아이템보다 적을 경우
                 {
                     curSpawnItemCount = maxItemCount - curItemCount;
@@ -78,24 +81,32 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
 
                 for (int i = 0; i < curSpawnItemCount; i++)     // 소환할 아이템 갯수만큼 아이템 소환
                 {
+                    MakeSpawnEmptyCheckList();
                     SetSpawnPos();                              // 아이템 좌표 가져오기
                     SetSpawnItem();                             // 소환할 아이템 종류 가져오기
-                    Instantiate(spawnItemType[spawnItemTypeNum], curItemSpawnPos, Quaternion.identity);
-
-                    curItemCount++;
-                    emptyTileCheckList[itemSpawnTileX, itemSpawnTileY] = false;
+                    SpawnItem();
                 }
             }
         }
     }
-
-
-    public GameObject SetSpawnItem()
+    public void SpawnItem()
     {
-        spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
+        item[itemSpawnTileX, itemSpawnTileY] = Instantiate(spawnItemType[spawnItemTypeNum], curItemSpawnPos, Quaternion.identity);
+
+        item[itemSpawnTileX, itemSpawnTileY].posX = itemSpawnTileX;
+        item[itemSpawnTileX, itemSpawnTileY].posY = itemSpawnTileY;
 
         //해당 노드를 아이템 점유 타일로 변경
         MapManager.Instance.grid[itemSpawnTileX, itemSpawnTileY].eOnTileObject = eTileOccupation.ITEM;
+        curItemCount++;
+    }
+
+
+    public Item SetSpawnItem()
+    {
+        spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
+
+
         return spawnItemType[spawnItemTypeNum];
     }
 
@@ -133,8 +144,4 @@ public class ItemSpawnManger : Singleton<ItemSpawnManger>
         return curItemSpawnPos;
     }
 
-    public void DeleteItem()
-    {
-
-    }
 }
