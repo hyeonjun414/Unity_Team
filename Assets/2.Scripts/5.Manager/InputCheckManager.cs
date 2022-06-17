@@ -36,6 +36,7 @@ public class InputCheckManager : MonoBehaviourPun
     {
         public CachedPlayer(int playerNumber,int command, int destX,int destY,int curPosX,int curPosY)
         {
+            
             this.playerNumber = playerNumber;
             this.command = command;
             this.destX = destX;
@@ -303,7 +304,7 @@ public class InputCheckManager : MonoBehaviourPun
         //플레이어들의 버튼 입력 가능하도록 초기화
         for (int i = 0; i < cachedPlayers.Count; ++i)
         {
-            cachedPlayers[i].isInputAvailable = true;
+            players[i].isInputAvailable = true;
             players[i].playerInput = ePlayerInput.NULL;
             players[i].playerHeadingPos = Vector2.zero;
             players[i].isMoving = true;//초기화

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -39,7 +40,7 @@ public enum PlayerDir
     End
 }
 
-public class Character : MonoBehaviourPun
+public class Character : MonoBehaviourPun,IPunObservable
 {
     [Header("Node")]
     public TileNode curNode;
@@ -202,11 +203,22 @@ public class Character : MonoBehaviourPun
     }
     private void Die()
     {
-        anim.SetTrigger("Die");
-        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
-        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
-        Destroy(gameObject);
-
+        // anim.SetTrigger("Die");
+        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
+        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
+        // Destroy(gameObject);
+        
+        var builder = new StringBuilder();
+        builder.Append(PhotonNetwork.LocalPlayer.NickName);
+        builder.Append(" 이 사망하였습니다");
+        string deadString = builder.ToString();
+        photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+    }
+    
+    [PunRPC]
+    public void SendLogToPlayers(string msg)
+    {
+        GameLogManager.Instance.AddQueue(msg);
     }
     public void CheckAvailability()
     {
@@ -226,6 +238,21 @@ public class Character : MonoBehaviourPun
         }
 
         //Debug.DrawRay(playerPos,rayPos.position,Color.red);
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // if (stream.IsWriting)
+        // {
+        //     stream.SendNext(characterStatus.curPositionX);
+        //     stream.SendNext(characterStatus.curPositionY);
+        //     stream.SendNext(Dir);
+        // }
+        // else
+        // {
+        //     characterStatus.curPositionX    = (int)stream.ReceiveNext();
+        //     characterStatus.curPositionY    = (int)stream.ReceiveNext();
+        //     Dir                             = (PlayerDir)stream.ReceiveNext();
+        // }
     }
 
 }

@@ -19,7 +19,7 @@ public class CharacterAction : ActionCommand
         {
             player.anim.SetTrigger("Right Punch Attack");
             player.playerInput = ePlayerInput.ATTACK;
-
+            
         }
 
     }

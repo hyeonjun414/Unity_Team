@@ -159,8 +159,10 @@ public class CharacterMove : MoveCommand
 
         Vector2 dest = GetPlayerDest(resultDir);
         int playerNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+        
         player.photonView.RPC(
-            "SendCommandToMaster",RpcTarget.AllBuffered,new object[6]{playerNumber, 1,dest.x,dest.y,player.characterStatus.curPositionX,player.characterStatus.curPositionY});
+            "SendCommandToMaster",RpcTarget.AllBuffered,new object[6]
+            {playerNumber, 1,dest.x,dest.y,player.characterStatus.curPositionX,player.characterStatus.curPositionY});
 
         StartCoroutine(MoveRoutine2(resultDir));
     }
