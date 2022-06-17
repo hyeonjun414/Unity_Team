@@ -44,7 +44,7 @@ public class Character : MonoBehaviourPun
     [Header("Node")]
     public TileNode curNode;
 
-
+    public int playerNumber;
     public bool isInputAvailable = true;
     public Transform[] rayPos;
     public ePlayerInput playerInput = ePlayerInput.NULL;
@@ -76,19 +76,25 @@ public class Character : MonoBehaviourPun
     private void Awake()
     {
         anim = GetComponent<Animator>();
-
+        
         moveCommand = gameObject.AddComponent<CharacterMove>();
         moveCommand.SetUp(this);
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
+
+        InputCheckManager.Instance.ResisterPlayer(this);
+
+
         Dir = PlayerDir.Right;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
 
-        object[] obj = new object[2]{"aa", 1};
-        photonView.RPC("Click",RpcTarget.AllBuffered, obj);
+        // object[] obj = new object[2]{"aa", 1};
+        // photonView.RPC("Click",RpcTarget.AllBuffered, obj);
+        //photonView.RPC()
         
     }
+
 
     [PunRPC]
     public void Click(string command , int a)
@@ -102,7 +108,8 @@ public class Character : MonoBehaviourPun
         if (photonView.IsMine)
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
         
-
+        
+        //InputCheckManager.Instance.players.Add(gameObject.GetComponent<Character>());
         RhythmManager.Instance.ResisterPlayer(this);
 
         //if(PhotonNetwork.IsMasterClient)

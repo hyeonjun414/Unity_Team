@@ -49,20 +49,20 @@ public class RhythmManager : Singleton<RhythmManager>
 
     public bool BitCheck()
     {
-        if(rhythmBox.isBeat && isBeat)//player.isInputAvailable)
+        if(rhythmBox.isBeat && player.isInputAvailable)
         {
             hitText.text = "HIT";
             print("HIT");
-            //player.isInputAvailable = false;
-            isBeat = false;
+            player.isInputAvailable = false;
+            //isBeat = false;
             return true;
         }
         else
         {
             hitText.text = "MISS";
             print("MISS");
-            //player.isInputAvailable = false;
-            isBeat = false;
+            player.isInputAvailable = false;
+            //isBeat = false;
             return false;
         }
     }

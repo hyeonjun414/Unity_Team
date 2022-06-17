@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
-
-
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    
     public static GameManager Instance { get; private set; } // �̱��� ����
 
     public Text infoText;

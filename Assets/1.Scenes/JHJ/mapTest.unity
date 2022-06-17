@@ -760,6 +760,7 @@ GameObject:
   - component: {fileID: 211671990}
   - component: {fileID: 211671991}
   - component: {fileID: 211671992}
+  - component: {fileID: 211671993}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -955,6 +956,20 @@ MonoBehaviour:
   spawnCountDown: 5
   countdown: 5
   spawnOffset: {x: 0, y: 1.5, z: 0}
+--- !u!114 &211671993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211671986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42a4d2d657ea074d9135620ced9e2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isReadyCount: 0
+  players: []
 --- !u!1 &212827361
 GameObject:
   m_ObjectHideFlags: 0

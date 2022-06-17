@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun.UtilityScripts;
+using Photon.Pun;
 using UnityEngine;
 
 public class CharacterMove : MoveCommand
@@ -11,8 +13,25 @@ public class CharacterMove : MoveCommand
         {
             RhythmManager.Instance.rhythmBox.NoteHit();
             InputCommand();
+         //   player.photonView.RPC()
+            
         }
     }
+    [PunRPC]
+    public void SendCommandToMaster(int playerNumber , int command, int playerDestX, int playerDestY, int curPosX , int curPosY)
+    {
+        //command   1 == move
+        //          2 == rotate
+        //          3 == attack
+        //          4 == useItem
+        //          5 == changeSlot
+        player.playerNumber = playerNumber;
+        if(PhotonNetwork.IsMasterClient)
+        {
+            InputCheckManager.Instance.CachePlayersCommand(playerNumber,command,playerDestX,playerDestY,curPosX,curPosY);
+        }
+    }
+    
     private void InputCommand()
     {
         if(Input.GetKeyDown(KeyCode.A))
@@ -50,7 +69,6 @@ public class CharacterMove : MoveCommand
         TileNode originNode = MapManager.Instance.grid[
             player.characterStatus.curPositionY,
             player.characterStatus.curPositionX];
-
 
         if(MapManager.Instance.BoundaryCheck(player.characterStatus.curPositionY,
             player.characterStatus.curPositionX, resultDir))
@@ -137,8 +155,20 @@ public class CharacterMove : MoveCommand
 
                 break;
         }
-        player.playerHeadingPos = resultDir;
+        //player.playerHeadingPos = resultDir;
+
+        Vector2 dest = GetPlayerDest(resultDir);
+        int playerNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+        player.photonView.RPC(
+            "SendCommandToMaster",RpcTarget.AllBuffered,new object[6]{playerNumber, 1,dest.x,dest.y,player.characterStatus.curPositionX,player.characterStatus.curPositionY});
+
         StartCoroutine(MoveRoutine2(resultDir));
+    }
+    public Vector2 GetPlayerDest(Vector2 result)
+    {
+        Vector2 destVec = new Vector2(player.characterStatus.curPositionX + result.x
+                                        ,player.characterStatus.curPositionY + result.y);
+        return destVec; 
     }
     private Vector3 GetBezierPos(Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {
