@@ -9,114 +9,63 @@ public class CharacterMove : MoveCommand
 
     public override void Execute()
     {
-        if(Input.anyKeyDown && RhythmManager.Instance.BitCheck())
-        {
-            RhythmManager.Instance.rhythmBox.NoteHit();
-            InputCommand();
-         //   player.photonView.RPC()
-            
-        }
+        MoveToNode();
     }
-    [PunRPC]
-    public void SendCommandToMaster(int playerNumber , int command, int playerDestX, int playerDestY, int curPosX , int curPosY)
+    public void MoveToNode()
     {
-        //command   1 == move
-        //          2 == rotate
-        //          3 == attack
-        //          4 == useItem
-        //          5 == changeSlot
-        player.playerNumber = playerNumber;
-        if(PhotonNetwork.IsMasterClient)
+        print("moveToNode");
+        if (player.eCurInput == ePlayerInput.MOVE_LEFT)
         {
-            InputCheckManager.Instance.CachePlayersCommand(playerNumber,command,playerDestX,playerDestY,curPosX,curPosY);
+            MoveNextNode(player.Dir, new Vector2(-1, 0));
+        }
+        else if (player.eCurInput == ePlayerInput.MOVE_RIGHT)
+        {
+            MoveNextNode(player.Dir, new Vector2(1, 0));
+        }
+        else if (player.eCurInput == ePlayerInput.MOVE_UP)
+        {
+            MoveNextNode(player.Dir, new Vector2(0, -1));
+        }
+        else if (player.eCurInput == ePlayerInput.MOVE_DOWN)
+        {
+            MoveNextNode(player.Dir, new Vector2(0, 1));
         }
     }
-    
-    private void InputCommand()
+    public TileNode NodeDetect()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        print("NodeDetect");
+        if (player.eCurInput == ePlayerInput.MOVE_LEFT)
         {
-            MoveCalculate(player.Dir, new Vector2(-1, 0));
+            return PreExcuteNextNode(player.Dir, new Vector2(-1, 0));
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (player.eCurInput == ePlayerInput.MOVE_RIGHT)
         {
-            MoveCalculate(player.Dir, new Vector2(1, 0));
+            return PreExcuteNextNode(player.Dir, new Vector2(1, 0));
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (player.eCurInput == ePlayerInput.MOVE_UP)
         {
-            MoveCalculate(player.Dir, new Vector2(0, -1));
+            return PreExcuteNextNode(player.Dir, new Vector2(0, -1));
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (player.eCurInput == ePlayerInput.MOVE_DOWN)
         {
-            MoveCalculate(player.Dir, new Vector2(0, 1));
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            player.Dir++;
-        }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            player.Dir--;
+            return PreExcuteNextNode(player.Dir, new Vector2(0, 1));
         }
 
+        return PreExcuteNextNode(player.Dir, new Vector2(0, 0));
     }
-    private IEnumerator MoveRoutine(Vector2 resultDir)
-    {
-        //yield return new WaitUntil(()=>player.isInputAvailable);
-        //if(adsasd)break;
-        yield return null;
-        //player.anim.SetTrigger("Jump");
-        TileNode originNode = MapManager.Instance.grid[
-            player.characterStatus.curPositionY,
-            player.characterStatus.curPositionX];
-
-        if(MapManager.Instance.BoundaryCheck(player.characterStatus.curPositionY,
-            player.characterStatus.curPositionX, resultDir))
-        {
-            player.characterStatus.curPositionY += (int)resultDir.y;
-            player.characterStatus.curPositionX += (int)resultDir.x;
-        }
-
-        TileNode destNode = MapManager.Instance.grid[
-            player.characterStatus.curPositionY,
-            player.characterStatus.curPositionX];
-
-        print($"{player.characterStatus.curPositionY}, {player.characterStatus.curPositionX}");
-
-        Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
-        
-        float curTime = 0;
-        yield return new WaitUntil(()=>player.isInputAvailable);
-        while (true)
-        {
-            if (curTime > 0.2f)
-                break;
-            curTime += Time.deltaTime;
-            transform.position = GetBezierPos(originNode.transform.position, middlePos, destNode.transform.position, curTime / 0.2f);
-
-            yield return null;
-        }
-    }
-    private IEnumerator MoveRoutine2(Vector2 resultDir)
+    private IEnumerator MoveRoutine2(Vector2 vec)
     {
         yield return null;
-        yield return new WaitUntil(()=>player.isInputAvailable);
-        if(!player.isMoving)yield break;
         //player.anim.SetTrigger("Jump");
         TileNode originNode = MapManager_verStatic.Instance.map.GetTileNode(player.characterStatus.curPositionY,
             player.characterStatus.curPositionX);
 
 
-        if (MapManager_verStatic.Instance.BoundaryCheck(player.characterStatus.curPositionY,
-            player.characterStatus.curPositionX, resultDir))
-        {
-            player.characterStatus.curPositionY += (int)resultDir.y;
-            player.characterStatus.curPositionX += (int)resultDir.x;
-        }
+        player.characterStatus.curPositionX += (int)vec.x;
+        player.characterStatus.curPositionY += (int)vec.y;
 
         TileNode destNode = MapManager_verStatic.Instance.map.GetTileNode(player.characterStatus.curPositionY,
             player.characterStatus.curPositionX);
-
         print($"{player.characterStatus.curPositionY}, {player.characterStatus.curPositionX}");
 
         Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
@@ -136,7 +85,7 @@ public class CharacterMove : MoveCommand
             yield return null;
         }
     }
-    private void MoveCalculate(PlayerDir dir, Vector2 moveVec)
+    public TileNode PreExcuteNextNode(PlayerDir dir, Vector2 moveVec)
     {
         Vector2 resultDir = Vector2.zero;
         switch (dir)
@@ -155,20 +104,52 @@ public class CharacterMove : MoveCommand
 
                 break;
         }
-        //player.playerHeadingPos = resultDir;
+        if (MapManager_verStatic.Instance.BoundaryCheck(player.characterStatus.curPositionY,
+             player.characterStatus.curPositionX, resultDir))
+        {
+            return GetPlayerDest(new Vector2(player.characterStatus.curPositionX + resultDir.x
+                                        , player.characterStatus.curPositionY + resultDir.y));
+        }
+        else
+        {
+            return GetPlayerDest(new Vector2(player.characterStatus.curPositionX,
+                player.characterStatus.curPositionY));
+        }
+    }
 
-        Vector2 dest = GetPlayerDest(resultDir);
-        int playerNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-        player.photonView.RPC(
-            "SendCommandToMaster",RpcTarget.AllBuffered,new object[6]{playerNumber, 1,dest.x,dest.y,player.characterStatus.curPositionX,player.characterStatus.curPositionY});
+    public void MoveNextNode(PlayerDir dir, Vector2 moveVec)
+    {
+        Vector2 resultDir = Vector2.zero;
+        switch (dir)
+        {
+            case PlayerDir.Up:
+                resultDir = new Vector2(moveVec.x, moveVec.y);
+                break;
+            case PlayerDir.Right:
+                resultDir = new Vector2(-moveVec.y, moveVec.x);
+                break;
+            case PlayerDir.Down:
+                resultDir = new Vector2(-moveVec.x, -moveVec.y);
+                break;
+            case PlayerDir.Left:
+                resultDir = new Vector2(moveVec.y, -moveVec.x);
 
+                break;
+        }
         StartCoroutine(MoveRoutine2(resultDir));
     }
-    public Vector2 GetPlayerDest(Vector2 result)
+    public TileNode GetPlayerDest(Vector2 result)
     {
         Vector2 destVec = new Vector2(player.characterStatus.curPositionX + result.x
                                         ,player.characterStatus.curPositionY + result.y);
-        return destVec; 
+        return MapManager_verStatic.Instance.map.GetTileNode(result); 
+    }
+    public TileNode GetPlayerMoveNode(Vector2 result)
+    {
+
+        Vector2 destVec = new Vector2(player.characterStatus.curPositionX
+                                , player.characterStatus.curPositionY);
+        return MapManager_verStatic.Instance.map.GetTileNode(destVec);
     }
     private Vector3 GetBezierPos(Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {

@@ -50,9 +50,8 @@ public class RhythmNote : MonoBehaviour
 
     public void DestroySelf()
     {
-        //RhythmManager.Instance.isBeat = true;
-        //RhythmManager.Instance.player.isMoving=true;
-        InputCheckManager.Instance.Judge();
+        
+        BattleManager.Instance.Judge();
         Destroy(gameObject);
     }
 

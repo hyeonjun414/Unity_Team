@@ -17,12 +17,20 @@ public class CharacterStatus
     public int currentCombo;
     public int killCount;
     public int deathCount;
+    public int destX;
+    public int destY;
+    public bool isMoving;
+    public bool isCrashing;
 }
 public enum ePlayerInput
 {
     NULL,
-    MOVE,
-    ROTATE,
+    MOVE_UP,
+    MOVE_RIGHT,
+    MOVE_DOWN,
+    MOVE_LEFT,
+    ROTATE_RIGHT,
+    ROTATE_LEFT,
     ATTACK,
     BLOCK,
     USE_ITEM,
@@ -53,8 +61,10 @@ public class Character : MonoBehaviourPun
     public Animator anim;
 
     [Header("Command")]
-    public MoveCommand moveCommand;
-    public ActionCommand actionCommand;
+    public ePlayerInput eCurInput;
+    public CharacterInput inputCommand;
+    public CharacterMove moveCommand;
+    public CharacterAction actionCommand;
     public Vector2 playerHeadingPos = Vector2.zero;
     public bool isMoving = true; //임시
     public bool isCrashing = false; //임시
@@ -76,48 +86,32 @@ public class Character : MonoBehaviourPun
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        
+
+        inputCommand = gameObject.AddComponent<CharacterInput>();
+        inputCommand.SetUp(this);
         moveCommand = gameObject.AddComponent<CharacterMove>();
         moveCommand.SetUp(this);
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
 
-        InputCheckManager.Instance.ResisterPlayer(this);
-
-
         Dir = PlayerDir.Right;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
-
-        // object[] obj = new object[2]{"aa", 1};
-        // photonView.RPC("Click",RpcTarget.AllBuffered, obj);
-        //photonView.RPC()
-        
-    }
-
-
-    [PunRPC]
-    public void Click(string command , int a)
-    {
-
     }
 
     [PunRPC]
     public void SetUp()
     {
         if (photonView.IsMine)
+        {
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
-        
-        
-        //InputCheckManager.Instance.players.Add(gameObject.GetComponent<Character>());
-        RhythmManager.Instance.ResisterPlayer(this);
-
-        //if(PhotonNetwork.IsMasterClient)
-            //InputCheckManager.Instance.ResisterPlayer(this);
-
-
+            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        }
+        playerNumber = photonView.Owner.GetPlayerNumber();
         Map map = MapManager_verStatic.Instance.map;
-        Vector2 vec = map.startPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
+        
+        Vector2 vec = map.startPos[playerNumber];
         TileNode tile = map.GetTileNode(vec);
         curNode = tile;
         CharacterReset();
@@ -130,10 +124,7 @@ public class Character : MonoBehaviourPun
     private void Update()
     {
         if (!photonView.IsMine) return;
-        //if(!isInputAvailable)return;
-        CheckAvailability();
-        Move();
-        Action();
+        inputCommand.Execute();
     }
 
     public void CharacterReset()
@@ -148,6 +139,7 @@ public class Character : MonoBehaviourPun
         characterStatus.deathCount = 0;
 
     }
+    [PunRPC]
     public void Move()
     {
         moveCommand?.Execute();
@@ -190,7 +182,7 @@ public class Character : MonoBehaviourPun
             yield return null;
         }
     }
-
+    
     public void Damaged(int damageInt)
     {
         characterStatus.hp -= damageInt;
@@ -208,15 +200,7 @@ public class Character : MonoBehaviourPun
         Destroy(gameObject);
 
     }
-    public void CheckAvailability()
-    {
-        //적이 사방에 있으면 해당 방향으로는 move 를 할 수 없게 예외처리
-        //사방에 벽이 있으면 해당 방향으로는 move를 할 수 없게 예외처리
-        //사방에 노드가 없는 큐브가 있으면 그 방향으로는 move를 할 수 없게 예외처리
-
-        // MapManager.Instance.mapSizeX
-
-    }
+  
     private void OnDrawGizmos()
     {
         Vector3 playerPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
@@ -225,7 +209,12 @@ public class Character : MonoBehaviourPun
             Debug.DrawLine(playerPos, rayPos[i].position, Color.red);
         }
 
-        //Debug.DrawRay(playerPos,rayPos.position,Color.red);
     }
+    [PunRPC]
+    public void SetCommand(ePlayerInput input)
+    {
+        eCurInput = input;
+    }
+
 
 }

@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curNode: {fileID: 0}
+  playerNumber: 0
   isInputAvailable: 1
   rayPos:
   - {fileID: 3177278766088077266}
@@ -488,6 +489,8 @@ MonoBehaviour:
   - {fileID: 8395618148717194562}
   playerInput: 0
   anim: {fileID: 0}
+  eCurInput: 0
+  inputCommand: {fileID: 0}
   moveCommand: {fileID: 0}
   actionCommand: {fileID: 0}
   playerHeadingPos: {x: 0, y: 0}
