@@ -36,43 +36,22 @@ public class Item : MonoBehaviour
         }
     }
     //아이템을 슬롯에 넣어줌
-    private void PickedUp(Character player){
-        if(ItemManager.Instance.AddNum(data)){
+    private void PickedUp(Character player)
+    {
+        if (ItemManager.Instance.AddNum(data))
+        {
             Debug.Log(player.name + "가 " + data.name + "을 아이템 보관함에 넣었습니다!");
         }
-        else{
+        else
+        {
             Debug.Log("아이템을 둘 자리가 없습니다!");
-
+        }
+    }
     private void ItemDestroy()
     {
         Destroy(gameObject);
         MapManager_verStatic.Instance.map.grid[MapManager_verStatic.Instance.map.mapSize * posX + posY].eOnTileObject = eTileOccupation.EMPTY;
         ItemSpawnManger_verStatic.Instance.curItemCount--;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

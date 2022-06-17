@@ -86,9 +86,6 @@ public class ItemManager : Singleton<ItemManager>
         Debug.Log(player.name + "가 벽을 투시합니다.");
     }
 
-    public void GetPos()
-    {
-
     public bool AddNum(ItemData item){
         if(itemList.Count >= maxCount){
             return false;
@@ -102,12 +99,5 @@ public class ItemManager : Singleton<ItemManager>
         itemList.Remove(item);
         itemSlotUI.UpdateUI();
     }
-
-
-
-
-
-
-
 
 }
