@@ -34,20 +34,20 @@ public void UseItem(Character player, ItemData data){
         public void HealPotion(Character player){
        
         //생명이 2개 늘어남
-        player.characterStatus.hp = 2 + player.characterStatus.hp;
+        player.stat.hp = 2 + player.stat.hp;
 
         //테스트용 디버그 로그
         Debug.Log("플레이어의 체력이 2 증가합니다.");
 
         //늘어난 라이프가 5개 이상일 경우 5개로 고정해줌
-        if (player.characterStatus.hp > 5)
+        if (player.stat.hp > 5)
         {
-            player.characterStatus.hp = 5;
+            player.stat.hp = 5;
 
             //테스트용 디버그 로그
             Debug.Log("플레이어의 체력이 이미 최대입니다!");
         }
-        Debug.Log(player.characterStatus.hp);
+        Debug.Log(player.stat.hp);
     }
 
 
@@ -70,15 +70,5 @@ public void UseItem(Character player, ItemData data){
         //오브젝트 알파값
         Debug.Log("벽을 투시합니다.");
     }
-
-
-
-
-
-
-
-
-
-
 
 }

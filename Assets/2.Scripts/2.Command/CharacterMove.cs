@@ -10,25 +10,26 @@ public class CharacterMove : MoveCommand
     public override void Execute()
     {
         MoveToNode();
+        player.eCurInput = ePlayerInput.NULL;
     }
     public void MoveToNode()
     {
         print("moveToNode");
         if (player.eCurInput == ePlayerInput.MOVE_LEFT)
         {
-            MoveNextNode(player.Dir, new Vector2(-1, 0));
+            MoveNextNode(new Point(0, -1));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_RIGHT)
         {
-            MoveNextNode(player.Dir, new Vector2(1, 0));
+            MoveNextNode(new Point(0, 1));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_UP)
         {
-            MoveNextNode(player.Dir, new Vector2(0, -1));
+            MoveNextNode(new Point(-1, 0));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_DOWN)
         {
-            MoveNextNode(player.Dir, new Vector2(0, 1));
+            MoveNextNode(new Point(1, 0));
         }
     }
     public TileNode NodeDetect()
@@ -36,37 +37,39 @@ public class CharacterMove : MoveCommand
         print("NodeDetect");
         if (player.eCurInput == ePlayerInput.MOVE_LEFT)
         {
-            return PreExcuteNextNode(player.Dir, new Vector2(-1, 0));
+            return PreExcuteNextNode(new Point(0, -1));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_RIGHT)
         {
-            return PreExcuteNextNode(player.Dir, new Vector2(1, 0));
+            return PreExcuteNextNode(new Point(0, 1));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_UP)
         {
-            return PreExcuteNextNode(player.Dir, new Vector2(0, -1));
+            return PreExcuteNextNode(new Point(-1, 0));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_DOWN)
         {
-            return PreExcuteNextNode(player.Dir, new Vector2(0, 1));
+            return PreExcuteNextNode(new Point(1, 0));
         }
 
-        return PreExcuteNextNode(player.Dir, new Vector2(0, 0));
+        return PreExcuteNextNode(new Point(0, 0));
     }
-    private IEnumerator MoveRoutine2(Vector2 vec)
+    private IEnumerator MoveRoutine2(Point point)
     {
         yield return null;
         //player.anim.SetTrigger("Jump");
-        TileNode originNode = MapManager_verStatic.Instance.map.GetTileNode(player.characterStatus.curPositionY,
-            player.characterStatus.curPositionX);
+        TileNode originNode = MapManager_verStatic.Instance.map.GetTileNode(player.stat.curPos);
 
+        print(player.stat.curPos.ToString());
+        print(point.ToString());
+        if (MapManager_verStatic.Instance.BoundaryCheck(player.stat.curPos, point))
+        {
+            player.stat.curPos += point;
+        }
 
-        player.characterStatus.curPositionX += (int)vec.x;
-        player.characterStatus.curPositionY += (int)vec.y;
-
-        TileNode destNode = MapManager_verStatic.Instance.map.GetTileNode(player.characterStatus.curPositionY,
-            player.characterStatus.curPositionX);
-        print($"{player.characterStatus.curPositionY}, {player.characterStatus.curPositionX}");
+        print(player.stat.curPos.ToString());
+        TileNode destNode = MapManager_verStatic.Instance.map.GetTileNode(player.stat.curPos);
+        
 
         Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
         Vector3 offset = Vector3.up * 0.5f;
@@ -85,72 +88,52 @@ public class CharacterMove : MoveCommand
             yield return null;
         }
     }
-    public TileNode PreExcuteNextNode(PlayerDir dir, Vector2 moveVec)
+    public TileNode PreExcuteNextNode(Point movePoint)
     {
-        Vector2 resultDir = Vector2.zero;
-        switch (dir)
-        {
-            case PlayerDir.Up:
-                resultDir = new Vector2(moveVec.x, moveVec.y);
-                break;
-            case PlayerDir.Right:
-                resultDir = new Vector2(-moveVec.y, moveVec.x);
-                break;
-            case PlayerDir.Down:
-                resultDir = new Vector2(-moveVec.x, -moveVec.y);
-                break;
-            case PlayerDir.Left:
-                resultDir = new Vector2(moveVec.y, -moveVec.x);
+        Point resultDir = GetResultDir(movePoint);
 
-                break;
-        }
-        if (MapManager_verStatic.Instance.BoundaryCheck(player.characterStatus.curPositionY,
-             player.characterStatus.curPositionX, resultDir))
+        if (MapManager_verStatic.Instance.BoundaryCheck(player.stat.curPos, resultDir))
         {
-            return GetPlayerDest(new Vector2(player.characterStatus.curPositionX + resultDir.x
-                                        , player.characterStatus.curPositionY + resultDir.y));
+            return GetPlayerDest(resultDir);
         }
         else
         {
-            return GetPlayerDest(new Vector2(player.characterStatus.curPositionX,
-                player.characterStatus.curPositionY));
+            return GetPlayerDest(new Point(0,0));
         }
     }
 
-    public void MoveNextNode(PlayerDir dir, Vector2 moveVec)
+    public void MoveNextNode(Point movePoint)
     {
-        Vector2 resultDir = Vector2.zero;
-        switch (dir)
-        {
-            case PlayerDir.Up:
-                resultDir = new Vector2(moveVec.x, moveVec.y);
-                break;
-            case PlayerDir.Right:
-                resultDir = new Vector2(-moveVec.y, moveVec.x);
-                break;
-            case PlayerDir.Down:
-                resultDir = new Vector2(-moveVec.x, -moveVec.y);
-                break;
-            case PlayerDir.Left:
-                resultDir = new Vector2(moveVec.y, -moveVec.x);
-
-                break;
-        }
+        Point resultDir = GetResultDir(movePoint);
         StartCoroutine(MoveRoutine2(resultDir));
     }
-    public TileNode GetPlayerDest(Vector2 result)
-    {
-        Vector2 destVec = new Vector2(player.characterStatus.curPositionX + result.x
-                                        ,player.characterStatus.curPositionY + result.y);
-        return MapManager_verStatic.Instance.map.GetTileNode(result); 
-    }
-    public TileNode GetPlayerMoveNode(Vector2 result)
-    {
 
-        Vector2 destVec = new Vector2(player.characterStatus.curPositionX
-                                , player.characterStatus.curPositionY);
-        return MapManager_verStatic.Instance.map.GetTileNode(destVec);
+    public Point GetResultDir(Point movePoint)
+    {
+        Point resultDir = new Point();
+        switch (player.Dir)
+        {
+            case PlayerDir.Up:
+                resultDir = new Point(-movePoint.y, movePoint.x);
+                break;
+            case PlayerDir.Right:
+                resultDir = new Point(movePoint.x, -movePoint.y);
+                break;
+            case PlayerDir.Down:
+                resultDir = new Point(movePoint.y, -movePoint.x);
+                break;
+            case PlayerDir.Left:
+                resultDir = new Point(-movePoint.x, movePoint.y);
+                break;
+        }
+        return resultDir;
     }
+    public TileNode GetPlayerDest(Point result)
+    {
+        Point destPoint = player.stat.curPos + result;
+        return MapManager_verStatic.Instance.map.GetTileNode(destPoint); 
+    }
+
     private Vector3 GetBezierPos(Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {
         Vector3 q1 = Vector3.Lerp(p1, p2, t);

@@ -22,11 +22,6 @@ public class BattleManager : MonoBehaviourPun
     private void Awake()
     {
         if (Instance == null)  Instance = this;
-        
-
-        
-        
-        
    
     }
     public void RegisterAllPlayer()
@@ -43,11 +38,6 @@ public class BattleManager : MonoBehaviourPun
                 return 1;
             }
         });
-    }
-
-    public void AddPlayer(Character player)
-    {
-        players.Add(player);
     }
 
 
@@ -122,7 +112,7 @@ public class BattleManager : MonoBehaviourPun
     {
         foreach(Character player in players)
         {
-            player.eCurInput = ePlayerInput.NULL;
+            //player.eCurInput = ePlayerInput.NULL;
         }
         RhythmManager.Instance.isBeat = true;
     }

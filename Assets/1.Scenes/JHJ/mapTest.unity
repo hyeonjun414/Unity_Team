@@ -170,7 +170,7 @@ MonoBehaviour:
   ShoulderOffset: {x: 0, y: 1, z: -2}
   VerticalArmLength: 0.4
   CameraSide: 1
-  CameraDistance: 2
+  CameraDistance: 10
   CameraCollisionFilter:
     serializedVersion: 2
     m_Bits: 0
@@ -282,8 +282,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &63530617
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,8 +379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &149312413
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,8 +476,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &150592903
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,8 +573,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &160096977
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,8 +748,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &211671986
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,8 +801,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitText: {fileID: 785648673}
-  bpm: 60
-  hitAreaRate: 2
+  bpm: 120
+  hitAreaRate: 5
   isBeat: 0
   rhythmBox: {fileID: 212827366}
   rhythmNote: {fileID: 1564230472269872857, guid: 908e3c6fc7ab1d44fba4623937ba3104,
@@ -1218,8 +1223,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &237850751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,8 +1320,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &281876545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,8 +1417,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &298716484
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,8 +1514,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &301761708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,8 +1611,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &341410109
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,8 +1708,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &359225729
 GameObject:
   m_ObjectHideFlags: 0
@@ -1794,8 +1805,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &397822777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1890,8 +1902,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &406704836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1986,8 +1999,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &501198483
 GameObject:
   m_ObjectHideFlags: 0
@@ -2082,8 +2096,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &541908161
 GameObject:
   m_ObjectHideFlags: 0
@@ -2178,8 +2193,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &570529405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2274,8 +2290,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &576639803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2370,8 +2387,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &654986001
 GameObject:
   m_ObjectHideFlags: 0
@@ -2605,8 +2623,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &672350542
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,8 +2787,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &731557654
 GameObject:
   m_ObjectHideFlags: 0
@@ -2864,8 +2884,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &785648671
 GameObject:
   m_ObjectHideFlags: 0
@@ -3038,8 +3059,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &919803430
 GameObject:
   m_ObjectHideFlags: 0
@@ -3134,8 +3156,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &957401829
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,8 +3253,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &985357488
 GameObject:
   m_ObjectHideFlags: 0
@@ -3326,8 +3350,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1085710109
 GameObject:
   m_ObjectHideFlags: 0
@@ -3422,8 +3447,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1119318453
 GameObject:
   m_ObjectHideFlags: 0
@@ -3553,8 +3579,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1143603029
 GameObject:
   m_ObjectHideFlags: 0
@@ -3649,8 +3676,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1165161481
 GameObject:
   m_ObjectHideFlags: 0
@@ -3745,8 +3773,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1173121697
 GameObject:
   m_ObjectHideFlags: 0
@@ -3941,8 +3970,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1242830764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4037,8 +4067,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1278242893
 GameObject:
   m_ObjectHideFlags: 0
@@ -4251,8 +4282,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1340216765
 GameObject:
   m_ObjectHideFlags: 0
@@ -4347,8 +4379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1349661346
 GameObject:
   m_ObjectHideFlags: 0
@@ -4443,8 +4476,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1388243430
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,8 +4647,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1424066106
 GameObject:
   m_ObjectHideFlags: 0
@@ -4709,8 +4744,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1528765853
 GameObject:
   m_ObjectHideFlags: 0
@@ -4805,8 +4841,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1667086165
 GameObject:
   m_ObjectHideFlags: 0
@@ -4901,8 +4938,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1672131655
 GameObject:
   m_ObjectHideFlags: 0
@@ -5184,8 +5222,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1758358322
 GameObject:
   m_ObjectHideFlags: 0
@@ -5280,8 +5319,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1767284212
 GameObject:
   m_ObjectHideFlags: 0
@@ -5376,8 +5416,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1937066483
 GameObject:
   m_ObjectHideFlags: 0
@@ -5472,8 +5513,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1968975125
 GameObject:
   m_ObjectHideFlags: 0
@@ -5568,8 +5610,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1975564476
 GameObject:
   m_ObjectHideFlags: 0
@@ -5664,8 +5707,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1978540404
 GameObject:
   m_ObjectHideFlags: 0
@@ -5948,8 +5992,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &2026165541
 GameObject:
   m_ObjectHideFlags: 0
@@ -6044,8 +6089,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &2043620269
 GameObject:
   m_ObjectHideFlags: 0
@@ -6214,8 +6260,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1098686828131173
 GameObject:
   m_ObjectHideFlags: 0
@@ -6249,8 +6296,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!1 &1831060229693433
 GameObject:
   m_ObjectHideFlags: 0
@@ -6284,8 +6332,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOnTile: {fileID: 0}
   eOnTileObject: 0
-  posX: 0
-  posY: 0
+  tilePos:
+    x: 0
+    y: 0
 --- !u!4 &4353890315264719
 Transform:
   m_ObjectHideFlags: 0

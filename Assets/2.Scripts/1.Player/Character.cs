@@ -7,13 +7,12 @@ using Photon.Pun.UtilityScripts;
 using Cinemachine;
 
 
-
+[System.Serializable]
 public class CharacterStatus
 {
     public int damage;
     public int hp;
-    public int curPositionX;
-    public int curPositionY;
+    public Point curPos;
     public int currentCombo;
     public int killCount;
     public int deathCount;
@@ -47,7 +46,7 @@ public enum PlayerDir
     End
 }
 
-public class Character : MonoBehaviourPun
+public class Character : MonoBehaviourPun, IPunObservable
 {
     [Header("Node")]
     public TileNode curNode;
@@ -56,7 +55,7 @@ public class Character : MonoBehaviourPun
     public bool isInputAvailable = true;
     public Transform[] rayPos;
     public ePlayerInput playerInput = ePlayerInput.NULL;
-    public CharacterStatus characterStatus;
+    public CharacterStatus stat;
     [HideInInspector]
     public Animator anim;
 
@@ -65,9 +64,7 @@ public class Character : MonoBehaviourPun
     public CharacterInput inputCommand;
     public CharacterMove moveCommand;
     public CharacterAction actionCommand;
-    public Vector2 playerHeadingPos = Vector2.zero;
-    public bool isMoving = true; //임시
-    public bool isCrashing = false; //임시
+
     private PlayerDir dir;
     public PlayerDir Dir
     {
@@ -111,12 +108,11 @@ public class Character : MonoBehaviourPun
         playerNumber = photonView.Owner.GetPlayerNumber();
         Map map = MapManager_verStatic.Instance.map;
         
-        Vector2 vec = map.startPos[playerNumber];
+        Point vec = map.startPos[playerNumber];
         TileNode tile = map.GetTileNode(vec);
         curNode = tile;
         CharacterReset();
-        characterStatus.curPositionX = tile.posX;
-        characterStatus.curPositionY = tile.posY;
+        stat.curPos = tile.tilePos;
         transform.position = tile.transform.position + Vector3.up * 0.5f;
 
     }
@@ -129,14 +125,14 @@ public class Character : MonoBehaviourPun
 
     public void CharacterReset()
     {
-        characterStatus = new CharacterStatus();
-        characterStatus.damage = 1;
-        characterStatus.hp = 5;
-        characterStatus.curPositionX = 0;//(int)spawnPoint.x;
-        characterStatus.curPositionY = 0;//(int)spawnPoint.y;
-        characterStatus.currentCombo = 0;
-        characterStatus.killCount = 0;
-        characterStatus.deathCount = 0;
+        stat = new CharacterStatus();
+        stat.damage = 1;
+        stat.hp = 5;
+        stat.curPos.y = 0;
+        stat.curPos.x = 0;
+        stat.currentCombo = 0;
+        stat.killCount = 0;
+        stat.deathCount = 0;
 
     }
     [PunRPC]
@@ -185,9 +181,9 @@ public class Character : MonoBehaviourPun
     
     public void Damaged(int damageInt)
     {
-        characterStatus.hp -= damageInt;
+        stat.hp -= damageInt;
         anim.SetTrigger("Take Damage");
-        if (characterStatus.hp <= 0)
+        if (stat.hp <= 0)
         {
             Die();
         }
@@ -195,8 +191,8 @@ public class Character : MonoBehaviourPun
     private void Die()
     {
         anim.SetTrigger("Die");
-        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
-        MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
+        MapManager_verStatic.Instance.map.GetTileNode(stat.curPos).objectOnTile=null;
+        MapManager_verStatic.Instance.map.GetTileNode(stat.curPos).eOnTileObject=eTileOccupation.EMPTY;
         Destroy(gameObject);
 
     }
@@ -211,10 +207,25 @@ public class Character : MonoBehaviourPun
 
     }
     [PunRPC]
-    public void SetCommand(ePlayerInput input)
+    public void SetCommand(ePlayerInput input, int curY, int curX)
     {
         eCurInput = input;
+        stat.curPos = new Point(curY, curX);
     }
 
-
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            //stream.SendNext(stat.curPos);
+        }
+        else
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+            //stat.curPos = (Point)stream.ReceiveNext();
+        }
+    }
 }

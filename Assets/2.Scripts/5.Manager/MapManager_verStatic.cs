@@ -16,12 +16,12 @@ public class MapManager_verStatic : Singleton<MapManager_verStatic>
         if (_instance == null) 
             _instance = this;
     }
-    public bool BoundaryCheck(int y, int x, Vector2 vec)
+    public bool BoundaryCheck(Point curPoint, Point diffPoint)
     {
-        x += (int)vec.x;
-        y += (int)vec.y;
-        if (x < 0 || map.mapSize <= x ||
-            y < 0 || map.mapSize <= y)
+        curPoint += diffPoint;
+
+        if (curPoint.x < 0 || map.mapSize <= curPoint.x ||
+            curPoint.y < 0 || map.mapSize <= curPoint.y)
             return false;
         else
             return true;
