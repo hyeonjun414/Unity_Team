@@ -60,8 +60,8 @@ public class InputCheckManager : MonoBehaviourPun
         cp.isCrashing = false;
         cachedPlayers.Add(cp);
     }
-    
-    public void ResisterPlayer(Character player) 
+
+    public void ResisterPlayer(Character player)
     //네트워크에 접속한 플레이어들이 awake에서 이 함수를 호출하여 호스트의 input매니저에 등록
     {
         players.Add(player);
@@ -73,8 +73,8 @@ public class InputCheckManager : MonoBehaviourPun
     {
         yield return new WaitUntil(()=>isReadyCount >= PhotonNetwork.PlayerList.Length);
         //전부 등록되면 게임 시작
-        
-        for(int i=0 ;i<players.Count; ++i)
+
+        for (int i = 0; i < players.Count; ++i)
         {
             players[i].isInputAvailable = true;
         }
@@ -262,10 +262,10 @@ public class InputCheckManager : MonoBehaviourPun
         {
             int x = ((CharacterAction)listAttack[i].actionCommand).tileFront.posX;
             int y = ((CharacterAction)listAttack[i].actionCommand).tileFront.posY;
-            if(MapManager_verStatic.Instance.map.GetTileNode(y,x).eOnTileObject == eTileOccupation.PLAYER)
+            if (MapManager_verStatic.Instance.map.GetTileNode(y, x).eOnTileObject == eTileOccupation.PLAYER)
             {
-                Character ohterPlayer = MapManager_verStatic.Instance.map.GetTileNode(y,x).objectOnTile.GetComponent<Character>();
-                if(ohterPlayer.playerInput == ePlayerInput.BLOCK)//앞에 적이 있고 방어를 눌렀고 그리고 방향이 이쪽이라면
+                Character ohterPlayer = MapManager_verStatic.Instance.map.GetTileNode(y, x).objectOnTile.GetComponent<Character>();
+                if (ohterPlayer.playerInput == ePlayerInput.BLOCK)//앞에 적이 있고 방어를 눌렀고 그리고 방향이 이쪽이라면
                 {
                     //플레이어 스턴
                 }

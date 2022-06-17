@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private IEnumerator StartCountDown()
     {
-//        yield return new WaitUntil(()=>InputCheckManager.Instance.isReadyCount >= MapManager_verStatic.Instance.playerCount);
+        //        yield return new WaitUntil(()=>InputCheckManager.Instance.isReadyCount >= MapManager_verStatic.Instance.playerCount);
         // ���� ���� ��ƾ
         PrintInfo("All Player Loaded, Start Count Down");
         yield return new WaitForSeconds(1.0f);

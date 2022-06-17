@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +16,7 @@ public class CharacterAction : ActionCommand
     }
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+        if(Input.GetKeyDown(KeyCode.H))
         {
             player.anim.SetTrigger("Right Punch Attack");
             player.playerInput = ePlayerInput.ATTACK;
@@ -26,17 +26,17 @@ public class CharacterAction : ActionCommand
     }
     private void Block()
     {
-        if (Input.GetKeyDown(KeyCode.J))
+        if(Input.GetKeyDown(KeyCode.J))
         {
             //애니메이션추가
             player.playerInput = ePlayerInput.BLOCK;
         }
-
-
+        
+   
     }
     private void UseItem()
     {
-        if (Input.GetKeyDown(KeyCode.N))
+        if(Input.GetKeyDown(KeyCode.N))
         {
             player.playerInput = ePlayerInput.USE_ITEM;
             //Debug.Log("아이템을 사용합니다.");
@@ -47,7 +47,7 @@ public class CharacterAction : ActionCommand
     }
     private void ChangeItemSlot()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if(Input.GetKeyDown(KeyCode.M))
         {
             //ItemPointing(!curItem);
             player.playerInput = ePlayerInput.CHANGE_ITEM_SLOT;
