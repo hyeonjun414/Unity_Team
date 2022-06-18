@@ -33,11 +33,11 @@ public class CharacterInput : InputCommand
         {
             SetCommand(ePlayerInput.MOVE_DOWN);
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             SetCommand(ePlayerInput.ROTATE_LEFT);
         }
-        else if (Input.GetKeyDown(KeyCode.Q))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             SetCommand(ePlayerInput.ROTATE_RIGHT);
         }

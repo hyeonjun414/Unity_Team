@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class RhythmNote : MonoBehaviour
+public class RhythmNote : MonoBehaviourPun
 {
 
     public float time;
@@ -10,6 +11,11 @@ public class RhythmNote : MonoBehaviour
     public Animator anim;
     Vector3 destPos;
 
+    private void Start()
+    {
+        transform.SetParent(RhythmManager.Instance.notePos[0], true);
+        transform.localScale = Vector3.one;
+    }
     public void SetUp(GameObject dest, float time)
     {
         destPos = dest.transform.position;
@@ -17,10 +23,11 @@ public class RhythmNote : MonoBehaviour
         //StartCoroutine("MoveRoutine");
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         transform.Translate(Vector3.right * 200 * Time.deltaTime);
     }
+
 
     IEnumerator MoveRoutine()
     {
@@ -50,8 +57,8 @@ public class RhythmNote : MonoBehaviour
 
     public void DestroySelf()
     {
-        
-        BattleManager.Instance.Judge();
+        RhythmManager.Instance.isBeat = true;
+        //BattleManager.Instance.Judge();
         Destroy(gameObject);
     }
 

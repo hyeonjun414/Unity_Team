@@ -54,7 +54,7 @@ public class CharacterMove : MoveCommand
 
         return PreExcuteNextNode(new Point(0, 0));
     }
-    private IEnumerator MoveRoutine2(Point point)
+    private IEnumerator MoveRoutine(Point point)
     {
         yield return null;
         //player.anim.SetTrigger("Jump");
@@ -82,7 +82,7 @@ public class CharacterMove : MoveCommand
             transform.position = GetBezierPos(
                 originNode.transform.position + offset,
                 middlePos + offset,
-                destNode.transform.position + offset, 
+                destNode.transform.position + offset,
                 curTime / 0.2f);
 
             yield return null;
@@ -105,22 +105,23 @@ public class CharacterMove : MoveCommand
     public void MoveNextNode(Point movePoint)
     {
         Point resultDir = GetResultDir(movePoint);
-        StartCoroutine(MoveRoutine2(resultDir));
+        StartCoroutine(MoveRoutine(resultDir));
     }
 
     public Point GetResultDir(Point movePoint)
     {
+        // 플레이어의 방향에 따른 이동 위치 차이를 계산하는 함수
         Point resultDir = new Point();
         switch (player.Dir)
         {
             case PlayerDir.Up:
-                resultDir = new Point(-movePoint.y, movePoint.x);
+                resultDir = new Point(movePoint.y, movePoint.x);
                 break;
             case PlayerDir.Right:
                 resultDir = new Point(movePoint.x, -movePoint.y);
                 break;
             case PlayerDir.Down:
-                resultDir = new Point(movePoint.y, -movePoint.x);
+                resultDir = new Point(-movePoint.y, -movePoint.x);
                 break;
             case PlayerDir.Left:
                 resultDir = new Point(-movePoint.x, movePoint.y);

@@ -70,9 +70,9 @@ public class RhythmManager : Singleton<RhythmManager>
         while (true)
         {
             if (bpm < 10) bpm = 10;
-
+            //PhotonNetwork.Instantiate("Rhythm Note", notePos[0].position, Quaternion.identity);
             photonView.RPC("CreateNote", RpcTarget.All);
-
+            //rhythmBox.RhythmHit();
             yield return new WaitForSeconds(60f/ bpm); 
         }
     }

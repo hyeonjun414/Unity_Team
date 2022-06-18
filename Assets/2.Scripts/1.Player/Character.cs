@@ -46,7 +46,7 @@ public enum PlayerDir
     End
 }
 
-public class Character : MonoBehaviourPun, IPunObservable
+public class Character : MonoBehaviourPun//, IPunObservable
 {
     [Header("Node")]
     public TileNode curNode;
@@ -61,6 +61,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     [Header("Command")]
     public ePlayerInput eCurInput;
+    public CharacterRote roteCommand;
     public CharacterInput inputCommand;
     public CharacterMove moveCommand;
     public CharacterAction actionCommand;
@@ -76,8 +77,6 @@ public class Character : MonoBehaviourPun, IPunObservable
                 dir = PlayerDir.Left;
             else if (dir == PlayerDir.End)
                 dir = PlayerDir.Up;
-
-            SetDirection();
         }
     }
     private void Awake()
@@ -88,6 +87,8 @@ public class Character : MonoBehaviourPun, IPunObservable
         inputCommand.SetUp(this);
         moveCommand = gameObject.AddComponent<CharacterMove>();
         moveCommand.SetUp(this);
+        roteCommand = gameObject.AddComponent<CharacterRote>();
+        roteCommand.SetUp(this);
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
@@ -121,6 +122,10 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (!photonView.IsMine) return;
         inputCommand.Execute();
+        roteCommand.Execute();
+        moveCommand.Execute();
+
+        eCurInput = ePlayerInput.NULL;
     }
 
     public void CharacterReset()
@@ -145,40 +150,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         actionCommand?.Execute();
     }
 
-    public void SetDirection()
-    {
-        float angle = 0f;
-        switch (Dir)
-        {
-            case PlayerDir.Up:
-                angle = 0f;
-                break;
-            case PlayerDir.Right:
-                angle = 90f;
-                break;
-            case PlayerDir.Down:
-                angle = 180f;
-                break;
-            case PlayerDir.Left:
-                angle = 270f;
-                break;
-        }
-        StartCoroutine(RotateRoutine(Quaternion.AngleAxis(angle, Vector3.up)));
-    }
-    IEnumerator RotateRoutine(Quaternion destRot)
-    {
-        Quaternion originRot = transform.rotation;
-        float curTime = 0;
-        while (true)
-        {
-            if (curTime > 0.2f)
-                break;
-            curTime += Time.deltaTime;
-            transform.rotation = Quaternion.Slerp(originRot, destRot, curTime / 0.2f);
-            yield return null;
-        }
-    }
-    
     public void Damaged(int damageInt)
     {
         stat.hp -= damageInt;
@@ -213,19 +184,19 @@ public class Character : MonoBehaviourPun, IPunObservable
         stat.curPos = new Point(curY, curX);
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+/*    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if(stream.IsWriting)
         {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+            //stream.SendNext(transform.position);
+            //stream.SendNext(transform.rotation);
             //stream.SendNext(stat.curPos);
         }
         else
         {
-            transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+            //transform.position = (Vector3)stream.ReceiveNext();
+            //transform.rotation = (Quaternion)stream.ReceiveNext();
             //stat.curPos = (Point)stream.ReceiveNext();
         }
-    }
+    }*/
 }
