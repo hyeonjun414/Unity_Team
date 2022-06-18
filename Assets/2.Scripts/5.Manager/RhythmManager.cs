@@ -15,6 +15,7 @@ public class RhythmManager : Singleton<RhythmManager>
     public float        bpm;
     public float        hitAreaRate;
     public bool isBeat;
+    public double prevTime;
 
     [Header("Rhythm")]
     public RhythmBox    rhythmBox;
@@ -38,8 +39,7 @@ public class RhythmManager : Singleton<RhythmManager>
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-            StartCoroutine("RhythmRoutine");
+        StartCoroutine("RhythmRoutine");
         rhythmBox.SetHitArea(hitAreaRate);
     }
 
@@ -66,14 +66,19 @@ public class RhythmManager : Singleton<RhythmManager>
     {
         print("리듬 시작");
         yield return null;
-        //yield return new WaitUntil(()=>InputCheckManager.Instance.isReadyCount >= MapManager_verStatic.Instance.playerCount);
         while (true)
         {
             if (bpm < 10) bpm = 10;
+            if(PhotonNetwork.Time >= prevTime + (double)(60f / bpm))
+            {
+                prevTime = PhotonNetwork.Time;
+                CreateNote();
+            }
+            yield return null;
             //PhotonNetwork.Instantiate("Rhythm Note", notePos[0].position, Quaternion.identity);
-            photonView.RPC("CreateNote", RpcTarget.All);
+            //photonView.RPC("CreateNote", RpcTarget.AllBuffered);
             //rhythmBox.RhythmHit();
-            yield return new WaitForSeconds(60f/ bpm); 
+            //yield return new WaitForSeconds(60f/ bpm); 
         }
     }
     [PunRPC]

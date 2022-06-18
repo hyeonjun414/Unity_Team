@@ -7,6 +7,7 @@ public class RhythmNote : MonoBehaviourPun
 {
 
     public float time;
+    public float velocity;
     public float timing;
     public Animator anim;
     Vector3 destPos;
@@ -20,31 +21,13 @@ public class RhythmNote : MonoBehaviourPun
     {
         destPos = dest.transform.position;
         this.time = time;
+        velocity = Vector3.Distance(destPos, transform.position) / time;
         //StartCoroutine("MoveRoutine");
     }
 
     private void FixedUpdate()
     {
-        transform.Translate(Vector3.right * 200 * Time.deltaTime);
-    }
-
-
-    IEnumerator MoveRoutine()
-    {
-        yield return null;
-
-        float curTime = 0;
-        Vector3 originPos = transform.position;
-        while(true)
-        {
-            if (curTime >= time)
-                break;
-            curTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(originPos, destPos, curTime/time);
-            yield return null;
-        }
-
-        DestroySelf();
+        transform.Translate(Vector3.right * velocity * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
