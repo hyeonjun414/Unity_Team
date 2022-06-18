@@ -10,8 +10,9 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     
-    public static GameManager Instance { get; private set; } 
-
+    public static GameManager Instance { get; private set; }
+    public Text serverText;
+    public Text pingText;
     public Text infoText;
     public Transform[] spawnPos;
 
@@ -26,6 +27,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
 
+    private void FixedUpdate()
+    {
+        pingText.text = PhotonNetwork.GetPing().ToString();
+        serverText.text = PhotonNetwork.Time.ToString();
+    }
     #region PHOTON CALLBACK
 
     public override void OnDisconnected(DisconnectCause cause)

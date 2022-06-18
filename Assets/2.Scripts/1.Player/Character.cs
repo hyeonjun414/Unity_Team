@@ -46,7 +46,7 @@ public enum PlayerDir
     End
 }
 
-public class Character : MonoBehaviourPun//, IPunObservable
+public class Character : MonoBehaviourPun, IPunObservable
 {
     [Header("Node")]
     public TileNode curNode;
@@ -184,19 +184,19 @@ public class Character : MonoBehaviourPun//, IPunObservable
         stat.curPos = new Point(curY, curX);
     }
 
-/*    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if(stream.IsWriting)
+        if (stream.IsWriting)
         {
-            //stream.SendNext(transform.position);
-            //stream.SendNext(transform.rotation);
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
             //stream.SendNext(stat.curPos);
         }
         else
         {
-            //transform.position = (Vector3)stream.ReceiveNext();
-            //transform.rotation = (Quaternion)stream.ReceiveNext();
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
             //stat.curPos = (Point)stream.ReceiveNext();
         }
-    }*/
+    }
 }
