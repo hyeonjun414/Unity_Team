@@ -19,12 +19,10 @@ public class ItemData : ScriptableObject
 
     [Header("Item UI")]
     public Sprite icon;
-    public Image image;
     public Item prefab;
 
 
-  //  [Header("Item Function")]
-
+ 
    
 
 

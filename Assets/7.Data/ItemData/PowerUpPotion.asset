@@ -15,6 +15,5 @@ MonoBehaviour:
   name: PowerUpPotion
   Description: Double offense power
   itemType: 1
-  icon: {fileID: 21300000, guid: d88b03a7da3ddc84b882c452fd42f025, type: 3}
-  image: {fileID: 0}
+  icon: {fileID: 21300000, guid: add7e27d18ace074eb4c5acb36ada1c6, type: 3}
   prefab: {fileID: 7699674279000733108, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}

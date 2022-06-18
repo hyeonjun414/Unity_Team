@@ -15,6 +15,5 @@ MonoBehaviour:
   name: SeeingThrough
   Description: See through the walls
   itemType: 3
-  icon: {fileID: 21300000, guid: d922a2264ecd0c04987a0589859c321c, type: 3}
-  image: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4bfdcbe1d7daf9246bae680f13e02c8f, type: 3}
   prefab: {fileID: 2744038572444704473, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
