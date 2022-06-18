@@ -12,12 +12,14 @@ public class ItemSlotUnit : MonoBehaviour
 
     public void AddItem(ItemData data){
         curItemData = data;
-        itemImage = data.image;
+        itemImage.sprite = data.icon;
+        itemImage.enabled = true;
     }
 
     public void ResetItem(){
         curItemData = null;
-        itemImage = null;
+        itemImage.sprite = null;
+        itemImage.enabled = false;
     }
 
 }

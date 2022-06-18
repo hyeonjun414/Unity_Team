@@ -15,5 +15,6 @@ MonoBehaviour:
   name: DashItem
   Description: Move 2 blocks
   itemType: 2
-  icon: {fileID: 21300000, guid: 98bd4c9b1471720489f5411c44702ab1, type: 3}
+  icon: {fileID: 21300000, guid: 66efb24ed46044ab8a039599cbc47d7b, type: 3}
+  image: {fileID: 0}
   prefab: {fileID: 1314381847075644517, guid: 38e0ffa2ab1fa2e44917e99b750170b6, type: 3}

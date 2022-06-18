@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curNode: {fileID: 0}
+  playerNumber: 0
   isInputAvailable: 1
   rayPos:
   - {fileID: 3177278766088077266}
