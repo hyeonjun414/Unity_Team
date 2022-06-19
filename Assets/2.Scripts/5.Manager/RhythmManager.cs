@@ -87,6 +87,7 @@ public class RhythmManager : Singleton<RhythmManager>
         RhythmNote note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
         note.SetUp(rhythmBox.gameObject, 1f / noteSpeed);
         rhythmBox.RhythmHit();
+        isBeat = true;
     }
 
 

@@ -54,7 +54,6 @@ public class Map : MonoBehaviour
 
     public TileNode GetTileNode(Point pos)
     {
-        print(grid[mapSize * pos.y + pos.x]);
         return grid[mapSize * pos.y + pos.x];
     }
 }

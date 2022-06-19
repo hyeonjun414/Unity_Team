@@ -22,10 +22,9 @@ public class RhythmNote : MonoBehaviourPun
         destPos = dest.transform.position;
         this.time = time;
         velocity = Vector3.Distance(destPos, transform.position) / time;
-        //StartCoroutine("MoveRoutine");
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         transform.Translate(Vector3.right * velocity * Time.deltaTime);
     }

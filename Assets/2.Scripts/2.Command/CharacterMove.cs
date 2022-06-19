@@ -10,11 +10,9 @@ public class CharacterMove : MoveCommand
     public override void Execute()
     {
         MoveToNode();
-        player.eCurInput = ePlayerInput.NULL;
     }
     public void MoveToNode()
     {
-        print("moveToNode");
         if (player.eCurInput == ePlayerInput.MOVE_LEFT)
         {
             MoveNextNode(new Point(0, -1));
@@ -34,7 +32,6 @@ public class CharacterMove : MoveCommand
     }
     public TileNode NodeDetect()
     {
-        print("NodeDetect");
         if (player.eCurInput == ePlayerInput.MOVE_LEFT)
         {
             return PreExcuteNextNode(new Point(0, -1));
@@ -57,17 +54,13 @@ public class CharacterMove : MoveCommand
     private IEnumerator MoveRoutine(Point point)
     {
         yield return null;
-        //player.anim.SetTrigger("Jump");
         TileNode originNode = MapManager_verStatic.Instance.map.GetTileNode(player.stat.curPos);
 
-        print(player.stat.curPos.ToString());
-        print(point.ToString());
         if (MapManager_verStatic.Instance.BoundaryCheck(player.stat.curPos, point))
         {
             player.stat.curPos += point;
         }
 
-        print(player.stat.curPos.ToString());
         TileNode destNode = MapManager_verStatic.Instance.map.GetTileNode(player.stat.curPos);
         
 

@@ -94,6 +94,25 @@ public class Character : MonoBehaviourPun, IPunObservable
 
 
         Dir = PlayerDir.Right;
+
+        float angle = 0f;
+        switch (Dir)
+        {
+            case PlayerDir.Up:
+                angle = 0f;
+                break;
+            case PlayerDir.Right:
+                angle = 90f;
+                break;
+            case PlayerDir.Down:
+                angle = 180f;
+                break;
+            case PlayerDir.Left:
+                angle = 270f;
+                break;
+        }
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
     }
 
