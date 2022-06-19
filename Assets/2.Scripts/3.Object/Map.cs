@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 [System.Serializable]
 public struct Point
@@ -26,13 +28,13 @@ public struct Point
 public class Map : MonoBehaviour
 {
     public int mapSize;
-    public TileNode[] grid;
+    public List<TileNode> grid;
 
     public List<Point> startPos;
 
     private void Awake()
     {
-        grid = GetComponentsInChildren<TileNode>();
+        grid = GetComponentsInChildren<TileNode>().ToList();
         startPos = new List<Point>();
         for(int i = 0; i < mapSize; i++)
         {
@@ -55,5 +57,12 @@ public class Map : MonoBehaviour
     public TileNode GetTileNode(Point pos)
     {
         return grid[mapSize * pos.y + pos.x];
+    }
+
+    public TileNode GetTileNode(Vector3 vec)
+    {
+        return grid.Find((tile) =>
+        tile.transform.position.x == vec.x &&
+        tile.transform.position.z == vec.z);
     }
 }

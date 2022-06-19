@@ -127,7 +127,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         }
         playerNumber = photonView.Owner.GetPlayerNumber();
-        Map map = MapManager_verStatic.Instance.map;
+        Map map = MapManager.Instance.map;
         
         Point vec = map.startPos[playerNumber];
         TileNode tile = map.GetTileNode(vec);
@@ -144,6 +144,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         inputCommand.Execute();
         roteCommand.Execute();
         moveCommand.Execute();
+        actionCommand.Execute();
 
         eCurInput = ePlayerInput.NULL;
     }

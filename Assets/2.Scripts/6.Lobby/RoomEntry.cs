@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using TMPro;
 
 public class RoomEntry : MonoBehaviour
 {
-    public Text roomNameText;
-    public Text roomPlayersText;
+    public TMP_Text roomNameText;
+    public TMP_Text roomPlayersText;
     public Button joinRoomButton;
 
     private string roomName;

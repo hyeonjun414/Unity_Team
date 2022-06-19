@@ -4,11 +4,12 @@ using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using ExitGames.Client.Photon;
+using TMPro;
 
 public class PlayerEntry : MonoBehaviour
 {
     [Header("UI References")]
-    public Text playerNameText;
+    public TMP_Text playerNameText;
     public Button playerReadyButton;
     public Image playerReadyImage;
 
@@ -47,7 +48,4 @@ public class PlayerEntry : MonoBehaviour
     {
         playerReadyImage.color = playerReady ? Color.green : Color.red;
     }
-
-
-
 }

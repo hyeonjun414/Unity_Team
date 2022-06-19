@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class CreateRoomPanel : MonoBehaviour
 {
-    public InputField roomNameInputField;
-    public InputField maxPlayersInputField;
+    public TMP_InputField roomNameInputField;
+    public TMP_InputField maxPlayersInputField;
 
     public void OnCreateRoomCancelButtonClicked()
     {

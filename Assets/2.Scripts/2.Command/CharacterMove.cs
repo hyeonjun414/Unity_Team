@@ -54,14 +54,14 @@ public class CharacterMove : MoveCommand
     private IEnumerator MoveRoutine(Point point)
     {
         yield return null;
-        TileNode originNode = MapManager_verStatic.Instance.map.GetTileNode(player.stat.curPos);
+        TileNode originNode = MapManager.Instance.map.GetTileNode(player.stat.curPos);
 
-        if (MapManager_verStatic.Instance.BoundaryCheck(player.stat.curPos, point))
+        if (MapManager.Instance.BoundaryCheck(player.stat.curPos, point))
         {
             player.stat.curPos += point;
         }
 
-        TileNode destNode = MapManager_verStatic.Instance.map.GetTileNode(player.stat.curPos);
+        TileNode destNode = MapManager.Instance.map.GetTileNode(player.stat.curPos);
         
 
         Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
@@ -85,7 +85,7 @@ public class CharacterMove : MoveCommand
     {
         Point resultDir = GetResultDir(movePoint);
 
-        if (MapManager_verStatic.Instance.BoundaryCheck(player.stat.curPos, resultDir))
+        if (MapManager.Instance.BoundaryCheck(player.stat.curPos, resultDir))
         {
             return GetPlayerDest(resultDir);
         }
@@ -125,7 +125,7 @@ public class CharacterMove : MoveCommand
     public TileNode GetPlayerDest(Point result)
     {
         Point destPoint = player.stat.curPos + result;
-        return MapManager_verStatic.Instance.map.GetTileNode(destPoint); 
+        return MapManager.Instance.map.GetTileNode(destPoint); 
     }
 
     private Vector3 GetBezierPos(Vector3 p1, Vector3 p2, Vector3 p3, float t)

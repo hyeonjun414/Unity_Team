@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using TMPro;
 
 public class InfoPanel : MonoBehaviour
 {
-    public Text stateText;
+    public TMP_Text stateText;
 
     public GameObject errorPanel;
     public Text errorText;

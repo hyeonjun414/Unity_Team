@@ -90,6 +90,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         SetActivePanel(PANEL.Room);
+
+        inRoomPanel.ChatInput.text = "";
+        for (int i = 0; i < inRoomPanel.ChatText.Length; i++) inRoomPanel.ChatText[i].text = "";
     }
 
     public override void OnLeftRoom()
@@ -123,4 +126,33 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     #endregion
+
+
+    public void Send()
+    {
+        if(inRoomPanel.ChatInput.text == "") return;
+        
+        photonView.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + inRoomPanel.ChatInput.text);
+        inRoomPanel.ChatInput.text = "";
+        //inRoomPanel.ChatInput.Select();
+    }
+
+    [PunRPC]
+    void ChatRPC(string msg)
+    {
+        bool isInput = false;
+        for (int i = 0; i < inRoomPanel.ChatText.Length; i++)
+            if (inRoomPanel.ChatText[i].text == "")
+            {
+                isInput = true;
+                inRoomPanel.ChatText[i].text = msg;
+                break;
+            }
+        if (!isInput) // ²ËÂ÷¸é ÇÑÄ­¾¿ À§·Î ¿Ã¸²
+        {
+            for (int i = 1; i < inRoomPanel.ChatText.Length; i++) inRoomPanel.ChatText[i - 1].text = inRoomPanel.ChatText[i].text;
+            inRoomPanel.ChatText[inRoomPanel.ChatText.Length - 1].text = msg;
+        }
+    }
+
 }

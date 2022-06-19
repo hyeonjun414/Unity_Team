@@ -10,12 +10,16 @@ public class Item : MonoBehaviour
     public int posX;
     public int posY;
 
+    private TileNode curTile;
+
     public ItemData data;
     public int holdingTime = 18;
 
 
     private void Start()
     {
+        curTile = MapManager.Instance.map.GetTileNode(transform.position);
+        curTile.eOnTileObject = eTileOccupation.ITEM;
         Invoke("ItemDestroy", holdingTime);
     }
 
@@ -28,7 +32,7 @@ public class Item : MonoBehaviour
             var contactedPlayer = other.gameObject.GetComponent<Character>();
             Debug.Log(contactedPlayer + "랑 충돌!");
             // contactedPlayer.AddItem(itemData)
-
+            curTile.eOnTileObject = eTileOccupation.PLAYER;
             //플레이어와 충돌한 아이템 삭제
             Destroy(gameObject);
             //플레이어의 보관함에 아이템 넣어줌
@@ -50,8 +54,8 @@ public class Item : MonoBehaviour
     private void ItemDestroy()
     {
         Destroy(gameObject);
-        MapManager_verStatic.Instance.map.grid[MapManager_verStatic.Instance.map.mapSize * posX + posY].eOnTileObject = eTileOccupation.EMPTY;
-        ItemSpawnManger_verStatic.Instance.curItemCount--;
+        curTile.eOnTileObject = eTileOccupation.EMPTY;
+        ItemSpawnManager.Instance.curItemCount--;
     }
 
 }

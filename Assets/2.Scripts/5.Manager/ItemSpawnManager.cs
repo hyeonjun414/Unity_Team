@@ -5,12 +5,12 @@ using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 
-public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
+public class ItemSpawnManager : Singleton<ItemSpawnManager>
 {
-    PhotonView photonView;
     public string[] spawnItemType;                // 스폰될 아이템 타입
     // public Item[] spawnItemType;                // 스폰될 아이템 타입
 
+    public ItemDB itemDB;
     int spawnItemTypeNum;
     public Item[] item;
 
@@ -27,6 +27,7 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 
     public Vector3 spawnOffset = new Vector3(0, 1.5f, 0);       // 타일로부터 스폰 위치 차이
 
+    Point itemSpawnTilePos = new Point();
     int itemSpawnTileX;                   // 아이템 스폰될 타일의 X축 좌표
     int itemSpawnTileY;                   // 아이템 스폰될 타일의 Y축 좌표
     int itemSpawnTileNum;                   // 아이템 스폰될 타일 번호
@@ -45,14 +46,9 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
             return;
         }
 
-        // spawnItemType = new Item[System.Enum.GetValues(typeof(ItemData)).Length];
-        spawnItemType[0] = "Bottle_Endurance";
-        spawnItemType[1] = "Bottle_Health";
-        spawnItemType[2] = "Bottle_Mana";
-
-        item = new Item[MapManager_verStatic.Instance.map.grid.Length];
-        maxItemCount = MapManager_verStatic.Instance.map.grid.Length;
-        emptyTileCheckList = new bool[MapManager_verStatic.Instance.map.grid.Length];
+        item = new Item[MapManager.Instance.map.grid.Count];
+        maxItemCount = MapManager.Instance.map.grid.Count;
+        emptyTileCheckList = new bool[MapManager.Instance.map.grid.Count];
 
         MakeSpawnEmptyCheckList();
     }
@@ -112,37 +108,25 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
 
     public void SpawnItem()
     {
-        // PhotonNetwork.Instantiate(spawnItemType[spawnItemTypeNum].name, curItemSpawnPos, Quaternion.identity);
-        PhotonNetwork.Instantiate(spawnItemType[spawnItemTypeNum], SetSpawnPos(), Quaternion.identity);
-        // item[curSpawnItemCount].posX = itemSpawnTileX;
-        // item[curSpawnItemCount].posY = itemSpawnTileY;
+        PhotonNetwork.Instantiate(itemDB.itemList[spawnItemTypeNum].prefab.name, SetSpawnPos(), Quaternion.identity);
 
-        //해당 노드를 아이템 점유 타일로 변경
-        MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].eOnTileObject = eTileOccupation.ITEM;
         curItemCount++;
     }
 
     public string SetSpawnItemType()
     {
-        spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
+        spawnItemTypeNum = Random.Range(0, itemDB.itemList.Length);
 
         return spawnItemType[spawnItemTypeNum];
     }
-
-    // public Item SetSpawnItemType()
-    // {
-    //     spawnItemTypeNum = Random.Range(0, spawnItemType.Length);
-
-    //     return spawnItemType[spawnItemTypeNum];
-    // }
 
     public void MakeSpawnEmptyCheckList()
     // 비어있는 칸 체크
     {
 
-        for (int i = 0; i < MapManager_verStatic.Instance.map.grid.Length; ++i)
+        for (int i = 0; i < MapManager.Instance.map.grid.Count; ++i)
         {
-            if (MapManager_verStatic.Instance.map.grid[i].eOnTileObject == eTileOccupation.EMPTY)
+            if (MapManager.Instance.map.grid[i].eOnTileObject == eTileOccupation.EMPTY)
             {
                 emptyTileCheckList[i] = true;
             }
@@ -156,15 +140,19 @@ public class ItemSpawnManger_verStatic : Singleton<ItemSpawnManger_verStatic>
     public Vector3 SetSpawnPos()
     // 좌표 만들기
     {
-        int mapSize = MapManager_verStatic.Instance.map.mapSize;
+        int mapSize = MapManager.Instance.map.mapSize;
+
+        itemSpawnTilePos = new Point(Random.Range(0, mapSize), Random.Range(0, mapSize));
+        itemSpawnTileNum = mapSize * itemSpawnTilePos.y + itemSpawnTilePos.x;
+
         while (!emptyTileCheckList[itemSpawnTileNum] == true)     // 비어있는 타일이 아닐경우 계속 랜덤 좌표 계산
         {
-            itemSpawnTileX = Random.Range(0, mapSize);
-            itemSpawnTileY = Random.Range(0, mapSize);
-            itemSpawnTileNum = mapSize * itemSpawnTileX + itemSpawnTileY;
+            itemSpawnTilePos = new Point(Random.Range(0, mapSize), Random.Range(0, mapSize));
+
+            itemSpawnTileNum = mapSize * itemSpawnTilePos.y + itemSpawnTilePos.x;
         }
 
-        curItemSpawnPos = MapManager_verStatic.Instance.map.grid[itemSpawnTileNum].transform.position + spawnOffset;
+        curItemSpawnPos = MapManager.Instance.map.grid[itemSpawnTileNum].transform.position + spawnOffset;
 
         return curItemSpawnPos;
     }

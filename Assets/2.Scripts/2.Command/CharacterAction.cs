@@ -28,7 +28,7 @@ public class CharacterAction : ActionCommand
     {
         if(Input.GetKeyDown(KeyCode.J))
         {
-            //ì• ë‹ˆë©”ì´ì…˜ì¶”ê°€
+            //? ë‹ˆë©”ì´?˜ì¶”ê°€
             player.playerInput = ePlayerInput.BLOCK;
         }
         
@@ -38,8 +38,9 @@ public class CharacterAction : ActionCommand
     {
         if(Input.GetKeyDown(KeyCode.N))
         {
+            print("¾ÆÀÌÅÛ »ç¿ë");
+
             player.playerInput = ePlayerInput.USE_ITEM;
-            //Debug.Log("ì•„ì´í…œì„ ì‚¬ìš©í•©ë‹ˆë‹¤.");
             ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
             ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
 
