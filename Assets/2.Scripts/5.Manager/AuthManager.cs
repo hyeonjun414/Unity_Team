@@ -29,6 +29,9 @@ public class AuthManager : Singleton<AuthManager>
     public GameObject signInPanel;
     public TMP_InputField idCreateField;
     public TMP_InputField passwordCreateField;
+    public TMP_InputField passwordCreateFieldConfirm;
+    public Button CreateIDBtn;
+    public Button CancelSignInPanelBtn;
     private void Awake()
     {
         if (_instance == null) _instance = this;
@@ -53,12 +56,13 @@ public class AuthManager : Singleton<AuthManager>
             signInBtn.interactable=isFireBaseReady;
         });
     }
-    public void SignInWithEmail()
+    public void LogInWithEmail()
     {
         if(!isFireBaseReady ||  isSignInOnProgress || user !=null)
         {
             return;
         }
+
         isSignInOnProgress = true;
         signInBtn.interactable = false;
 
@@ -68,6 +72,7 @@ public class AuthManager : Singleton<AuthManager>
                 Debug.Log(message:$"Sign in status : {task.Status}");
                 isSignInOnProgress = false;
                 signInBtn.interactable=true;
+
 
                 if(task.IsFaulted)
                 {
@@ -93,51 +98,105 @@ public class AuthManager : Singleton<AuthManager>
     {
 
     }
-    public void SetSignInPanel()
+    public void LogInAnonymously()
     {
-        signInPanel.SetActive(true);
+        if(!isFireBaseReady ||  isSignInOnProgress || user !=null)
+        {
+            return;
+        }
+        isSignInOnProgress = true;
+        signInBtn.interactable = false;
+
+        firebaseAuth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task => {
+           
+            isSignInOnProgress = false;
+            signInBtn.interactable=true;
+
+            if (task.IsCanceled) {
+                Debug.LogError("SignInAnonymouslyAsync was canceled.");
+                return;
+            }
+            else if (task.IsFaulted) {
+                Debug.LogError("SignInAnonymouslyAsync encountered an error: " + task.Exception);
+                return;
+            }
+            else
+            {
+                SceneManager.LoadScene("NewLobbyScene");
+                Firebase.Auth.FirebaseUser newUser = task.Result;
+                Debug.LogFormat("User signed in successfully: {0} ({1})",
+                newUser.DisplayName, newUser.UserId);
+            }
+
+
+        });
     }
+
     public void CreateUserId()
     {
-        
+        if(passwordCreateField.text.ToString() != passwordCreateFieldConfirm.text.ToString())
+        {
+            StartCoroutine(ErrorMessage("비밀번호를 다시 확인해주세요"));
+             return;
+        }
         firebaseAuth.CreateUserWithEmailAndPasswordAsync(idCreateField.text,passwordCreateField.text)
-            .ContinueWith(task=>
+            .ContinueWithOnMainThread(task=>
             {
                 if(task.IsCanceled)
                 {
                     Debug.LogError("task Canceled");
                     return;
                 }
-                if(task.IsFaulted)
+                else if(task.IsFaulted)
                 {
                     StartCoroutine(ErrorMessage("제대로 된 입력이 아닙니다"));
                     Debug.Log("task is Faulted"+task.Exception);
                     
                     return;
                 }
+                else
+                {
+                    //userCreated
+                    Firebase.Auth.FirebaseUser newUser = task.Result;
+                    Debug.LogFormat("Firebase user created successfully: {0}({1})",
+                        newUser.DisplayName,newUser.UserId);
+                    
+                    signInPanel.SetActive(false);
 
-                //userCreated
-                Firebase.Auth.FirebaseUser newUser = task.Result;
-                Debug.LogFormat("Firebase user created successfully: {0}({1})",
-                    newUser.DisplayName,newUser.UserId);
-                
-                signInPanel.SetActive(false);
-                idCreateField.text = "";
-                passwordCreateField.text = "";
-                StartCoroutine(ErrorMessage("가입이 완료되었습니다"));
+                    StartCoroutine(ErrorMessage("가입이 완료되었습니다"));
+                    idField.text = idCreateField.text;
+
+                    idCreateField.text = "";
+                    passwordCreateField.text = "";
+                }
+
             });
+    }
 
-  
+    public void SetSignInPanel()
+    {
+        signInPanel.SetActive(true);
+        idField.text = "";
+        passwordField.text = "";
+    }
+    public void CancelOnCreateIDPanel()
+    {
+        signInPanel.SetActive(false);
     }
     IEnumerator ErrorMessage(string errorMessage)
     {
         TMP_Text error = errorTextPanel.transform.GetChild(0).GetComponent<TMP_Text>();
         errorTextPanel.SetActive(true);
         loginPanel.SetActive(false);
+        CreateIDBtn.interactable=false;
+        CancelSignInPanelBtn.interactable=false;
+        
         error.text = errorMessage;//errorMessage;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.5f);
         errorTextPanel.SetActive(false);
         loginPanel.SetActive(true);
+        CreateIDBtn.interactable=true;
+        CancelSignInPanelBtn.interactable=true;
         error.text = "";
     }
 }
