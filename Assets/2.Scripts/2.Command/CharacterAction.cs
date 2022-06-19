@@ -32,6 +32,16 @@ public class CharacterAction : ActionCommand
     private void Attack()
     {
         player.anim.SetTrigger("Right Punch Attack");
+        RaycastHit target;
+        if(Physics.Raycast(player.transform.position + Vector3.up + transform.forward *0.5f, player.transform.forward, out target, 0.5f))
+        {
+            Character enemy = target.collider.gameObject.GetComponent<Character>();
+            if (enemy != null)
+            {
+                print("Attack Enemy");
+                enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage);
+            }
+        }
     }
     private void Block()
     {

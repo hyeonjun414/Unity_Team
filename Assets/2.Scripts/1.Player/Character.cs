@@ -135,6 +135,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         CharacterReset();
         stat.curPos = tile.tilePos;
         transform.position = tile.transform.position + Vector3.up * 0.5f;
+        anim.speed = 2f;
 
     }
 
@@ -179,6 +180,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     }
 
+    [PunRPC]
     public void Damaged(int damageInt)
     {
         stat.hp -= damageInt;
@@ -194,7 +196,9 @@ public class Character : MonoBehaviourPun, IPunObservable
         // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
         // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
         // Destroy(gameObject);
-        
+
+        if (!photonView.IsMine) return;
+
         var builder = new StringBuilder();
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append(" 이 사망하였습니다");

@@ -16,7 +16,7 @@ public class Item : MonoBehaviour
     public int holdingTime = 18;
 
 
-    private void Start()
+    private void Awake()
     {
         curTile = MapManager.Instance.map.GetTileNode(transform.position);
         curTile.eOnTileObject = eTileOccupation.ITEM;
