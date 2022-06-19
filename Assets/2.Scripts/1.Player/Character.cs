@@ -8,22 +8,29 @@ using Photon.Pun.UtilityScripts;
 using Cinemachine;
 
 
-
+[System.Serializable]
 public class CharacterStatus
 {
     public int damage;
     public int hp;
-    public int curPositionX;
-    public int curPositionY;
+    public Point curPos;
     public int currentCombo;
     public int killCount;
     public int deathCount;
+    public int destX;
+    public int destY;
+    public bool isMoving;
+    public bool isCrashing;
 }
 public enum ePlayerInput
 {
     NULL,
-    MOVE,
-    ROTATE,
+    MOVE_UP,
+    MOVE_RIGHT,
+    MOVE_DOWN,
+    MOVE_LEFT,
+    ROTATE_RIGHT,
+    ROTATE_LEFT,
     ATTACK,
     BLOCK,
     USE_ITEM,
@@ -40,7 +47,7 @@ public enum PlayerDir
     End
 }
 
-public class Character : MonoBehaviourPun,IPunObservable
+public class Character : MonoBehaviourPun, IPunObservable
 {
     [Header("Node")]
     public TileNode curNode;
@@ -49,16 +56,17 @@ public class Character : MonoBehaviourPun,IPunObservable
     public bool isInputAvailable = true;
     public Transform[] rayPos;
     public ePlayerInput playerInput = ePlayerInput.NULL;
-    public CharacterStatus characterStatus;
+    public CharacterStatus stat;
     [HideInInspector]
     public Animator anim;
 
     [Header("Command")]
-    public MoveCommand moveCommand;
-    public ActionCommand actionCommand;
-    public Vector2 playerHeadingPos = Vector2.zero;
-    public bool isMoving = true; //임시
-    public bool isCrashing = false; //임시
+    public ePlayerInput eCurInput;
+    public CharacterRote roteCommand;
+    public CharacterInput inputCommand;
+    public CharacterMove moveCommand;
+    public CharacterAction actionCommand;
+
     private PlayerDir dir;
     public PlayerDir Dir
     {
@@ -70,96 +78,24 @@ public class Character : MonoBehaviourPun,IPunObservable
                 dir = PlayerDir.Left;
             else if (dir == PlayerDir.End)
                 dir = PlayerDir.Up;
-
-            SetDirection();
         }
     }
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        
+
+        inputCommand = gameObject.AddComponent<CharacterInput>();
+        inputCommand.SetUp(this);
         moveCommand = gameObject.AddComponent<CharacterMove>();
         moveCommand.SetUp(this);
+        roteCommand = gameObject.AddComponent<CharacterRote>();
+        roteCommand.SetUp(this);
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
 
-        InputCheckManager.Instance.ResisterPlayer(this);
-
-
         Dir = PlayerDir.Right;
-        photonView.RPC("SetUp", RpcTarget.AllBuffered);
 
-        // object[] obj = new object[2]{"aa", 1};
-        // photonView.RPC("Click",RpcTarget.AllBuffered, obj);
-        //photonView.RPC()
-        
-    }
-
-
-    [PunRPC]
-    public void Click(string command , int a)
-    {
-
-    }
-
-    [PunRPC]
-    public void SetUp()
-    {
-        if (photonView.IsMine)
-            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
-        
-        
-        //InputCheckManager.Instance.players.Add(gameObject.GetComponent<Character>());
-        RhythmManager.Instance.ResisterPlayer(this);
-
-        //if(PhotonNetwork.IsMasterClient)
-            //InputCheckManager.Instance.ResisterPlayer(this);
-
-
-        Map map = MapManager_verStatic.Instance.map;
-        Vector2 vec = map.startPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()];
-        TileNode tile = map.GetTileNode(vec);
-        curNode = tile;
-        CharacterReset();
-        characterStatus.curPositionX = tile.posX;
-        characterStatus.curPositionY = tile.posY;
-        transform.position = tile.transform.position + Vector3.up * 0.5f;
-
-    }
-
-    private void Update()
-    {
-        if (!photonView.IsMine) return;
-        //if(!isInputAvailable)return;
-        CheckAvailability();
-        Move();
-        Action();
-    }
-
-    public void CharacterReset()
-    {
-        characterStatus = new CharacterStatus();
-        characterStatus.damage = 1;
-        characterStatus.hp = 5;
-        characterStatus.curPositionX = 0;//(int)spawnPoint.x;
-        characterStatus.curPositionY = 0;//(int)spawnPoint.y;
-        characterStatus.currentCombo = 0;
-        characterStatus.killCount = 0;
-        characterStatus.deathCount = 0;
-
-    }
-    public void Move()
-    {
-        moveCommand?.Execute();
-    }
-    public void Action()
-    {
-        actionCommand?.Execute();
-    }
-
-    public void SetDirection()
-    {
         float angle = 0f;
         switch (Dir)
         {
@@ -176,27 +112,69 @@ public class Character : MonoBehaviourPun,IPunObservable
                 angle = 270f;
                 break;
         }
-        StartCoroutine(RotateRoutine(Quaternion.AngleAxis(angle, Vector3.up)));
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+
+        photonView.RPC("SetUp", RpcTarget.AllBuffered);
     }
-    IEnumerator RotateRoutine(Quaternion destRot)
+
+    [PunRPC]
+    public void SetUp()
     {
-        Quaternion originRot = transform.rotation;
-        float curTime = 0;
-        while (true)
+        if (photonView.IsMine)
         {
-            if (curTime > 0.2f)
-                break;
-            curTime += Time.deltaTime;
-            transform.rotation = Quaternion.Slerp(originRot, destRot, curTime / 0.2f);
-            yield return null;
+            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
+            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         }
+        playerNumber = photonView.Owner.GetPlayerNumber();
+        Map map = MapManager_verStatic.Instance.map;
+        
+        Point vec = map.startPos[playerNumber];
+        TileNode tile = map.GetTileNode(vec);
+        curNode = tile;
+        CharacterReset();
+        stat.curPos = tile.tilePos;
+        transform.position = tile.transform.position + Vector3.up * 0.5f;
+
+    }
+
+    private void Update()
+    {
+        if (!photonView.IsMine) return;
+        inputCommand.Execute();
+        roteCommand.Execute();
+        moveCommand.Execute();
+
+        eCurInput = ePlayerInput.NULL;
+    }
+
+    public void CharacterReset()
+    {
+        stat = new CharacterStatus();
+        stat.damage = 1;
+        stat.hp = 5;
+        stat.curPos.y = 0;
+        stat.curPos.x = 0;
+        stat.currentCombo = 0;
+        stat.killCount = 0;
+        stat.deathCount = 0;
+
+    }
+    [PunRPC]
+    public void Move()
+    {
+        moveCommand?.Execute();
+    }
+    public void Action()
+    {
+        actionCommand?.Execute();
     }
 
     public void Damaged(int damageInt)
     {
-        characterStatus.hp -= damageInt;
+        stat.hp -= damageInt;
         anim.SetTrigger("Take Damage");
-        if (characterStatus.hp <= 0)
+        if (stat.hp <= 0)
         {
             Die();
         }
@@ -220,15 +198,7 @@ public class Character : MonoBehaviourPun,IPunObservable
     {
         GameLogManager.Instance.AddQueue(msg);
     }
-    public void CheckAvailability()
-    {
-        //적이 사방에 있으면 해당 방향으로는 move 를 할 수 없게 예외처리
-        //사방에 벽이 있으면 해당 방향으로는 move를 할 수 없게 예외처리
-        //사방에 노드가 없는 큐브가 있으면 그 방향으로는 move를 할 수 없게 예외처리
-
-        // MapManager.Instance.mapSizeX
-
-    }
+  
     private void OnDrawGizmos()
     {
         Vector3 playerPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
@@ -237,22 +207,27 @@ public class Character : MonoBehaviourPun,IPunObservable
             Debug.DrawLine(playerPos, rayPos[i].position, Color.red);
         }
 
-        //Debug.DrawRay(playerPos,rayPos.position,Color.red);
     }
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    [PunRPC]
+    public void SetCommand(ePlayerInput input, int curY, int curX)
     {
-        // if (stream.IsWriting)
-        // {
-        //     stream.SendNext(characterStatus.curPositionX);
-        //     stream.SendNext(characterStatus.curPositionY);
-        //     stream.SendNext(Dir);
-        // }
-        // else
-        // {
-        //     characterStatus.curPositionX    = (int)stream.ReceiveNext();
-        //     characterStatus.curPositionY    = (int)stream.ReceiveNext();
-        //     Dir                             = (PlayerDir)stream.ReceiveNext();
-        // }
+        eCurInput = input;
+        stat.curPos = new Point(curY, curX);
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            //stream.SendNext(stat.curPos);
+        }
+        else
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+            //stat.curPos = (Point)stream.ReceiveNext();
+        }
+    }
 }

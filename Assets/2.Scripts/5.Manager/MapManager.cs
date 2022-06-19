@@ -21,12 +21,12 @@ public class MapManager : Singleton<MapManager>
     {
         if (_instance == null) _instance = this;
 
-        //í”Œë ˆì´ì–´ ì¸ì› ë°›ì•„ì„œ í• ë‹¹í•˜ê¸°
+        //ÇÃ·¹ÀÌ¾î ÀÎ¿ø ¹Ş¾Æ¼­ ÇÒ´çÇÏ±â
         playerCount = 4;
-        if (playerCount > 4) playerCount = 4;//í˜¹ì‹œ ë„¤íŠ¸ì›Œí¬ì—ëŸ¬? ë“±ìœ¼ë¡œ ìµœëŒ€ì¸ì›ë³´ë‹¤ ë§ê²Œë  ì‹œ ì˜ˆì™¸ì²˜ë¦¬
+        if (playerCount > 4) playerCount = 4;//È¤½Ã ³×Æ®¿öÅ©¿¡·¯? µîÀ¸·Î ÃÖ´ëÀÎ¿øº¸´Ù ¸¹°ÔµÉ ½Ã ¿¹¿ÜÃ³¸®
 
-        mapSizeX = 10;//ì„ì‹œë¡œ ë§µì‚¬ì´ì¦ˆìš© ë³€ìˆ˜ ì§€ì •
-        mapSizeY = 10;//ì„ì‹œë¡œ ë§µì‚¬ì´ì¦ˆìš© ë³€ìˆ˜ ì§€ì •
+        mapSizeX = 10;//ÀÓ½Ã·Î ¸Ê»çÀÌÁî¿ë º¯¼ö ÁöÁ¤
+        mapSizeY = 10;//ÀÓ½Ã·Î ¸Ê»çÀÌÁî¿ë º¯¼ö ÁöÁ¤
         grid = new TileNode[mapSizeY, mapSizeX];
 
         Vector3 basePlayerPos = new Vector3(0f, 0.25f, 0f);
@@ -37,8 +37,8 @@ public class MapManager : Singleton<MapManager>
 
 
 
-        //if(í˜¸ìŠ¤íŠ¸ë©´) 
-        GenerateMap(); //-> í˜¹ì€ ë§µì„ ì‹œì‘ ì „ ë£¸ì—ì„œ ë¯¸ë¦¬ ì„ íƒí•˜ê³  ë„˜ì–´ì˜¤ëŠ”ì§€?
+        //if(È£½ºÆ®¸é) 
+        GenerateMap(); //-> È¤Àº ¸ÊÀ» ½ÃÀÛ Àü ·ë¿¡¼­ ¹Ì¸® ¼±ÅÃÇÏ°í ³Ñ¾î¿À´ÂÁö?
 
         ReadRoomData();
 
@@ -55,8 +55,8 @@ public class MapManager : Singleton<MapManager>
             {
                 grid[i, j] = Instantiate(prefNode, new Vector3(j * spaceBetweenTiles, 0, -i * spaceBetweenTiles), Quaternion.identity);
                 grid[i, j].eOnTileObject = eTileOccupation.EMPTY;
-                grid[i, j].posX = j;
-                grid[i, j].posY = i;
+               // grid[i, j].posX = j;
+                //grid[i, j].posY = i;
                 grid[i, j].transform.SetParent(obj.transform);
             }
         }
@@ -84,9 +84,9 @@ public class MapManager : Singleton<MapManager>
             {
                 //objPlayer.SetUp(grid[mapSizeX - 1, 0]);
             }
-            //í•´ë‹¹ ë…¸ë“œë¥¼ í”Œë ˆì´ì–´ ì ìœ  íƒ€ì¼ë¡œ ë³€ê²½
-            grid[objPlayer.characterStatus.curPositionX, objPlayer.characterStatus.curPositionY].eOnTileObject = eTileOccupation.PLAYER;
-            ItemSpawnManger.Instance.emptyTileCheckList[objPlayer.characterStatus.curPositionX, objPlayer.characterStatus.curPositionY] = false;
+            //ÇØ´ç ³ëµå¸¦ ÇÃ·¹ÀÌ¾î Á¡À¯ Å¸ÀÏ·Î º¯°æ
+           // grid[objPlayer.stat.curPositionX, objPlayer.stat.curPositionY].eOnTileObject = eTileOccupation.PLAYER;
+           // ItemSpawnManger.Instance.emptyTileCheckList[objPlayer.stat.curPositionX, objPlayer.stat.curPositionY] = false;
         }
 
 

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class GameData : MonoBehaviour
 {
-    public const int COUNTDOWN = 3;
+    public const int COUNTDOWN = 0;
 
     public const string PLAYER_READY = "Ready";
     public const string PLAYER_LOAD = "Load";
+    public const string PLAYER_GEN = "Character";
     
     public static Color GetColor(int playerNumber)
     {
