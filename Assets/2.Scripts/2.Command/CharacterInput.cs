@@ -7,13 +7,7 @@ public class CharacterInput : InputCommand
 {
     public override void Execute()
     {
-        if (Input.anyKeyDown && RhythmManager.Instance.BitCheck())
-        {
-            RhythmManager.Instance.rhythmBox.NoteHit();
-            PlayerInput();
-
-        }
-        
+        PlayerInput();
     }
     public void PlayerInput()
     {
@@ -41,10 +35,30 @@ public class CharacterInput : InputCommand
         {
             SetCommand(ePlayerInput.ROTATE_RIGHT);
         }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            SetCommand(ePlayerInput.ATTACK);
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            SetCommand(ePlayerInput.BLOCK);
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            SetCommand(ePlayerInput.USE_ITEM);
+        }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            SetCommand(ePlayerInput.CHANGE_ITEM_SLOT);
+        }
     }
-    public void SetCommand(ePlayerInput input)
+/*    public void SetCommand(ePlayerInput input)
     {
         player.photonView.RPC("SetCommand", RpcTarget.All,
                 new object[3] { input, player.stat.curPos.y, player.stat.curPos.x });
+    }*/
+    public void SetCommand(ePlayerInput input)
+    {
+        player.eCurInput = input;
     }
 }

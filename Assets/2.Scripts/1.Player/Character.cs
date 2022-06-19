@@ -141,12 +141,29 @@ public class Character : MonoBehaviourPun, IPunObservable
     private void Update()
     {
         if (!photonView.IsMine) return;
-        inputCommand.Execute();
-        roteCommand.Execute();
-        moveCommand.Execute();
-        actionCommand.Execute();
+
+        if(RhythmHit())
+        {
+            inputCommand.Execute();
+            roteCommand.Execute();
+            moveCommand.Execute();
+            actionCommand.Execute();
+        }
+
 
         eCurInput = ePlayerInput.NULL;
+    }
+    public bool RhythmHit()
+    {
+        if (Input.anyKeyDown && RhythmManager.Instance.BitCheck())
+        {
+            RhythmManager.Instance.rhythmBox.NoteHit();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void CharacterReset()
@@ -160,15 +177,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         stat.killCount = 0;
         stat.deathCount = 0;
 
-    }
-    [PunRPC]
-    public void Move()
-    {
-        moveCommand?.Execute();
-    }
-    public void Action()
-    {
-        actionCommand?.Execute();
     }
 
     public void Damaged(int damageInt)
@@ -206,6 +214,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         for (int i = 0; i < 4; ++i)
         {
             Debug.DrawLine(playerPos, rayPos[i].position, Color.red);
+            Debug.DrawRay(playerPos, transform.forward, Color.green);
         }
 
     }
