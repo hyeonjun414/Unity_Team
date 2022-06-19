@@ -77,7 +77,7 @@ public class AuthManager : Singleton<AuthManager>
                 if(task.IsFaulted)
                 {
                     Debug.Log(task.Exception);
-                    StartCoroutine(ErrorMessage("잘못된 입력입니다"));//task.Exception.ToString()));
+                    StartCoroutine(ErrorMessage("잘못된 입력입니다. ID와 비밀번호를 확인해주세요"));//task.Exception.ToString()));
                 }
                 else if(task.IsCanceled)
                 {
