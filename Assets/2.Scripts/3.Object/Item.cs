@@ -39,6 +39,7 @@ public class Item : MonoBehaviour
             PickedUp(contactedPlayer);
         }
     }
+
     //아이템을 슬롯에 넣어줌
     private void PickedUp(Character player)
     {
@@ -54,11 +55,12 @@ public class Item : MonoBehaviour
             Debug.Log("아이템을 둘 자리가 없습니다!");
         }
     }
+
     private void ItemDestroy()
     {
-        Destroy(gameObject);
         curTile.eOnTileObject = eTileOccupation.EMPTY;
-        ItemSpawnManager.Instance.curItemCount--;
+        ItemSpawnManager.Instance.curItemDecrease();
+        Destroy(gameObject);
     }
 
 }

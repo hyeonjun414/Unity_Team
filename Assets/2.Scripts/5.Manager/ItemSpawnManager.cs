@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 
+
 public class ItemSpawnManager : Singleton<ItemSpawnManager>
 {
     public string[] spawnItemType;                // 스폰될 아이템 타입
@@ -25,13 +26,10 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
     public float spawnCountDown = 5.0f;     // 스폰 쿨타임
     public float countdown = 5.0f;          // 시간 계산용 쿨타임
 
-    public Vector3 spawnOffset = new Vector3(0, 1.5f, 0);       // 타일로부터 스폰 위치 차이
+    public Vector3 spawnOffset = new Vector3(0, 0, 0);       // 타일로부터 스폰 위치 차이
 
     Point itemSpawnTilePos = new Point();
-    int itemSpawnTileX;                   // 아이템 스폰될 타일의 X축 좌표
-    int itemSpawnTileY;                   // 아이템 스폰될 타일의 Y축 좌표
     int itemSpawnTileNum;                   // 아이템 스폰될 타일 번호
-    int itemSpawnTileCheckNum;
     Vector3 curItemSpawnPos;                // 아이템 스폰될 위치
 
     private void Awake()
@@ -51,6 +49,7 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
         emptyTileCheckList = new bool[MapManager.Instance.map.grid.Count];
 
         MakeSpawnEmptyCheckList();
+
     }
 
     private void Update()
@@ -80,6 +79,9 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
     {
         if (countdown <= 0)
         {
+            MakeSpawnEmptyCheckList();
+            // 아이템 좌표 가져오기
+
             if (maxItemCount <= curItemCount)      // 현재 스폰된 아이템 수가 최대로 가질 수 있는 수보다 많을 경우
             {
                 return;
@@ -97,8 +99,6 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
 
                 for (int i = 0; i < curSpawnItemCount; i++)     // 소환할 아이템 갯수만큼 아이템 소환
                 {
-                    MakeSpawnEmptyCheckList();
-                    // 아이템 좌표 가져오기
                     SetSpawnItemType();                             // 소환할 아이템 종류 가져오기
                     SpawnItem();                                // 아이템 스폰
                 }
@@ -106,11 +106,13 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
         }
     }
 
+
     public void SpawnItem()
     {
         PhotonNetwork.Instantiate(itemDB.itemList[spawnItemTypeNum].prefab.name, SetSpawnPos(), Quaternion.identity);
 
         curItemCount++;
+        emptyTileCheckList[itemSpawnTileNum] = false;
     }
 
     public string SetSpawnItemType()
@@ -157,4 +159,8 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
         return curItemSpawnPos;
     }
 
+    public void curItemDecrease()
+    {
+        curItemCount--;
+    }
 }
