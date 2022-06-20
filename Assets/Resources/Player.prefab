@@ -482,6 +482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curNode: {fileID: 0}
+  nickName: 
   stat:
     damage: 0
     hp: 0

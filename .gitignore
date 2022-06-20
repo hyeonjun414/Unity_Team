@@ -61,4 +61,4 @@ crashlytics-build.properties
 # External Asset
 /Assets/ExternalAsset
 /Assets/StreamingAssets
-/google-services.json
+/Assets/google-services.json

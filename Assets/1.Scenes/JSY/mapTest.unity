@@ -825,6 +825,8 @@ GameObject:
   - component: {fileID: 211671993}
   - component: {fileID: 211671994}
   - component: {fileID: 211671990}
+  - component: {fileID: 211671995}
+  - component: {fileID: 211671996}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1004,7 +1006,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211671986}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f224bbe1016d0740850c59f19ddbff1, type: 3}
   m_Name: 
@@ -1012,16 +1014,16 @@ MonoBehaviour:
   spawnItemType:
   - 
   - 
-  itemDB: {fileID: 0}
+  itemDB: {fileID: 11400000, guid: 17b8b0adcb2427b46bde2d19056a81e1, type: 2}
   item: []
   maxItemCount: 25
   curItemCount: 0
-  maxSpawnItemCount: 3
+  maxSpawnItemCount: 1
   curSpawnItemCount: 0
   emptyTileCheckList: 
   spawnCountDown: 5
   countdown: 5
-  spawnOffset: {x: 0, y: 1.5, z: 0}
+  spawnOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &211671993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,6 +1038,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isReadyCount: 0
   players: []
+  alivePlayer: []
+  deadPlayer: []
+  resultText: {fileID: 0}
 --- !u!114 &211671994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1058,6 +1063,36 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &211671995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211671986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1075957e74911db4b8b9551d64763a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxWallCount: 10
+  wall: {fileID: 4829291609278854547, guid: c6c0871f0b3d8e846be5834b2a13b4bb, type: 3}
+  spawnOffset: {x: 0, y: 1, z: 0}
+--- !u!114 &211671996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211671986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea53a510d114a54b9530e6a901c64ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemList: []
+  itemSlotUI: {fileID: 0}
+  maxCount: 2
 --- !u!1 &212827361
 GameObject:
   m_ObjectHideFlags: 0
