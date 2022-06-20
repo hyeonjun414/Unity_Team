@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,7 +87,7 @@ public class CharacterAction : ActionCommand
             Debug.Log("사용할 아이템이 없습니다!");
         }
         else{
-            player.playerInput = ePlayerInput.USE_ITEM;
+            player.eCurInput = ePlayerInput.USE_ITEM;
             ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
             ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
 
@@ -95,7 +95,7 @@ public class CharacterAction : ActionCommand
     }
     private void ChangeItemSlot()
     {
-        player.playerInput = ePlayerInput.CHANGE_ITEM_SLOT;
+        player.eCurInput = ePlayerInput.CHANGE_ITEM_SLOT;
         ItemManager.Instance.ChangeItems();
     }
 }

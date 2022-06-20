@@ -54,17 +54,6 @@ public class BattleManager : MonoBehaviourPun
         //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
         alivePlayer = FindObjectsOfType<Character>().ToList();
       
-        players.Sort((Character a, Character b) =>
-        {
-            if (a.playerNumber < b.playerNumber)
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
-        });
     }
 
 

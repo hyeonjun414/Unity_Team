@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
@@ -148,7 +148,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 inRoomPanel.ChatText[i].text = msg;
                 break;
             }
-        if (!isInput) // ²ËÂ÷¸é ÇÑÄ­¾¿ À§·Î ¿Ã¸²
+        if (!isInput) // ê½‰ì°¨ë©´ í•œì¹¸ì”© ìœ„ë¡œ ì˜¬ë¦¼
         {
             for (int i = 1; i < inRoomPanel.ChatText.Length; i++) inRoomPanel.ChatText[i - 1].text = inRoomPanel.ChatText[i].text;
             inRoomPanel.ChatText[inRoomPanel.ChatText.Length - 1].text = msg;

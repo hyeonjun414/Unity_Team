@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
@@ -8,21 +8,21 @@ using System.Collections.Generic;
 public class MainPanel : MonoBehaviourPunCallbacks
 {
     [Header("Login")]
-    public GameObject loginPanel; // ·Î±×ÀÎ ÆĞ³Î
+    public GameObject loginPanel; // ë¡œê·¸ì¸ íŒ¨ë„
 
-    public InputField playerNameInput; // ÇÃ·¹ÀÌ¾î ³×ÀÓ½ºÆäÀÌ½º
+    public InputField playerNameInput; // í”Œë ˆì´ì–´ ë„¤ì„ìŠ¤í˜ì´ìŠ¤
 
     [Header("Connect")]
-    public GameObject inConnectPanel; // ¿¬°áÁß ÆĞ³Î
+    public GameObject inConnectPanel; // ì—°ê²°ì¤‘ íŒ¨ë„
 
     [Header("Create Room")]
-    public GameObject createRoomPanel; // ¹æ »ı¼º ÆĞ³Î
+    public GameObject createRoomPanel; // ë°© ìƒì„± íŒ¨ë„
 
-    public InputField roomNameInputField; // ¹æ ÀÌ¸§ ³×ÀÓ½ºÆäÀÌ½º
-    public InputField maxPlayersInputField; // ÃÖ´ë ÀÎ¿ø ³×ÀÓ½ºÆäÀÌ½º
+    public InputField roomNameInputField; // ë°© ì´ë¦„ ë„¤ì„ìŠ¤í˜ì´ìŠ¤
+    public InputField maxPlayersInputField; // ìµœëŒ€ ì¸ì› ë„¤ì„ìŠ¤í˜ì´ìŠ¤
 
     [Header("Lobby")]
-    public GameObject inLobbyPanel; // ·Îºñ ÆĞ³Î
+    public GameObject inLobbyPanel; // ë¡œë¹„ íŒ¨ë„
 
     public GameObject roomContent;
     public GameObject roomEntryPrefab;
@@ -56,7 +56,7 @@ public class MainPanel : MonoBehaviourPunCallbacks
     public enum PANEL { Login, Connect, Lobby, Room, CreateRoom }
     private void SetActivePanel(PANEL panel)
     {
-        // ÀûÀıÇÑ ÆĞ³ÎÀ» È°¼ºÈ­ ÇÏ´Â ÇÔ¼ö
+        // ì ì ˆí•œ íŒ¨ë„ì„ í™œì„±í™” í•˜ëŠ” í•¨ìˆ˜
 
         loginPanel.SetActive(panel == PANEL.Login);
         inConnectPanel.SetActive(panel == PANEL.Connect);
@@ -67,7 +67,7 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
     public void OnLoginButtonClicked()
     {
-        // ·Î±×ÀÎ ÆĞ³ÎÀÇ ¹öÆ°À» ´­·¶À» ¶§ ÀÛµ¿ÇÏ´Â ÇÔ¼ö
+        // ë¡œê·¸ì¸ íŒ¨ë„ì˜ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì‘ë™í•˜ëŠ” í•¨ìˆ˜
 
         string playerName = playerNameInput.text;
 
@@ -76,55 +76,55 @@ public class MainPanel : MonoBehaviourPunCallbacks
             Debug.LogError("Invalid Player Name");
             return;
         }
-        // ÀÔ·ÂµÈ ÇÃ·¹ÀÌ¾î ³×ÀÓ½ºÆäÀÌ½ºÀÇ ÅØ½ºÆ®¸¦ ´Ğ³×ÀÓÀ¸·Î ¼³Á¤ÇÑ´Ù.
+        // ì…ë ¥ëœ í”Œë ˆì´ì–´ ë„¤ì„ìŠ¤í˜ì´ìŠ¤ì˜ í…ìŠ¤íŠ¸ë¥¼ ë‹‰ë„¤ì„ìœ¼ë¡œ ì„¤ì •í•œë‹¤.
         PhotonNetwork.LocalPlayer.NickName = playerName;
-        // ÇØ´ç ¼³Á¤À¸·Î ¿¬°áÀ» ÇÑ´Ù.
+        // í•´ë‹¹ ì„¤ì •ìœ¼ë¡œ ì—°ê²°ì„ í•œë‹¤.
         PhotonNetwork.ConnectUsingSettings();
     }
 
     public void OnCreateRoomButtonClicked()
     {
-        // ¹æ »ı¼º ¹öÆ°À» ´­·¶À» ¶§ ÀÛµ¿ÇÏ´Â ÇÔ¼ö
+        // ë°© ìƒì„± ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì‘ë™í•˜ëŠ” í•¨ìˆ˜
 
-        // ¹æ »ı¼º ÆĞ³ÎÀ» È°¼ºÈ­.
+        // ë°© ìƒì„± íŒ¨ë„ì„ í™œì„±í™”.
         SetActivePanel(PANEL.CreateRoom);
     }
 
     public void OnRandomMatchingButtonClicked()
     {
-        // ·£´ı ¸ÅÄª ¹öÆ°À» ´­·¶À» ¶§ ÀÛµ¿ÇÏ´Â ÇÔ¼ö
+        // ëœë¤ ë§¤ì¹­ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì‘ë™í•˜ëŠ” í•¨ìˆ˜
 
-        // ·£´ıÇÑ ¹æ¿¡ µé¾î°¨.
+        // ëœë¤í•œ ë°©ì— ë“¤ì–´ê°.
         PhotonNetwork.JoinRandomRoom();
     }
 
     public void OnLobbyButtonClicked()
     {
-        // ·Îºñ ¹öÆ°¿¡ ¿¬°áµÈ ÇÔ¼ö
+        // ë¡œë¹„ ë²„íŠ¼ì— ì—°ê²°ëœ í•¨ìˆ˜
 
-        // ·Îºñ¿¡ Á¢¼ÓÇÏ´Â ÇÔ¼ö.
+        // ë¡œë¹„ì— ì ‘ì†í•˜ëŠ” í•¨ìˆ˜.
         PhotonNetwork.JoinLobby();
     }
 
     public void OnLogoutButtonClicked()
     {
-        // ·Î±×¾Æ¿ô ¹öÆ°¿¡ ¿¬°áµÈ ÇÔ¼ö
+        // ë¡œê·¸ì•„ì›ƒ ë²„íŠ¼ì— ì—°ê²°ëœ í•¨ìˆ˜
 
-        // ¼­¹ö¿ÍÀÇ ¿¬°áÀ» ÇØÁ¦ÇÔ.
+        // ì„œë²„ì™€ì˜ ì—°ê²°ì„ í•´ì œí•¨.
         PhotonNetwork.Disconnect();
     }
 
     public void OnCreateRoomCancelButtonClicked()
     {
-        // ¹æ »ı¼º Ãë¼Ò ¹öÆ°¿¡ ¿¬°áµÈ ÇÔ¼ö
+        // ë°© ìƒì„± ì·¨ì†Œ ë²„íŠ¼ì— ì—°ê²°ëœ í•¨ìˆ˜
 
-        // ¿¬°á ÆĞ³Î È°¼ºÈ­
+        // ì—°ê²° íŒ¨ë„ í™œì„±í™”
         SetActivePanel(PANEL.Connect);
     }
 
     public void OnCreateRoomConfirmButtonClicked()
     {
-        // ¹æ »ı¼º È®ÀÎ ¹öÆ°¿¡ ¿¬°áµÈ ÇÔ¼ö
+        // ë°© ìƒì„± í™•ì¸ ë²„íŠ¼ì— ì—°ê²°ëœ í•¨ìˆ˜
 
         
         string roomName = roomNameInputField.text;
@@ -135,39 +135,39 @@ public class MainPanel : MonoBehaviourPunCallbacks
         byte maxPlayer = byte.Parse(maxPlayersInputField.text);
         maxPlayer = (byte) Mathf.Clamp(maxPlayer, 1, 8);
 
-        // ÀÔ·ÂÇÑ °ªÀ» ±â¹İÀ¸·Î ¹æ ¿É¼ÇÀ» ¼³Á¤
+        // ì…ë ¥í•œ ê°’ì„ ê¸°ë°˜ìœ¼ë¡œ ë°© ì˜µì…˜ì„ ì„¤ì •
         RoomOptions options = new RoomOptions { MaxPlayers = maxPlayer, PlayerTtl = 10000 };
         
-        // ¹æ »ı¼ºÀ» ¿äÃ»
+        // ë°© ìƒì„±ì„ ìš”ì²­
         PhotonNetwork.CreateRoom(roomName, options, null);
     }
 
     public void OnBackButtonClicked()
     {
-        // ·Îºñ¿¡¼­ µÚ·Î °¡±â ¹öÆ°À» ´­·¶À» ¶§ ÀÛµ¿ÇÏ´Â ÇÔ¼ö
+        // ë¡œë¹„ì—ì„œ ë’¤ë¡œ ê°€ê¸° ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì‘ë™í•˜ëŠ” í•¨ìˆ˜
 
-        // ·Îºñ¿¡¼­ ³ª°¨.
+        // ë¡œë¹„ì—ì„œ ë‚˜ê°.
         PhotonNetwork.LeaveLobby();
 
     }
 
     public void OnLeaveRoomClicked()
     {
-        // ¹æ ¶°³ª±â ¹öÆ°À» ´­·¶À»¶§ ÀÛµ¿ÇÏ´Â ÇÔ¼ö
+        // ë°© ë– ë‚˜ê¸° ë²„íŠ¼ì„ ëˆŒë €ì„ë•Œ ì‘ë™í•˜ëŠ” í•¨ìˆ˜
 
-        // ¹æ ¶°³² ¿äÃ»
+        // ë°© ë– ë‚¨ ìš”ì²­
         PhotonNetwork.LeaveRoom();
     }
 
     public void OnStartGameButtonClicked()
     {
-        // ½ºÅ¸Æ® °ÔÀÓ ¹öÆ°¿¡ ¿¬°áµÊ ÇÔ¼ö
+        // ìŠ¤íƒ€íŠ¸ ê²Œì„ ë²„íŠ¼ì— ì—°ê²°ë¨ í•¨ìˆ˜
 
-        // ÇöÀç ÀÖ´Â ¹æÀÇ ¿É¼ÇÀ» ´İÈù, º¸ÀÌÁö ¾Ê´Â »óÅÂ·Î º¯°æ
+        // í˜„ì¬ ìˆëŠ” ë°©ì˜ ì˜µì…˜ì„ ë‹«íŒ, ë³´ì´ì§€ ì•ŠëŠ” ìƒíƒœë¡œ ë³€ê²½
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        // ÀÎ°ÔÀÓ ¾ÀÀ» ºÒ·¯¿È.
+        // ì¸ê²Œì„ ì”¬ì„ ë¶ˆëŸ¬ì˜´.
         //PhotonNetwork.LoadLevel("GameScene");
         PhotonNetwork.LoadLevel("TankScene");
     }
@@ -223,23 +223,23 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        // ¼­¹ö¿¡ Á¢¼ÓµÇ¾úÀ» ¶§ ¹ß»ıÇÏ´Â Äİ¹é ÇÔ¼ö
+        // ì„œë²„ì— ì ‘ì†ë˜ì—ˆì„ ë•Œ ë°œìƒí•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
-        // ¿¬°á ÆĞ³Î·Î º¯°æÇÔ.
+        // ì—°ê²° íŒ¨ë„ë¡œ ë³€ê²½í•¨.
         SetActivePanel(PANEL.Connect);
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
-        // ¼­¹ö¿¡ Á¢¼ÓÀÌ ÇØÁ¦µÇ¾úÀ» ¶§ ¹ß»ıÇÏ´Â Äİ¹é ÇÔ¼ö
+        // ì„œë²„ì— ì ‘ì†ì´ í•´ì œë˜ì—ˆì„ ë•Œ ë°œìƒí•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
-        // ·Î±×ÀÎ ÆĞ³Î·Î º¯°æÇÔ.
+        // ë¡œê·¸ì¸ íŒ¨ë„ë¡œ ë³€ê²½í•¨.
         SetActivePanel(PANEL.Login);
         Debug.LogError(cause.ToString());
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        // ·ë ¸®½ºÆ®¸¦ ÃÖ½ÅÈ­ ÇÒ¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö
+        // ë£¸ ë¦¬ìŠ¤íŠ¸ë¥¼ ìµœì‹ í™” í• ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
         ClearRoomListView();
 
@@ -275,61 +275,61 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        // ·£´ı ¹æ ¸ÅÄª¿¡ ½ÇÆĞÇßÀ»¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö.
+        // ëœë¤ ë°© ë§¤ì¹­ì— ì‹¤íŒ¨í–ˆì„ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜.
 
         string roomName = "Room " + Random.Range(1000, 10000);
         RoomOptions options = new RoomOptions { MaxPlayers = 8 };
 
-        // ¹æ »ı¼º.
+        // ë°© ìƒì„±.
         PhotonNetwork.CreateRoom(roomName, options, null);
     }
 
     public override void OnJoinedRoom()
     {
-        // ¹æ¿¡ µé¾î°¡´Â °ÍÀ» ¼º°øÇßÀ»¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö.
+        // ë°©ì— ë“¤ì–´ê°€ëŠ” ê²ƒì„ ì„±ê³µí–ˆì„ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜.
 
         // joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
         
-        // ±âÁ¸ÀÇ ¹æ ¸ñ·ÏÀ» ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+        // ê¸°ì¡´ì˜ ë°© ëª©ë¡ì„ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
         cachedRoomList.Clear();
 
 
-        // ¹æ ÆĞ³ÎÀ» È°¼ºÈ­ ½ÃÄÑÁØ´Ù.
+        // ë°© íŒ¨ë„ì„ í™œì„±í™” ì‹œì¼œì¤€ë‹¤.
         SetActivePanel(PANEL.Room);
 
-        // ÇÃ·¹ÀÌ¾î ¸®½ºÆ®°¡ nullÀÏ¶§ µñ¼Å³Ê¸® »ı¼º
+        // í”Œë ˆì´ì–´ ë¦¬ìŠ¤íŠ¸ê°€ nullì¼ë•Œ ë”•ì…”ë„ˆë¦¬ ìƒì„±
         if (playerListEntries == null)
         {
             playerListEntries = new Dictionary<int, GameObject>();
         }
 
-        // ¸ğµç ÇÃ·¹ÀÌ¾î ¸®½ºÆ®¸¦ ¹Ş¾Æ¿Í ¹İº¹¹®À» µ¹¸°´Ù.
+        // ëª¨ë“  í”Œë ˆì´ì–´ ë¦¬ìŠ¤íŠ¸ë¥¼ ë°›ì•„ì™€ ë°˜ë³µë¬¸ì„ ëŒë¦°ë‹¤.
         foreach (Player p in PhotonNetwork.PlayerList)
         {
-            // ÇÃ·¹ÀÌ¾î ¿£Æ®¸® »ı¼º
+            // í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ ìƒì„±
             GameObject entry = Instantiate(playerEntryPrefab);
-            // À§Ä¡ ¼³Á¤ ¹× Å©±â ¼³Á¤
+            // ìœ„ì¹˜ ì„¤ì • ë° í¬ê¸° ì„¤ì •
             entry.transform.SetParent(playerListContent.transform);
             entry.transform.localScale = Vector3.one;
 
-            // ¿£Æ®¸®¿¡ ÇÃ·¹ÀÌ¾îÀÇ ³Ñ¹ö¿Í ´Ğ³×ÀÓÀ» ¼³Á¤
+            // ì—”íŠ¸ë¦¬ì— í”Œë ˆì´ì–´ì˜ ë„˜ë²„ì™€ ë‹‰ë„¤ì„ì„ ì„¤ì •
             entry.GetComponent<PlayerEntry>().Initialize(p.ActorNumber, p.NickName);
 
             object isPlayerReady;
-            // ÇÃ·¹ÀÌ¾îÀÇ ·¹µğ ¿©ºÎ¸¦ ¹Ş¾Æ¿Í Àû¿ëÇÑ´Ù.
+            // í”Œë ˆì´ì–´ì˜ ë ˆë”” ì—¬ë¶€ë¥¼ ë°›ì•„ì™€ ì ìš©í•œë‹¤.
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
             {
                 entry.GetComponent<PlayerEntry>().SetPlayerReady((bool)isPlayerReady);
 
             }
-            // ÇÃ·¹ÀÌ¾î ¿£Æ®¸® ¿ÀºêÁ§Æ® Ãß°¡
+            // í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ ì˜¤ë¸Œì íŠ¸ ì¶”ê°€
             playerListEntries.Add(p.ActorNumber, entry);
         }
 
-        // ÀüºÎ ·¹µğ »óÅÂÀÏ¶§ È°¼ºÈ­
+        // ì „ë¶€ ë ˆë”” ìƒíƒœì¼ë•Œ í™œì„±í™”
         startGameButton.gameObject.SetActive(CheckPlayersReady());
 
-        // ¾À ·Îµå µ¿±âÈ­¸¦ À§ÇØ »ç¿ë
+        // ì”¬ ë¡œë“œ ë™ê¸°í™”ë¥¼ ìœ„í•´ ì‚¬ìš©
         Hashtable props = new Hashtable
         {
             {GameData.PLAYER_LOAD, false}
@@ -339,12 +339,12 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        // ¹æÀ» ¶°³¯ ¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö
+        // ë°©ì„ ë– ë‚  ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
-        // ¿¬°á ÆĞ³Î·Î ÀüÈ¯
+        // ì—°ê²° íŒ¨ë„ë¡œ ì „í™˜
         SetActivePanel(PANEL.Connect);
 
-        // ÇÃ·¹ÀÌ¾î ¿£Æ®¸®¸¦ ÆÄ±« ¹× ÃÊ±âÈ­.
+        // í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ë¥¼ íŒŒê´´ ë° ì´ˆê¸°í™”.
         foreach (GameObject entry in playerListEntries.Values)
         {
             Destroy(entry.gameObject);
@@ -356,43 +356,43 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        // ÇÃ·¹ÀÌ¾î°¡ ¹æ¿¡ µé¾î¿ÔÀ»¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö
+        // í”Œë ˆì´ì–´ê°€ ë°©ì— ë“¤ì–´ì™”ì„ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
-        // ÇÃ·¹ÀÌ¾î ¿£Æ®¸® »ı¼º
+        // í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ ìƒì„±
         GameObject entry = Instantiate(playerEntryPrefab);
-        // À§Ä¡ ¹× Å©±â ¼³Á¤
+        // ìœ„ì¹˜ ë° í¬ê¸° ì„¤ì •
         entry.transform.SetParent(playerListContent.transform);
         entry.transform.localScale = Vector3.one;
 
-        // ¿£Æ®¸® ÃÊ±âÈ­
+        // ì—”íŠ¸ë¦¬ ì´ˆê¸°í™”
         entry.GetComponent<PlayerEntry>().Initialize(newPlayer.ActorNumber, newPlayer.NickName);
 
-        // ¸®½ºÆ®¿¡ Ãß°¡
+        // ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
         playerListEntries.Add(newPlayer.ActorNumber, entry);
 
-        // ·¹µğ°¡ ÀüºÎ µÇ¾îÀÖÀ¸¸é ½ºÅ¸Æ® ¹öÆ° Ãß°¡
+        // ë ˆë””ê°€ ì „ë¶€ ë˜ì–´ìˆìœ¼ë©´ ìŠ¤íƒ€íŠ¸ ë²„íŠ¼ ì¶”ê°€
         startGameButton.gameObject.SetActive(CheckPlayersReady());
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        // ÇÃ·¹ÀÌ¾î°¡ ¹æ¿¡¼­ ¶°³µÀ»¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö
+        // í”Œë ˆì´ì–´ê°€ ë°©ì—ì„œ ë– ë‚¬ì„ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
-        // ÇØ´ç ÇÃ·¹ÀÌ¾î ¿£Æ®¸® ÆÄ±«
+        // í•´ë‹¹ í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ íŒŒê´´
         Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
 
-        // ÇÃ·¹ÀÌ¾î ¿£Æ®¸®¿¡¼­ Á¦¿Ü
+        // í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ì—ì„œ ì œì™¸
         playerListEntries.Remove(otherPlayer.ActorNumber);
 
-        // ³²Àº ÇÃ·¹ÀÌ¾îÀÇ ÁØºñ ¿©ºÎ¿¡ µû¶ó ½ºÅ¸Æ® ¹öÆ° È°¼ºÈ­ ¿©ºÎ È®ÀÎ
+        // ë‚¨ì€ í”Œë ˆì´ì–´ì˜ ì¤€ë¹„ ì—¬ë¶€ì— ë”°ë¼ ìŠ¤íƒ€íŠ¸ ë²„íŠ¼ í™œì„±í™” ì—¬ë¶€ í™•ì¸
         startGameButton.gameObject.SetActive(CheckPlayersReady());
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        // ¸¶½ºÅÍ°¡ º¯°æµÇ¾úÀ»¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö
+        // ë§ˆìŠ¤í„°ê°€ ë³€ê²½ë˜ì—ˆì„ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
-        // Å¬¶óÀÌ¾ğÆ®Áß ¾×ÅÍ ³Ñ¹ö°¡ ÀÏÄ¡ÇÏ´Â Å¬¶óÀÌ¾ğÆ®ÀÇ ½ºÅ¸Æ®¹öÆ°À» È°¼ºÈ­
+        // í´ë¼ì´ì–¸íŠ¸ì¤‘ ì•¡í„° ë„˜ë²„ê°€ ì¼ì¹˜í•˜ëŠ” í´ë¼ì´ì–¸íŠ¸ì˜ ìŠ¤íƒ€íŠ¸ë²„íŠ¼ì„ í™œì„±í™”
         if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
         {
             startGameButton.gameObject.SetActive(CheckPlayersReady());
@@ -401,9 +401,9 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        // ÇÃ·¹ÀÌ¾îÀÇ ÇÁ·ÎÆÛÆ¼°¡ º¯°æµÇ¾úÀ» ¶§ ÀÛµ¿ÇÏ´Â Äİ¹é ÇÔ¼ö
+        // í”Œë ˆì´ì–´ì˜ í”„ë¡œí¼í‹°ê°€ ë³€ê²½ë˜ì—ˆì„ ë•Œ ì‘ë™í•˜ëŠ” ì½œë°± í•¨ìˆ˜
 
-        // ÇÃ·¹ÀÌ¾î ¿£Æ®¸®°¡ ¾øÀ»¶§ µ¿Àû »ı¼º
+        // í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ê°€ ì—†ì„ë•Œ ë™ì  ìƒì„±
         if (playerListEntries == null)
         {
             playerListEntries = new Dictionary<int, GameObject>();
@@ -411,19 +411,19 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
         GameObject entry;
 
-        // Å¸°Ù ÇÃ·¹ÀÌ¾î¿Í ÀÏÄ¡ÇÏ´Â ÇÃ·¹ÀÌ¾î ¿£Æ®¸®¸¦ °¡Á®¿Â´Ù.
+        // íƒ€ê²Ÿ í”Œë ˆì´ì–´ì™€ ì¼ì¹˜í•˜ëŠ” í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
         if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
         {
             object isPlayerReady;
-            // ·¹µğ ¿©ºÎ¸¦ È®ÀÎÇÑ´Ù.
+            // ë ˆë”” ì—¬ë¶€ë¥¼ í™•ì¸í•œë‹¤.
             if (changedProps.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
             {
-                // ·¹µğ ¿©ºÎ¿¡ µû¶ó ÇÃ·¹ÀÌ¾î ¿£Æ®¸®¸¦ ÃÊ±âÈ­ÇØÁØ´Ù.
+                // ë ˆë”” ì—¬ë¶€ì— ë”°ë¼ í”Œë ˆì´ì–´ ì—”íŠ¸ë¦¬ë¥¼ ì´ˆê¸°í™”í•´ì¤€ë‹¤.
                 entry.GetComponent<PlayerEntry>().SetPlayerReady((bool)isPlayerReady);
             }
             
         }
-        // º¯°æÁ¡À¸·Î ÀÎÇÑ ½ºÅ¸Æ® ¹öÆ° È°¼ºÈ­ ¿©ºÎ¸¦ È®ÀÎÇÑ´Ù.
+        // ë³€ê²½ì ìœ¼ë¡œ ì¸í•œ ìŠ¤íƒ€íŠ¸ ë²„íŠ¼ í™œì„±í™” ì—¬ë¶€ë¥¼ í™•ì¸í•œë‹¤.
         startGameButton.gameObject.SetActive(CheckPlayersReady());
     }
 
@@ -431,36 +431,36 @@ public class MainPanel : MonoBehaviourPunCallbacks
 
     private bool CheckPlayersReady()
     {
-        // ÇÃ·¹ÀÌ¾î ·¹µğ ¿©ºÎ¸¦ È®ÀÎÇÏ´Â ÇÔ¼ö
+        // í”Œë ˆì´ì–´ ë ˆë”” ì—¬ë¶€ë¥¼ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
 
-        // ¸¶½ºÅÍ Å¬¶óÀÌ¾ğÆ®°¡ ¾Æ´Ï¶ó¸é ½ÇÇà ¾ÈÇÔ
+        // ë§ˆìŠ¤í„° í´ë¼ì´ì–¸íŠ¸ê°€ ì•„ë‹ˆë¼ë©´ ì‹¤í–‰ ì•ˆí•¨
         if (!PhotonNetwork.IsMasterClient)
         {
             return false;
         }
 
-        // ÇöÀç ¹æÀÇ ÇÃ·¹ÀÌ¾î ¸®½ºÆ®¸¦ °¡Á®¿Í ÇÏ³ªÇÏ³ª È®ÀÎÇÑ´Ù.
+        // í˜„ì¬ ë°©ì˜ í”Œë ˆì´ì–´ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì™€ í•˜ë‚˜í•˜ë‚˜ í™•ì¸í•œë‹¤.
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             object isPlayerReady;
-            // ·¹µğ¿©ºÎ¸¦ °¡Á®¿Â´Ù.
+            // ë ˆë””ì—¬ë¶€ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
             {
-                // ·¹µğ »óÅÂ°¡ ¾Æ´Ï¸é »¡°­
+                // ë ˆë”” ìƒíƒœê°€ ì•„ë‹ˆë©´ ë¹¨ê°•
                 if (!(bool)isPlayerReady)
                 {
                     return false;
                 }
             }
-            // ·¹µğ ¿©ºÎ°¡ ¾ø´Ù¸é
+            // ë ˆë”” ì—¬ë¶€ê°€ ì—†ë‹¤ë©´
             else
             {
-                // »¡°­
+                // ë¹¨ê°•
                 return false;
             }
         }
 
-        // ±×¸°
+        // ê·¸ë¦°
         return true;
     }
 

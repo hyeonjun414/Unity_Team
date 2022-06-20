@@ -70,7 +70,6 @@ public class AuthManager : Singleton<AuthManager>
         firebaseAuth.SignInWithEmailAndPasswordAsync(idField.text,passwordField.text).
             ContinueWithOnMainThread((task=>
             {
-                Debug.Log(message:$"Sign in status : {task.Status}");
                 isSignInOnProgress = false;
                 signInBtn.interactable=true;
 

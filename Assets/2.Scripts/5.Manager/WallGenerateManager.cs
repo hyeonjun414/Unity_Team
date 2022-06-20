@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -14,11 +14,11 @@ public class WallGenerateManager : Singleton<WallGenerateManager>
 
 
 
-    public Vector3 spawnOffset = new Vector3(0, 1f, 0);       // 타일로부터 스폰 위치 차이
+    public Vector3 spawnOffset = new Vector3(0, 1f, 0);       // ??쇰줈遺???ㅽ룿 ?꾩튂 李⑥씠
 
     Point spawnTilePos = new Point();
-    int spawnTileNum;                   //  스폰될 타일 번호
-    Vector3 curSpawnPos;                //  스폰될 위치
+    int spawnTileNum;                   //  ?ㅽ룿?????踰덊샇
+    Vector3 curSpawnPos;                //  ?ㅽ룿???꾩튂
 
     private void Awake()
     {
@@ -57,14 +57,14 @@ public class WallGenerateManager : Singleton<WallGenerateManager>
 
 
     public Vector3 SetSpawnPos()
-    // 좌표 만들기
+    // 醫뚰몴 留뚮뱾湲?
     {
         int mapSize = MapManager.Instance.map.mapSize;
 
         spawnTilePos = new Point(Random.Range(1, mapSize - 1), Random.Range(1, mapSize - 1));
         spawnTileNum = mapSize * spawnTilePos.y + spawnTilePos.x;
 
-        while (!ItemSpawnManager.Instance.emptyTileCheckList[spawnTileNum] == true)     // 비어있는 타일이 아닐경우 계속 랜덤 좌표 계산
+        while (!ItemSpawnManager.Instance.emptyTileCheckList[spawnTileNum] == true)     // 鍮꾩뼱?덈뒗 ??쇱씠 ?꾨땺寃쎌슦 怨꾩냽 ?쒕뜡 醫뚰몴 怨꾩궛
         {
             spawnTilePos = new Point(Random.Range(1, mapSize - 1), Random.Range(1, mapSize - 1));
 
