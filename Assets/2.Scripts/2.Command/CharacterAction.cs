@@ -57,7 +57,7 @@ public class CharacterAction : ActionCommand
         {
             //ItemPointing(!curItem);
             player.playerInput = ePlayerInput.CHANGE_ITEM_SLOT;
-            ItemManager.Instance.ChangeItem(ItemManager.Instance.itemList[0], ItemManager.Instance.itemList[1]);
+            ItemManager.Instance.ChangeItems();
         }
     }
 }

@@ -23,11 +23,5 @@ public class ItemSlotUnit : MonoBehaviour
         itemImage.enabled = false;
     }
 
-    public void ChangeItem(ItemData data1, ItemData data2){
-
-
-
-
-    }
 
 }

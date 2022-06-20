@@ -101,9 +101,9 @@ public class ItemManager : Singleton<ItemManager>
         itemSlotUI.UpdateUI();
     }
 
-    public void ChangeItem(ItemData item1, ItemData item2){
-
-
+    public void ChangeItems(){
+        itemList.Reverse();
+        Debug.Log("아이템 순서를 바꿉니다.");
     }
 
 }
