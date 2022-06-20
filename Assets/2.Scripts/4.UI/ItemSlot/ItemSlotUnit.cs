@@ -11,6 +11,7 @@ public class ItemSlotUnit : MonoBehaviour
     public ItemData curItemData;
 
     public void AddItem(ItemData data){
+
         curItemData = data;
         itemImage.sprite = data.icon;
         itemImage.enabled = true;
@@ -20,6 +21,13 @@ public class ItemSlotUnit : MonoBehaviour
         curItemData = null;
         itemImage.sprite = null;
         itemImage.enabled = false;
+    }
+
+    public void ChangeItem(ItemData data1, ItemData data2){
+
+
+
+
     }
 
 }
