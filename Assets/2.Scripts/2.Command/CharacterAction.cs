@@ -37,11 +37,8 @@ public class CharacterAction : ActionCommand
             Character enemy = target.collider.gameObject.GetComponent<Character>();
             if (enemy != null)
             {
-                // »ó´ë¹æÀÌ ¹æ¾îÇÏ°í ÀÖ´ÂÁö ¿©ºÎ¸¦ È®ÀÎ
                 if(EnemyDefenceCheck(enemy))
                 {
-                    print("½ºÅÏ");
-                    // »ó´ë¹æÀÌ ¹æ¾îÇÏ°í ÀÖ´Ù¸é °ø°İÇÑ ÇÃ·¹ÀÌ¾î ½ºÅÏ »óÅÂ·Î º¯°æ
                     player.photonView.RPC("Stunned", Photon.Pun.RpcTarget.All);
                     return;
                 }
@@ -54,32 +51,26 @@ public class CharacterAction : ActionCommand
     
     public bool EnemyDefenceCheck(Character enemy)
     {
-        // ¸¸¾à »ó´ë°¡ ¹æ¾î »óÅÂ¶ó¸é
         if(enemy.state == PlayerState.Defend)
         {
-            // ¹æ¾îÀÇ ¹æÇâÀ» Ã¼Å©
             return DefenceDirCheck(enemy);
         }
-        // ¹æ¾î »óÅÂ ¾Æ´Ï¶ó¸é °ø°İ ÁøÇà
         return false;
     }
     public bool DefenceDirCheck(Character enemy)
     {
         PlayerDir originDir = enemy.Dir;
 
-        // ¹İ´ë ¹æÇâÀ¸·Î µ¹¸²
         enemy.Dir++;
         enemy.Dir++;
 
         if (enemy.Dir == player.Dir)
         {
-            // ¸¶ÁÖÇÏ°í ÀÖ´Ù¸é °ø°İ ¹«È¿
             enemy.Dir = originDir;
             return true;
         }
         else
         {
-            // ¸¶ÁÖÇÏ°í ÀÖÁö ¾Ê´Ù¸é °ø°İ À¯È¿
             enemy.Dir = originDir;
             return false;
         }
@@ -92,12 +83,19 @@ public class CharacterAction : ActionCommand
     }
     private void UseItem()
     {
-        print("¾ÆÀÌÅÛ »ç¿ë");
-        ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
-        ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
+        if(ItemManager.Instance.itemList.Count == 0){
+            Debug.Log("ì‚¬ìš©í•  ì•„ì´í…œì´ ì—†ìŠµë‹ˆë‹¤!");
+        }
+        else{
+            player.playerInput = ePlayerInput.USE_ITEM;
+            ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
+            ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
+
+        }
     }
     private void ChangeItemSlot()
     {
-        // Change Item Slot
+        player.playerInput = ePlayerInput.CHANGE_ITEM_SLOT;
+        ItemManager.Instance.ChangeItems();
     }
 }

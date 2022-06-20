@@ -7,10 +7,6 @@ public class ItemSlotUI : MonoBehaviour
 {
     ItemSlotUnit[] itemSlots;
 
-
-
-
-
     
     public void UpdateUI(){
         itemSlots = GetComponentsInChildren<ItemSlotUnit>();

@@ -25,6 +25,7 @@ public class ItemManager : Singleton<ItemManager>
 
     public void UseItem(Character player, ItemData data)
     {
+
         switch (data.itemType)
         {
             case ItemType.HEAL:
@@ -99,6 +100,11 @@ public class ItemManager : Singleton<ItemManager>
     public void RemoveNum(ItemData item){
         itemList.Remove(item);
         itemSlotUI.UpdateUI();
+    }
+
+    public void ChangeItems(){
+        itemList.Reverse();
+        Debug.Log("아이템 순서를 바꿉니다.");
     }
 
 }
