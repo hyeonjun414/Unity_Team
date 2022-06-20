@@ -42,6 +42,9 @@ public class Item : MonoBehaviour
     //아이템을 슬롯에 넣어줌
     private void PickedUp(Character player)
     {
+        if(!player.photonView.IsMine){
+            return;
+        }
         if (ItemManager.Instance.AddNum(data))
         {
             Debug.Log(player.name + "가 " + data.name + "을 아이템 보관함에 넣었습니다!");

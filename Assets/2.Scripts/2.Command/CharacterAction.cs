@@ -28,7 +28,7 @@ public class CharacterAction : ActionCommand
     {
         if(Input.GetKeyDown(KeyCode.J))
         {
-            //? ë‹ˆë©”ì´?˜ì¶”ê°€
+            //?ï¿½ë‹ˆë©”ì´?ï¿½ì¶”ê°€
             player.playerInput = ePlayerInput.BLOCK;
         }
         
@@ -38,11 +38,16 @@ public class CharacterAction : ActionCommand
     {
         if(Input.GetKeyDown(KeyCode.N))
         {
-            print("¾ÆÀÌÅÛ »ç¿ë");
+            if(ItemManager.Instance.itemList.Count == 0){
+                Debug.Log("ì‚¬ìš©í•  ì•„ì´í…œì´ ì—†ìŠµë‹ˆë‹¤!");
+            }
+            else{
+                print("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                player.playerInput = ePlayerInput.USE_ITEM;
+                ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
+                ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
 
-            player.playerInput = ePlayerInput.USE_ITEM;
-            ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
-            ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
+            }
 
         }
     }
@@ -52,6 +57,7 @@ public class CharacterAction : ActionCommand
         {
             //ItemPointing(!curItem);
             player.playerInput = ePlayerInput.CHANGE_ITEM_SLOT;
+            ItemManager.Instance.ChangeItem(ItemManager.Instance.itemList[0], ItemManager.Instance.itemList[1]);
         }
     }
 }
