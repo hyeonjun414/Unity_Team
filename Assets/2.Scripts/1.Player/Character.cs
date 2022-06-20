@@ -5,10 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
-
 using Cinemachine;
-
-
 
 public enum ePlayerInput
 {
@@ -152,6 +149,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         RhythmManager.Instance.OnRhythmHit += RhythmOnChange;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
+        (GameObject.Find("MinimapCamera")).GetComponent<CameraLock>().EnableCamera();
     }
 
     [PunRPC]
