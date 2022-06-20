@@ -8,8 +8,8 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using UnityEngine.SceneManagement;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
+//using GooglePlayGames;
+//using GooglePlayGames.BasicApi;
 
 public class AuthManager : Singleton<AuthManager>
 {
@@ -23,10 +23,11 @@ public class AuthManager : Singleton<AuthManager>
     public FirebaseUser user;
     public GameObject errorTextPanel;
     public GameObject loginPanel;
- 
+
 
     [Header("SignInPanel")]
     public GameObject signInPanel;
+    public TMP_InputField nickNameField;
     public TMP_InputField idCreateField;
     public TMP_InputField passwordCreateField;
     public TMP_InputField passwordCreateFieldConfirm;
@@ -96,7 +97,22 @@ public class AuthManager : Singleton<AuthManager>
 
     public void LogInGoogle()
     {
+        // Firebase.Auth.Credential credential =
+        //     Firebase.Auth.GoogleAuthProvider.GetCredential(googleIdToken, googleAccessToken);
+        // firebaseAuth.SignInWithCredentialAsync(credential).ContinueWith(task => {
+        // if (task.IsCanceled) {
+        //     Debug.LogError("SignInWithCredentialAsync was canceled.");
+        //     return;
+        // }
+        // if (task.IsFaulted) {
+        //     Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
+        //     return;
+    //   }
 
+    //   Firebase.Auth.FirebaseUser newUser = task.Result;
+    //   Debug.LogFormat("User signed in successfully: {0} ({1})",
+    //       newUser.DisplayName, newUser.UserId);
+    // });
     }
     public void LogInAnonymously()
     {
@@ -108,7 +124,7 @@ public class AuthManager : Singleton<AuthManager>
         signInBtn.interactable = false;
 
         firebaseAuth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task => {
-           
+
             isSignInOnProgress = false;
             signInBtn.interactable=true;
 
@@ -151,7 +167,7 @@ public class AuthManager : Singleton<AuthManager>
                 {
                     StartCoroutine(ErrorMessage("제대로 된 입력이 아닙니다"));
                     Debug.Log("task is Faulted"+task.Exception);
-                    
+
                     return;
                 }
                 else
@@ -160,12 +176,13 @@ public class AuthManager : Singleton<AuthManager>
                     Firebase.Auth.FirebaseUser newUser = task.Result;
                     Debug.LogFormat("Firebase user created successfully: {0}({1})",
                         newUser.DisplayName,newUser.UserId);
-                    
+                    DataBaseManager.Instance.WriteNickName(idCreateField.text,nickNameField.text);
                     signInPanel.SetActive(false);
 
                     StartCoroutine(ErrorMessage("가입이 완료되었습니다"));
                     idField.text = idCreateField.text;
 
+                    nickNameField.text = "";
                     idCreateField.text = "";
                     passwordCreateField.text = "";
                 }
@@ -176,6 +193,7 @@ public class AuthManager : Singleton<AuthManager>
     public void SetSignInPanel()
     {
         signInPanel.SetActive(true);
+        nickNameField.text = "";
         idField.text = "";
         passwordField.text = "";
     }
@@ -183,14 +201,14 @@ public class AuthManager : Singleton<AuthManager>
     {
         signInPanel.SetActive(false);
     }
-    IEnumerator ErrorMessage(string errorMessage)
+    public IEnumerator ErrorMessage(string errorMessage)
     {
         TMP_Text error = errorTextPanel.transform.GetChild(0).GetComponent<TMP_Text>();
         errorTextPanel.SetActive(true);
         loginPanel.SetActive(false);
         CreateIDBtn.interactable=false;
         CancelSignInPanelBtn.interactable=false;
-        
+
         error.text = errorMessage;//errorMessage;
         yield return new WaitForSeconds(2.5f);
         errorTextPanel.SetActive(false);
