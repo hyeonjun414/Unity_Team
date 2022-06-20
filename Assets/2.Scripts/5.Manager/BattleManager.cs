@@ -73,7 +73,7 @@ public class BattleManager : MonoBehaviourPun
         foreach(Character player in playerList)
         {
             // 각 플레이어가 도달할 다음 노드를 받아옴
-            destNodes.Add(player.moveCommand.NodeDetect());
+            //destNodes.Add(player.moveCommand.NodeDetect());
         }
 
         for(int i = 0; i < destNodes.Count; i++)

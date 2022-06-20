@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CharacterMove : MoveCommand
 {
-
+    public bool isMoving = false;
     public override void Execute()
     {
         MoveToNode();
@@ -30,39 +30,20 @@ public class CharacterMove : MoveCommand
             MoveNextNode(new Point(1, 0));
         }
     }
-    public TileNode NodeDetect()
-    {
-        if (player.eCurInput == ePlayerInput.MOVE_LEFT)
-        {
-            return PreExcuteNextNode(new Point(0, -1));
-        }
-        else if (player.eCurInput == ePlayerInput.MOVE_RIGHT)
-        {
-            return PreExcuteNextNode(new Point(0, 1));
-        }
-        else if (player.eCurInput == ePlayerInput.MOVE_UP)
-        {
-            return PreExcuteNextNode(new Point(-1, 0));
-        }
-        else if (player.eCurInput == ePlayerInput.MOVE_DOWN)
-        {
-            return PreExcuteNextNode(new Point(1, 0));
-        }
-
-        return PreExcuteNextNode(new Point(0, 0));
-    }
     private IEnumerator MoveRoutine(Point point)
     {
         yield return null;
-        TileNode originNode = MapManager.Instance.map.GetTileNode(player.stat.curPos);
-
+        isMoving = true;
+        TileNode originNode = player.curNode;
+        TileNode destNode = null;
         if (MapManager.Instance.BoundaryCheck(player.stat.curPos, point))
         {
-            player.stat.curPos += point;
+            destNode = MapManager.Instance.map.GetTileNode(player.stat.curPos + point);
         }
-
-        TileNode destNode = MapManager.Instance.map.GetTileNode(player.stat.curPos);
-        
+        else
+        {
+            destNode = MapManager.Instance.map.GetTileNode(player.stat.curPos);
+        }
 
         Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
         Vector3 offset = Vector3.up * 0.5f;
@@ -80,25 +61,22 @@ public class CharacterMove : MoveCommand
 
             yield return null;
         }
+
+        ChangeNode(destNode);
+
     }
-    public TileNode PreExcuteNextNode(Point movePoint)
+    public void ChangeNode(TileNode nextNode)
     {
-        Point resultDir = GetResultDir(movePoint);
-
-        if (MapManager.Instance.BoundaryCheck(player.stat.curPos, resultDir))
-        {
-            return GetPlayerDest(resultDir);
-        }
-        else
-        {
-            return GetPlayerDest(new Point(0,0));
-        }
+        player.curNode.eOnTileObject = eTileOccupation.EMPTY;
+        player.curNode = nextNode;
+        player.curNode.eOnTileObject = eTileOccupation.PLAYER;
+        player.stat.curPos = nextNode.tilePos;
+        isMoving = false;
     }
-
     public void MoveNextNode(Point movePoint)
     {
         Point resultDir = GetResultDir(movePoint);
-        StartCoroutine(MoveRoutine(resultDir));
+        StartCoroutine("MoveRoutine", resultDir);
     }
 
     public Point GetResultDir(Point movePoint)
@@ -127,6 +105,44 @@ public class CharacterMove : MoveCommand
         Point destPoint = player.stat.curPos + result;
         return MapManager.Instance.map.GetTileNode(destPoint); 
     }
+
+    public void CollidedPlayer()
+    {
+        if (!isMoving)
+            return;
+
+        StopCoroutine("MoveRoutine");
+        StartCoroutine("ReturnPosRoutine");
+    }
+
+    IEnumerator ReturnPosRoutine()
+    {
+        yield return null;
+
+
+        TileNode destNode = player.curNode;
+
+
+        Vector3 middlePos = (transform.position + destNode.transform.position) * 0.5f + Vector3.up;
+        Vector3 offset = Vector3.up * 0.5f;
+        float curTime = 0;
+        while (true)
+        {
+            if (curTime > 0.2f)
+                break;
+            curTime += Time.deltaTime;
+            transform.position = GetBezierPos(
+                transform.position + offset,
+                middlePos + offset,
+                destNode.transform.position + offset,
+                curTime / 0.2f);
+
+            yield return null;
+        }
+        isMoving = false;
+    }
+
+
 
     private Vector3 GetBezierPos(Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {

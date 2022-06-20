@@ -130,10 +130,14 @@ public class Character : MonoBehaviourPun, IPunObservable
         Map map = MapManager.Instance.map;
         
         Point vec = map.startPos[playerNumber];
+        // 자신의 최초 노드를 지정
         TileNode tile = map.GetTileNode(vec);
         curNode = tile;
         CharacterReset();
-        stat.curPos = tile.tilePos;
+
+        // 현재 플레이어 위치 = 최초 노드 위치
+        stat.curPos = curNode.tilePos;
+        curNode.eOnTileObject = eTileOccupation.PLAYER;
         transform.position = tile.transform.position + Vector3.up * 0.5f;
         anim.speed = 2f;
 
@@ -211,7 +215,16 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         GameLogManager.Instance.AddQueue(msg);
     }
-  
+
+    private void OnCollisionEnter(Collision other)
+    {
+        print("collide");
+        if (other.collider.CompareTag("Player"))
+        {
+            moveCommand.CollidedPlayer();
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Vector3 playerPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
