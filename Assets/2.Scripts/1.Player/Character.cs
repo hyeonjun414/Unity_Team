@@ -7,7 +7,6 @@ using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using Cinemachine;
 
-
 [System.Serializable]
 public class CharacterStatus
 {
@@ -115,6 +114,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
 
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
+        (GameObject.Find("MinimapCamera")).GetComponent<CameraLock>().EnableCamera();
     }
 
     [PunRPC]
