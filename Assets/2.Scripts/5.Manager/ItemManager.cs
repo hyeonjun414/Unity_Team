@@ -83,8 +83,77 @@ public class ItemManager : Singleton<ItemManager>
     public void SeeingThrough(Character player)
     {
         //벽 투시
+        // GameObject wall = Resources.Load<GameObject>("Wall");
+        // MeshRenderer renderer = (wall.transform.GetChild(0)).GetComponent<MeshRenderer>();
+        // Material[] wallMaterial = renderer.sharedMaterials;
+        
+        RaycastHit target;
+        if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
+        {
+            Wall wall= target.collider.gameObject.GetComponent<Wall>();
+            if (wall != null)
+            {
+                StartCoroutine(TransparentTroughWall(wall));
+            }
+        }
+        
         //오브젝트 알파값
         Debug.Log(player.name + "가 벽을 투시합니다.");
+    }
+    IEnumerator TransparentTroughWall(Wall wall)
+    {
+        Debug.Log("들어왔니");
+        wall.UpdateMaterial(true);
+        yield return new WaitForSeconds(5f);
+        wall.UpdateMaterial(false);
+    }
+
+#region test
+    // public void TransparentTest()
+    // {
+    //     GameObject wall = Instantiate(Resources.Load<GameObject>("Wall"),new Vector3(1,1,0),Quaternion.identity);
+    //     MeshRenderer renderer = (wall.transform.GetChild(0)).GetComponent<MeshRenderer>();
+    //     Material[] wallMaterial = renderer.sharedMaterials;
+    //     wallMaterial[0] = ChangeMatToTransparent(wallMaterial[0]);
+    //     renderer.sharedMaterials = wallMaterial;
+    // }
+    // public void OpaqueTest()
+    // {
+    //     GameObject wall = Instantiate(Resources.Load<GameObject>("Wall"));
+    //     MeshRenderer renderer = (wall.transform.GetChild(0)).GetComponent<MeshRenderer>();
+    //     Material[] wallMaterial = renderer.sharedMaterials;
+    //     wallMaterial[0] = ChangeMatToOpaqueMode(wallMaterial[0]);
+    //     renderer.sharedMaterials = wallMaterial;
+    // }
+    // public Material ChangeMatToTransparent(Material material)
+    // {
+    //     material.SetOverrideTag("RenderType", "Transparent");
+    //     material.SetInt("_SrcBlend", (int) UnityEngine.Rendering.BlendMode.SrcAlpha);
+    //     material.SetInt("_DstBlend", (int) UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+    //     material.SetInt("_ZWrite", 0);
+    //     material.DisableKeyword("_ALPHATEST_ON");
+    //     material.EnableKeyword("_ALPHABLEND_ON");
+    //     material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+    //     material.renderQueue = (int) UnityEngine.Rendering.RenderQueue.Transparent;
+    //     return material;
+    // }
+    // public Material ChangeMatToOpaqueMode(Material material)
+    // {
+    //     material.SetOverrideTag("RenderType", "");
+    //     material.SetInt("_SrcBlend", (int) UnityEngine.Rendering.BlendMode.One);
+    //     material.SetInt("_DstBlend", (int) UnityEngine.Rendering.BlendMode.Zero);
+    //     material.SetInt("_ZWrite", 1);
+    //     material.DisableKeyword("_ALPHATEST_ON");
+    //     material.DisableKeyword("_ALPHABLEND_ON");
+    //     material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+    //     material.renderQueue = -1;
+    //     return material;
+    // }
+#endregion
+ 
+    public void BreakWall(Character player)
+    {
+        Debug.Log(player.name + "가 벽을 부숩니다");
     }
 
 

@@ -64,6 +64,39 @@ public class Character : MonoBehaviourPun, IPunObservable
     public CharacterStatus stat;
     public ePlayerInput eCurInput = ePlayerInput.NULL;
     public PlayerState state = PlayerState.Normal;
+    private int killStreak;//연속킬
+    public int KillStreak
+    {
+        get{return killStreak;}
+        set
+        {
+            killStreak = value;
+
+            var builder = new StringBuilder();
+            if(killStreak==3)
+            {             
+                builder.Append(PhotonNetwork.LocalPlayer.NickName);
+                builder.Append(" 을 막을 수 없습니다");
+                string deadString = builder.ToString();
+                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+            }
+            if(killStreak==4)
+            {            
+                builder.Append(PhotonNetwork.LocalPlayer.NickName);
+                builder.Append(" 이 게임을 지배하고 있습니다");
+                string deadString = builder.ToString();
+                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+            }
+            if(killStreak==4)
+            {            
+                builder.Append(PhotonNetwork.LocalPlayer.NickName);
+                builder.Append(" 이 미쳐 날뛰고 있습니다");
+                string deadString = builder.ToString();
+                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+            }
+
+        }
+    }
     public int defenceCount;
     public int DC
     {
@@ -283,7 +316,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         // Destroy(gameObject);
 
         if (!photonView.IsMine) return;
-
+        KillStreak = 0;
         var builder = new StringBuilder();
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append(" 이 사망하였습니다");
