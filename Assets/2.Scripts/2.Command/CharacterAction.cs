@@ -30,7 +30,7 @@ public class CharacterAction : ActionCommand
     }
     private void Attack()
     {
-        player.anim.SetTrigger("Right Punch Attack");
+        
         RaycastHit target;
         if(Physics.Raycast(player.transform.position + Vector3.up + transform.forward *0.5f, player.transform.forward, out target, 0.5f))
         {
@@ -40,9 +40,12 @@ public class CharacterAction : ActionCommand
                 // 상대방이 방어하고 있는지 여부를 확인
                 if(EnemyDefenceCheck(enemy))
                 {
-                    // 방어가 유효하면 return;
+                    print("스턴");
+                    // 상대방이 방어하고 있다면 공격한 플레이어 스턴 상태로 변경
+                    player.photonView.RPC("Stunned", Photon.Pun.RpcTarget.All);
                     return;
                 }
+                player.anim.SetTrigger("Right Punch Attack");
                 print("Attack Enemy");
                 enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage);
             }

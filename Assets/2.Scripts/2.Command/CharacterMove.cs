@@ -10,6 +10,7 @@ public class CharacterMove : MoveCommand
     public override void Execute()
     {
         MoveToNode();
+        
     }
     public void MoveToNode()
     {

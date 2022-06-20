@@ -41,6 +41,7 @@ public enum PlayerState
     Move,
     Defend,
     Attack,
+    Stun
 }
 
 [System.Serializable]
@@ -58,23 +59,37 @@ public class Character : MonoBehaviourPun, IPunObservable
 {
     [Header("Node")]
     public TileNode curNode;
-    
+
+    [Header("Player Info")]
+    public string nickName;
+
     [Header("Player State")]
     public CharacterStatus stat;
     public ePlayerInput eCurInput = ePlayerInput.NULL;
     public PlayerState state = PlayerState.Normal;
-    public int defencePoint;
-    public int DP
+    public int defenceCount;
+    public int DC
     {
-        get { return defencePoint; }
+        get { return defenceCount; }
         set 
         { 
-            defencePoint = value;
-            if(defencePoint <= 0)
+            defenceCount = value;
+            if(defenceCount <= 0)
             {
-                state = PlayerState.Normal;
-                anim.SetBool("Defend", false);
-                defencePoint = 0;
+                photonView.RPC("SetNormalState", RpcTarget.All, state);
+            }
+        }
+    }
+    public int stunCount;
+    public int SC
+    {
+        get { return stunCount; }
+        set
+        {
+            stunCount = value;
+            if (stunCount <= 0 )
+            {
+                photonView.RPC("SetNormalState", RpcTarget.All, state);
             }
         }
     }
@@ -89,7 +104,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     [HideInInspector]
     public Animator anim;
-    private PlayerDir dir;
+    public PlayerDir dir;
     public PlayerDir Dir
     {
         get { return dir; }
@@ -148,9 +163,10 @@ public class Character : MonoBehaviourPun, IPunObservable
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
             
+            
         }
         Map map = MapManager.Instance.map;
-        
+        nickName = photonView.Owner.NickName;
         Point vec = map.startPos[photonView.Owner.GetPlayerNumber()];
         // 자신의 최초 노드를 지정
         TileNode tile = map.GetTileNode(vec);
@@ -183,7 +199,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     }
     public bool RhythmHit()
     {
-        if (Input.anyKeyDown && RhythmManager.Instance.BitCheck())
+        if (Input.anyKeyDown && RhythmManager.Instance.BitCheck() &&
+            state == PlayerState.Normal)
         {
             RhythmManager.Instance.rhythmBox.NoteHit();
             return true;
@@ -221,14 +238,43 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void Block()
     {
         anim.SetBool("Defend", true);
-        DP++;
+        DC = 5;
         state = PlayerState.Defend;
     }
-
+    [PunRPC]
+    public void Stunned()
+    {
+        anim.SetBool("Stunned", true);
+        SC = 5;
+        state = PlayerState.Stun;
+    }
     public void RhythmOnChange()
     {
         print(photonView.Owner.NickName);
-        DP--;
+        if(state == PlayerState.Defend)
+        {
+            DC--;
+        }
+        if(state == PlayerState.Stun)
+        {
+            SC--;
+        }
+    }
+    [PunRPC]
+    public void SetNormalState(PlayerState ps)
+    {
+        switch(ps)
+        {
+            case PlayerState.Defend:
+                anim.SetBool("Defend", false);
+                defenceCount = 0;
+                break;
+            case PlayerState.Stun:
+                anim.SetBool("Stunned", false);
+                stunCount = 0;
+                break;
+        }
+        state = PlayerState.Normal;
     }
 
     private void Die()
@@ -280,15 +326,17 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+            //stream.SendNext(transform.position);
+            //stream.SendNext(transform.rotation);
             stream.SendNext(state);
+            stream.SendNext(Dir);
         }
         else
         {
-            transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+            //transform.position = (Vector3)stream.ReceiveNext();
+            //transform.rotation = (Quaternion)stream.ReceiveNext();
             state = (PlayerState)stream.ReceiveNext();
+            Dir = (PlayerDir)stream.ReceiveNext();
         }
     }
 }
