@@ -86,8 +86,9 @@ public class ItemManager : Singleton<ItemManager>
         Debug.Log(player.name + "가 벽을 투시합니다.");
     }
 
+
     public bool AddNum(ItemData item){
-        if(itemList.Count >= maxCount){
+        if (itemList.Count >= maxCount){
             return false;
         }
         else{

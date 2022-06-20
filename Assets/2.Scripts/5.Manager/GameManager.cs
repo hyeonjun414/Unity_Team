@@ -47,7 +47,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        // �÷��̾� �ε忡 ���� ������Ƽ
         if (changedProps.ContainsKey(GameData.PLAYER_LOAD))
         {
             if (CheckAllPlayerLoadLevel())
@@ -59,24 +58,16 @@ public class GameManager : MonoBehaviourPunCallbacks
                 PrintInfo("wait players " + PlayersLoadLevel() + " / " + PhotonNetwork.PlayerList.Length);
             }
         }
-        // �÷��̾� ĳ���� ������ ���� ������Ƽ
         if (changedProps.ContainsKey(GameData.PLAYER_GEN))
         {
             if (CheckAllCharacter())
             {
-                photonView.RPC("RegisterPlayer", RpcTarget.All);
             }
             else
             {
                 PrintInfo("wait players " + PlayersCharacter() + " / " + PhotonNetwork.PlayerList.Length);
             }
         }
-    }
-    [PunRPC]
-    public void RegisterPlayer()
-    {
-        BattleManager.Instance.RegisterAllPlayer();
-        
     }
 
 

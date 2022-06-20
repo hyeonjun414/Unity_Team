@@ -8,6 +8,7 @@ public class CharacterRote : RoteCommand
     public override void Execute()
     {
         PlayerRotation();
+        
     }
 
     public void PlayerRotation()
@@ -22,6 +23,7 @@ public class CharacterRote : RoteCommand
             player.Dir--;
             SetDirection();
         }
+
         
     }
 

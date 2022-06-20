@@ -5,53 +5,99 @@ using UnityEngine;
 
 public class CharacterAction : ActionCommand
 {
-    public TileNode tileFront;
-    //public Character player;
     public override void Execute()
     {
-        Attack();
-        Block();
-        UseItem();
-        ChangeItemSlot();
+        Action();
+    }
+    public void Action()
+    {
+        if (player.eCurInput == ePlayerInput.ATTACK)
+        {
+            Attack();
+        }
+        else if (player.eCurInput == ePlayerInput.BLOCK)
+        {
+            Block();
+        }
+        else if (player.eCurInput == ePlayerInput.USE_ITEM)
+        {
+            UseItem();
+        }
+        else if (player.eCurInput == ePlayerInput.CHANGE_ITEM_SLOT)
+        {
+            ChangeItemSlot();
+        }
     }
     private void Attack()
     {
-        if(Input.GetKeyDown(KeyCode.H))
+        
+        RaycastHit target;
+        if(Physics.Raycast(player.transform.position + Vector3.up + transform.forward *0.5f, player.transform.forward, out target, 0.5f))
         {
-            player.anim.SetTrigger("Right Punch Attack");
-            player.playerInput = ePlayerInput.ATTACK;
-            
+            Character enemy = target.collider.gameObject.GetComponent<Character>();
+            if (enemy != null)
+            {
+                // ªÛ¥ÎπÊ¿Ã πÊæÓ«œ∞Ì ¿÷¥¬¡ˆ ø©∫Œ∏¶ »Æ¿Œ
+                if(EnemyDefenceCheck(enemy))
+                {
+                    print("Ω∫≈œ");
+                    // ªÛ¥ÎπÊ¿Ã πÊæÓ«œ∞Ì ¿÷¥Ÿ∏È ∞¯∞›«— «√∑π¿ÃæÓ Ω∫≈œ ªÛ≈¬∑Œ ∫Ø∞Ê
+                    player.photonView.RPC("Stunned", Photon.Pun.RpcTarget.All);
+                    return;
+                }
+                player.anim.SetTrigger("Right Punch Attack");
+                print("Attack Enemy");
+                enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage);
+            }
         }
-
     }
+    
+    public bool EnemyDefenceCheck(Character enemy)
+    {
+        // ∏∏æ‡ ªÛ¥Î∞° πÊæÓ ªÛ≈¬∂Û∏È
+        if(enemy.state == PlayerState.Defend)
+        {
+            // πÊæÓ¿« πÊ«‚¿ª √º≈©
+            return DefenceDirCheck(enemy);
+        }
+        // πÊæÓ ªÛ≈¬ æ∆¥œ∂Û∏È ∞¯∞› ¡¯«‡
+        return false;
+    }
+    public bool DefenceDirCheck(Character enemy)
+    {
+        PlayerDir originDir = enemy.Dir;
+
+        // π›¥Î πÊ«‚¿∏∑Œ µπ∏≤
+        enemy.Dir++;
+        enemy.Dir++;
+
+        if (enemy.Dir == player.Dir)
+        {
+            // ∏∂¡÷«œ∞Ì ¿÷¥Ÿ∏È ∞¯∞› π´»ø
+            enemy.Dir = originDir;
+            return true;
+        }
+        else
+        {
+            // ∏∂¡÷«œ∞Ì ¿÷¡ˆ æ ¥Ÿ∏È ∞¯∞› ¿Ø»ø
+            enemy.Dir = originDir;
+            return false;
+        }
+    }
+
     private void Block()
     {
-        if(Input.GetKeyDown(KeyCode.J))
-        {
-            //?†ÎãàÎ©îÏù¥?òÏ∂îÍ∞Ä
-            player.playerInput = ePlayerInput.BLOCK;
-        }
+        player.photonView.RPC("Block", Photon.Pun.RpcTarget.All);
         
-   
     }
     private void UseItem()
     {
-        if(Input.GetKeyDown(KeyCode.N))
-        {
-            print("æ∆¿Ã≈€ ªÁøÎ");
-
-            player.playerInput = ePlayerInput.USE_ITEM;
-            ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
-            ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
-
-        }
+        print("æ∆¿Ã≈€ ªÁøÎ");
+        ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
+        ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
     }
     private void ChangeItemSlot()
     {
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            //ItemPointing(!curItem);
-            player.playerInput = ePlayerInput.CHANGE_ITEM_SLOT;
-        }
+        // Change Item Slot
     }
 }
