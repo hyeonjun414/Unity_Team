@@ -67,8 +67,11 @@ public class ItemManager : Singleton<ItemManager>
     public void PowerUpPotion(Character player)
     {
         //공격력이 2배로 증가
+        //후에 틱(노트)당으로 변경하기
+        StartCoroutine(TwiceDamage(player,5f));
         Debug.Log(player.name + "의 공격력이 두 배로 증가합니다.");
     }
+
 
     public void DashItem(Character player)
     {
@@ -93,18 +96,59 @@ public class ItemManager : Singleton<ItemManager>
             Wall wall= target.collider.gameObject.GetComponent<Wall>();
             if (wall != null)
             {
-                StartCoroutine(TransparentTroughWall(wall));
+                StartCoroutine(TransparentTroughWall(wall, 5f));
             }
-        }
-        
+        }      
         //오브젝트 알파값
         Debug.Log(player.name + "가 벽을 투시합니다.");
     }
-    IEnumerator TransparentTroughWall(Wall wall)
+
+    public void BreakWall(Character player)
+    {
+        RaycastHit target;
+        if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
+        {
+            Wall wall= target.collider.gameObject.GetComponent<Wall>();
+            if (wall != null)
+            {
+                //후에 애니메이션이나 폭발or 부서지는 이펙트 추가
+                Destroy(wall.gameObject);
+            }
+        }
+        Debug.Log(player.name + "가 벽을 부숩니다");
+    }
+
+
+    public bool AddNum(ItemData item){
+        if (itemList.Count >= maxCount){
+            return false;
+        }
+        else{
+            itemList.Add(item);
+            return true;
+        }
+    }
+    public void RemoveNum(ItemData item){
+        itemList.Remove(item);
+        itemSlotUI.UpdateUI();
+    }
+
+    public void ChangeItems(){
+        itemList.Reverse();
+        Debug.Log("아이템 순서를 바꿉니다.");
+    }
+
+    IEnumerator TwiceDamage(Character player,float time)
+    {
+        player.stat.damage +=1;
+        yield return new WaitForSeconds(time);
+        player.stat.damage -=1;
+    }
+    IEnumerator TransparentTroughWall(Wall wall , float time)
     {
         Debug.Log("들어왔니");
         wall.UpdateMaterial(true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(time);
         wall.UpdateMaterial(false);
     }
 
@@ -151,29 +195,4 @@ public class ItemManager : Singleton<ItemManager>
     // }
 #endregion
  
-    public void BreakWall(Character player)
-    {
-        Debug.Log(player.name + "가 벽을 부숩니다");
-    }
-
-
-    public bool AddNum(ItemData item){
-        if (itemList.Count >= maxCount){
-            return false;
-        }
-        else{
-            itemList.Add(item);
-            return true;
-        }
-    }
-    public void RemoveNum(ItemData item){
-        itemList.Remove(item);
-        itemSlotUI.UpdateUI();
-    }
-
-    public void ChangeItems(){
-        itemList.Reverse();
-        Debug.Log("아이템 순서를 바꿉니다.");
-    }
-
 }
