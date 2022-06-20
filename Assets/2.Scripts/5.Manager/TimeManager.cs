@@ -1,0 +1,29 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class TimeManager : Singleton<TimeManager>{
+
+
+    //제한시간 타이머
+    public float limitTime;
+    public Text timer;
+
+
+    private void Update() {
+        limitTime -= Time.deltaTime;
+        //소수점을 제외하여 간단하게 표시
+        timer.text = "Time: " + Mathf.Round(limitTime);
+        TimeOver();
+    }
+
+
+    //시간이 0초가 되면 시간 세기를 멈춘다.
+    public void TimeOver(){
+        if(Mathf.Round(limitTime) <= 0){
+            timer.text = "TIME OVER!";
+        }
+    }
+   
+}
