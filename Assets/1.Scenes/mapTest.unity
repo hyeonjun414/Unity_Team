@@ -861,8 +861,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitText: {fileID: 785648673}
-  bpm: 80
-  hitAreaRate: 3
+  bpm: 120
+  hitAreaRate: 5
   isBeat: 0
   prevTime: 0
   rhythmBox: {fileID: 212827366}
@@ -871,7 +871,7 @@ MonoBehaviour:
   notePos:
   - {fileID: 1981924218}
   - {fileID: 1119318454}
-  noteSpeed: 1
+  noteSpeed: 0.8
   audioSource: {fileID: 211671989}
   beatsfx: {fileID: 8300000, guid: 6b8745f1367db6f4da5bb068f1e87848, type: 3}
 --- !u!82 &211671989

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class CharacterAction : ActionCommand
 {
-    public TileNode tileFront;
     public override void Execute()
     {
         Action();
@@ -38,19 +37,59 @@ public class CharacterAction : ActionCommand
             Character enemy = target.collider.gameObject.GetComponent<Character>();
             if (enemy != null)
             {
+                // 상대방이 방어하고 있는지 여부를 확인
+                if(EnemyDefenceCheck(enemy))
+                {
+                    // 방어가 유효하면 return;
+                    return;
+                }
                 print("Attack Enemy");
                 enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage);
             }
         }
     }
+    
+    public bool EnemyDefenceCheck(Character enemy)
+    {
+        // 만약 상대가 방어 상태라면
+        if(enemy.state == PlayerState.Defend)
+        {
+            // 방어의 방향을 체크
+            return DefenceDirCheck(enemy);
+        }
+        // 방어 상태 아니라면 공격 진행
+        return false;
+    }
+    public bool DefenceDirCheck(Character enemy)
+    {
+        PlayerDir originDir = enemy.Dir;
+
+        // 반대 방향으로 돌림
+        enemy.Dir++;
+        enemy.Dir++;
+
+        if (enemy.Dir == player.Dir)
+        {
+            // 마주하고 있다면 공격 무효
+            enemy.Dir = originDir;
+            return true;
+        }
+        else
+        {
+            // 마주하고 있지 않다면 공격 유효
+            enemy.Dir = originDir;
+            return false;
+        }
+    }
+
     private void Block()
     {
-        player.anim.SetTrigger("Right Punch Attack");
+        player.photonView.RPC("Block", Photon.Pun.RpcTarget.All);
+        
     }
     private void UseItem()
     {
         print("아이템 사용");
-        player.playerInput = ePlayerInput.USE_ITEM;
         ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
         ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);
     }

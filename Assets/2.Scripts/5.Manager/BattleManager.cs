@@ -24,30 +24,12 @@ public class BattleManager : MonoBehaviourPun
         if (Instance == null)  Instance = this;
    
     }
-    public void RegisterAllPlayer()
-    {
-        players = FindObjectsOfType<Character>().ToList();
-        players.Sort((Character a, Character b) =>
-        {
-            if (a.playerNumber < b.playerNumber)
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
-        });
-    }
-
 
     public void Judge()
     {
         if(PhotonNetwork.IsMasterClient)
         {
-            MoveJudge();
 
-            photonView.RPC("ResetPlayers", RpcTarget.All);
         }
         //CheckPlayersAvailability();
         //AttackJudge();
@@ -59,45 +41,6 @@ public class BattleManager : MonoBehaviourPun
         // 플레이어 명령 기반
         // 입력이 없다면 NULL 
 
-    }
-    public void MoveJudge()
-    {
-        List<Character> playerList = players.FindAll((x) =>
-        x.eCurInput == ePlayerInput.MOVE_UP ||
-        x.eCurInput == ePlayerInput.MOVE_RIGHT ||
-        x.eCurInput == ePlayerInput.MOVE_DOWN ||
-        x.eCurInput == ePlayerInput.MOVE_LEFT);
-
-        List<TileNode> destNodes = new List<TileNode>();
-
-        foreach(Character player in playerList)
-        {
-            // 각 플레이어가 도달할 다음 노드를 받아옴
-            //destNodes.Add(player.moveCommand.NodeDetect());
-        }
-
-        for(int i = 0; i < destNodes.Count; i++)
-        {
-            if (destNodes.FindAll((x) => x == destNodes[i]).Count >= 2 ||
-                destNodes[i].eOnTileObject == eTileOccupation.PLAYER)
-            {
-                playerList[i].eCurInput = ePlayerInput.NULL;
-            }
-        }
-        // 도착 노드에 대한 예외처리
-        ActualMovement(playerList);
-    }
-
-    public void ActualMovement(List<Character> playerList)
-    {
-        foreach(Character player in playerList)
-        {
-            if(player.eCurInput != ePlayerInput.NULL)
-            {
-                print($"player{player.playerNumber} Move");
-                player.photonView.RPC("Move", RpcTarget.All);
-            }
-        }
     }
 
     public void AttackJudge()

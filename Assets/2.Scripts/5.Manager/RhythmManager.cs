@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using Photon.Pun;
+
 
 
 public class RhythmManager : Singleton<RhythmManager>
@@ -29,6 +31,8 @@ public class RhythmManager : Singleton<RhythmManager>
     [Header("Sound")]
     public AudioSource  audioSource;
     public AudioClip    beatsfx;
+
+    public UnityAction OnRhythmHit;
 
     private void Awake()
     {
@@ -87,6 +91,7 @@ public class RhythmManager : Singleton<RhythmManager>
         RhythmNote note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
         note.SetUp(rhythmBox.gameObject, 1f / noteSpeed);
         rhythmBox.RhythmHit();
+        OnRhythmHit?.Invoke();
         isBeat = true;
     }
 

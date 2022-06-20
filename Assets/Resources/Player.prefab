@@ -481,14 +481,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curNode: {fileID: 0}
-  playerNumber: 0
-  isInputAvailable: 1
-  rayPos:
-  - {fileID: 3177278766088077266}
-  - {fileID: 107938830617150011}
-  - {fileID: 1067558395054224972}
-  - {fileID: 8395618148717194562}
-  playerInput: 0
   stat:
     damage: 0
     hp: 0
@@ -498,16 +490,14 @@ MonoBehaviour:
     currentCombo: 0
     killCount: 0
     deathCount: 0
-    destX: 0
-    destY: 0
-    isMoving: 0
-    isCrashing: 0
-  anim: {fileID: 0}
   eCurInput: 0
+  state: 0
+  defencePoint: 0
   roteCommand: {fileID: 0}
   inputCommand: {fileID: 0}
   moveCommand: {fileID: 0}
   actionCommand: {fileID: 0}
+  anim: {fileID: 0}
 --- !u!114 &4095130721716653487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,6 +519,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1515985922250877100}
   - {fileID: -8892196271743944284}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
