@@ -103,6 +103,9 @@ public class ItemManager : Singleton<ItemManager>
     }
 
     public void ChangeItems(){
+        //itemSlotUI.anim.SetTrigger("ChangeSlot");
+
+        // 코루틴
         itemList.Reverse();
         Debug.Log("아이템 순서를 바꿉니다.");
     }

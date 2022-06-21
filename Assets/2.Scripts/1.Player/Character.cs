@@ -97,6 +97,12 @@ public class Character : MonoBehaviourPun, IPunObservable
     public CharacterMove moveCommand;
     public CharacterAction actionCommand;
 
+    [Header("Cam")]
+    public Transform camPos;
+
+    [Header("Effect")]
+    public GameObject stunEffect;
+    public GameObject shieldEffect;
     //private UnityAction OnRhythmHit;
 
     [HideInInspector]
@@ -157,7 +163,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
+            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = camPos;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
             
@@ -235,6 +241,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void Block()
     {
+        shieldEffect.gameObject.SetActive(true);
         anim.SetBool("Defend", true);
         DC = 5;
         state = PlayerState.Defend;
@@ -242,6 +249,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void Stunned()
     {
+        stunEffect.gameObject.SetActive(true);
         anim.SetBool("Stunned", true);
         SC = 5;
         state = PlayerState.Stun;
@@ -265,10 +273,12 @@ public class Character : MonoBehaviourPun, IPunObservable
         {
             case PlayerState.Defend:
                 anim.SetBool("Defend", false);
+                shieldEffect.gameObject.SetActive(false);
                 defenceCount = 0;
                 break;
             case PlayerState.Stun:
                 anim.SetBool("Stunned", false);
+                stunEffect.gameObject.SetActive(false);
                 stunCount = 0;
                 break;
         }
