@@ -96,6 +96,6 @@ public class CharacterAction : ActionCommand
     private void ChangeItemSlot()
     {
         player.eCurInput = ePlayerInput.CHANGE_ITEM_SLOT;
-        ItemManager.Instance.ChangeItems();
+        ItemManager.Instance.SwitchItems();
     }
 }

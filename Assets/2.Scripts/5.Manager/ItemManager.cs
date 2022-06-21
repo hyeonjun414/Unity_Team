@@ -14,6 +14,13 @@ public class ItemManager : Singleton<ItemManager>
     public ItemSlotUI itemSlotUI;
     public int maxCount = 2;
 
+    public ParticleSystem particleEffect;
+
+
+
+    private void Start()
+    {
+    }
     private void Awake() {
         if (_instance == null){
             _instance = this;
@@ -50,7 +57,7 @@ public class ItemManager : Singleton<ItemManager>
             player.stat.hp = 2 + player.stat.hp;
 
             //테스트용 디버그 로그
-            Debug.Log(player.name + "의 체력이 2 증가합니다.");
+            Debug.Log(player.nickName + "의 체력이 2 증가합니다.");
 
             //늘어난 라이프가 5개 이상일 경우 5개로 고정해줌
             if (player.stat.hp > 5)
@@ -58,7 +65,7 @@ public class ItemManager : Singleton<ItemManager>
                 player.stat.hp = 5;
 
                 //테스트용 디버그 로그
-                Debug.Log(player.name + "의 체력이 이미 최대입니다!");
+                Debug.Log(player.nickName + "의 체력이 이미 최대입니다!");
             }
             Debug.Log(player.stat.hp);
     }
@@ -67,7 +74,7 @@ public class ItemManager : Singleton<ItemManager>
     public void PowerUpPotion(Character player)
     {
         //공격력이 2배로 증가
-        Debug.Log(player.name + "의 공격력이 두 배로 증가합니다.");
+        Debug.Log(player.nickName + "의 공격력이 두 배로 증가합니다.");
     }
 
     public void DashItem(Character player)
@@ -77,14 +84,14 @@ public class ItemManager : Singleton<ItemManager>
         //앞뒤좌우 이동 시 같은 방향으로 2칸 이동, Vector로는 2씩 이동
 
         //현 아이템이 사용 되면
-        Debug.Log(player.name + "의 이동이 두 배로 증가합니다.");
+        Debug.Log(player.nickName + "의 이동이 두 배로 증가합니다.");
     }
 
     public void SeeingThrough(Character player)
     {
         //벽 투시
         //오브젝트 알파값
-        Debug.Log(player.name + "가 벽을 투시합니다.");
+        Debug.Log(player.nickName + "이(가) 벽을 투시합니다.");
     }
 
 
@@ -98,13 +105,17 @@ public class ItemManager : Singleton<ItemManager>
         }
     }
     public void RemoveNum(ItemData item){
+
+        itemSlotUI.GetComponentInChildren<ParticleSystem>().Play();
         itemList.Remove(item);
         itemSlotUI.UpdateUI();
     }
 
-    public void ChangeItems(){
+    public void SwitchItems(){
         itemList.Reverse();
         Debug.Log("아이템 순서를 바꿉니다.");
+      
     }
+
 
 }
