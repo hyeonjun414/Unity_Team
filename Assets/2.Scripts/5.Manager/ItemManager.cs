@@ -20,6 +20,8 @@ public class ItemManager : Singleton<ItemManager>
 
     private void Start()
     {
+        itemSlotUI.GetComponentInChildren<ParticleSystem>().Stop();
+
     }
     private void Awake() {
         if (_instance == null){
