@@ -1014,6 +1014,7 @@ MonoBehaviour:
   spawnItemType:
   - 
   - 
+  - 
   itemDB: {fileID: 11400000, guid: 17b8b0adcb2427b46bde2d19056a81e1, type: 2}
   item: []
   maxItemCount: 25

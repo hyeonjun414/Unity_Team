@@ -11,26 +11,26 @@ public class RhythmManager : Singleton<RhythmManager>
 {
 
     [Header("UI")]
-    public Text         hitText;
+    public Text hitText;
 
     [Header("Beat")]
-    public float        bpm;
-    public float        hitAreaRate;
+    public float bpm;
+    public float hitAreaRate;
     public bool isBeat;
     public double prevTime;
 
     [Header("Rhythm")]
-    public RhythmBox    rhythmBox;
-    public RhythmNote   rhythmNote;
-    public Transform[]  notePos;
+    public RhythmBox rhythmBox;
+    public RhythmNote rhythmNote;
+    public Transform[] notePos;
 
     [Header("Note")]
-    public float        noteSpeed;
+    public float noteSpeed;
 
 
     [Header("Sound")]
-    public AudioSource  audioSource;
-    public AudioClip    beatsfx;
+    public AudioSource audioSource;
+    public AudioClip beatsfx;
 
     public UnityAction OnRhythmHit;
 
@@ -38,7 +38,7 @@ public class RhythmManager : Singleton<RhythmManager>
     {
         if (_instance == null)
             _instance = this;
-        
+
     }
 
     private void Start()
@@ -50,7 +50,7 @@ public class RhythmManager : Singleton<RhythmManager>
 
     public bool BitCheck()
     {
-        if(rhythmBox.isBeat && isBeat)
+        if (rhythmBox.isBeat && isBeat)
         {
             hitText.text = "HIT";
             //print("HIT");
@@ -73,7 +73,7 @@ public class RhythmManager : Singleton<RhythmManager>
         while (true)
         {
             if (bpm < 10) bpm = 10;
-            if(PhotonNetwork.Time >= prevTime + (double)(60f / bpm))
+            if (PhotonNetwork.Time >= prevTime + (double)(60f / bpm))
             {
                 prevTime = PhotonNetwork.Time;
                 CreateNote();
@@ -96,7 +96,7 @@ public class RhythmManager : Singleton<RhythmManager>
     }
 
 
-    
+
 
 
 }

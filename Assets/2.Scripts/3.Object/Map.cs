@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +22,6 @@ public struct Point
     {
         return y.ToString() + ", " + x.ToString();
     }
-
 }
 
 public class Map : MonoBehaviour
@@ -31,16 +30,17 @@ public class Map : MonoBehaviour
     public List<TileNode> grid;
 
     public List<Point> startPos;
-
+    public List<Point> allTilePos;
     private void Awake()
     {
         grid = GetComponentsInChildren<TileNode>().ToList();
         startPos = new List<Point>();
-        for(int i = 0; i < mapSize; i++)
+        for (int i = 0; i < mapSize; i++)
         {
             for (int j = 0; j < mapSize; j++)
             {
                 grid[mapSize * i + j].tilePos = new Point(i, j);
+                allTilePos.Add(new Point(i, j));
 
             }
         }
@@ -51,7 +51,7 @@ public class Map : MonoBehaviour
         startPos.Add(new Point(0, 0));
         startPos.Add(new Point(0, mapSize - 1));
         startPos.Add(new Point(mapSize - 1, 0));
-        startPos.Add(new Point(mapSize-1, mapSize-1));
+        startPos.Add(new Point(mapSize - 1, mapSize - 1));
     }
 
     public TileNode GetTileNode(Point pos)
@@ -65,4 +65,5 @@ public class Map : MonoBehaviour
         tile.transform.position.x == vec.x &&
         tile.transform.position.z == vec.z);
     }
+
 }

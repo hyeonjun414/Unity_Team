@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
     private void Awake()
     {
         curTile = MapManager.Instance.map.GetTileNode(transform.position);
-        curTile.eOnTileObject = eTileOccupation.ITEM;
+        curTile.eOnTileObject = eTileOccupation.OCCUPIED;
         Invoke("ItemDestroy", holdingTime);
     }
 
@@ -59,7 +59,8 @@ public class Item : MonoBehaviour
     private void ItemDestroy()
     {
         curTile.eOnTileObject = eTileOccupation.EMPTY;
-        ItemSpawnManager.Instance.curItemDecrease();
+        //ItemSpawnManager.Instance.curItemDecrease();
+        Test.Instance.curItemDecrease();
         Destroy(gameObject);
     }
 
