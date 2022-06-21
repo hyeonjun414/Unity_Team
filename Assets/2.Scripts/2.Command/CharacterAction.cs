@@ -30,7 +30,7 @@ public class CharacterAction : ActionCommand
     }
     private void Attack()
     {
-        player.anim.SetTrigger("Right Punch Attack");
+        player.photonView.RPC("Attack", Photon.Pun.RpcTarget.All);
         RaycastHit target;
         if(Physics.Raycast(player.transform.position + Vector3.up + transform.forward *0.5f, player.transform.forward, out target, 0.5f))
         {

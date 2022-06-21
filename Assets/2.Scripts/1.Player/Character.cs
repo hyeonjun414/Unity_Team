@@ -38,7 +38,8 @@ public enum PlayerState
     Move,
     Defend,
     Attack,
-    Stun
+    Stun,
+    Dead
 }
 
 [System.Serializable]
@@ -232,11 +233,16 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void Damaged(int damageInt)
     {
         stat.hp -= damageInt;
-        anim.SetTrigger("Take Damage");
+        anim.SetTrigger("Hit");
         if (stat.hp <= 0)
         {
             Die();
         }
+    }
+    [PunRPC]
+    public void Attack()
+    {
+        anim.SetTrigger("Attack");
     }
     [PunRPC]
     public void Block()
@@ -294,12 +300,14 @@ public class Character : MonoBehaviourPun, IPunObservable
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append(" 이 사망하였습니다");
         string deadString = builder.ToString();
+        
         photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
     }
     
     [PunRPC]
     public void SendLogToPlayers(string msg)
     {
+        anim.SetTrigger("Die");
         GameLogManager.Instance.AddQueue(msg);
     }
 
