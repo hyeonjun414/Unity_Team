@@ -42,7 +42,7 @@ public class BattleManager : MonoBehaviourPun
     }
 
     private void Update() {
-        FinalWinner();
+        //FinalWinner();
     }
 
 

@@ -60,7 +60,7 @@ public class Item : MonoBehaviour
     {
         curTile.eOnTileObject = eTileOccupation.EMPTY;
         //ItemSpawnManager.Instance.curItemDecrease();
-        Test.Instance.curItemDecrease();
+        ItemSpawnManager.Instance.curItemDecrease();
         Destroy(gameObject);
     }
 

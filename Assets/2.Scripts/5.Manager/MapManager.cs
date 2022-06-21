@@ -14,6 +14,12 @@ public class MapManager : Singleton<MapManager>
         if (_instance == null) 
             _instance = this;
     }
+
+    private void Start()
+    {
+        map = FindObjectOfType<Map>();
+    }
+
     public bool BoundaryCheck(Point curPoint, Point diffPoint)
     {
         curPoint += diffPoint;

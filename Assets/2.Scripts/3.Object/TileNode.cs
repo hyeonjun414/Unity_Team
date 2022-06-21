@@ -12,8 +12,8 @@ public enum eTileOccupation
 
 public class TileNode : MonoBehaviour
 {
-    public GameObject objectOnTile;         //타일이 NULL이 아닐 시 위에 있는 오브젝트
-    public eTileOccupation eOnTileObject;   //타일의 점유상태 (빈상태 , 플레이어가 위에 있음 , 아이템이 위에 있음)
+    public GameObject objectOnTile;         //?�?�이 NULL???�닐 ???�에 ?�는 ?�브?�트
+    public eTileOccupation eOnTileObject;   //?�?�의 ?�유?�태 (빈상??, ?�레?�어가 ?�에 ?�음 , ?�이?�이 ?�에 ?�음)
     public Point tilePos = new Point();
 
 
