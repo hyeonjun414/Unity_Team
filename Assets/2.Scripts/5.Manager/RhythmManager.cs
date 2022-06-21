@@ -21,10 +21,12 @@ public class RhythmManager : Singleton<RhythmManager>
 
     [Header("Rhythm")]
     public RhythmBox    rhythmBox;
-    public RhythmNote   rhythmNote;
+    
     public Transform[]  notePos;
-
+    
     [Header("Note")]
+    public RhythmNote rhythmNote;
+    public List<RhythmNote> notePool;
     public float        noteSpeed;
 
 
@@ -43,8 +45,17 @@ public class RhythmManager : Singleton<RhythmManager>
 
     private void Start()
     {
+        notePool = new List<RhythmNote>();
+        for(int i = 0; i < 50; i++)
+        {
+            RhythmNote note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
+            notePool.Add(note);
+            note.ReturnObj();
+        }
+
         StartCoroutine("RhythmRoutine");
         rhythmBox.SetHitArea(hitAreaRate);
+
     }
 
 
@@ -79,17 +90,18 @@ public class RhythmManager : Singleton<RhythmManager>
                 CreateNote();
             }
             yield return null;
-            //PhotonNetwork.Instantiate("Rhythm Note", notePos[0].position, Quaternion.identity);
-            //photonView.RPC("CreateNote", RpcTarget.AllBuffered);
-            //rhythmBox.RhythmHit();
-            //yield return new WaitForSeconds(60f/ bpm); 
         }
     }
     [PunRPC]
     public void CreateNote()
     {
-        RhythmNote note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
-        note.SetUp(rhythmBox.gameObject, 1f / noteSpeed);
+        RhythmNote note = notePool.Find((x) => x.gameObject.activeSelf == false);
+        if (note == null)
+        {
+            note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
+            notePool.Add(note);
+        }
+        note.SetUp(notePos[0], rhythmBox.gameObject, 1f / noteSpeed);
         rhythmBox.RhythmHit();
         OnRhythmHit?.Invoke();
         isBeat = true;

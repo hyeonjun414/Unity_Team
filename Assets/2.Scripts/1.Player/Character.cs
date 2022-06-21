@@ -149,7 +149,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         RhythmManager.Instance.OnRhythmHit += RhythmOnChange;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
-        (GameObject.Find("MinimapCamera")).GetComponent<CameraLock>().EnableCamera();
+        GameObject.Find("MinimapCamera").GetComponent<CameraLock>().EnableCamera();
     }
 
     [PunRPC]
@@ -277,10 +277,6 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
-        // anim.SetTrigger("Die");
-        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
-        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
-        // Destroy(gameObject);
 
         if (!photonView.IsMine) return;
 
@@ -300,7 +296,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     private void OnCollisionEnter(Collision other)
     {
         print("collide");
-        if (other.collider.CompareTag("Player"))
+        if (other.collider.CompareTag("Player") || other.collider.CompareTag("Wall"))
         {
             moveCommand.CollidedPlayer();
         }

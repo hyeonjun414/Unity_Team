@@ -17,8 +17,10 @@ public class RhythmNote : MonoBehaviourPun
         transform.SetParent(RhythmManager.Instance.notePos[0], true);
         transform.localScale = Vector3.one;
     }
-    public void SetUp(GameObject dest, float time)
+    public void SetUp(Transform start,GameObject dest, float time)
     {
+        gameObject.SetActive(true);
+        transform.position = start.position;
         destPos = dest.transform.position;
         this.time = time;
         velocity = Vector3.Distance(destPos, transform.position) / time;
@@ -39,9 +41,14 @@ public class RhythmNote : MonoBehaviourPun
 
     public void DestroySelf()
     {
-        RhythmManager.Instance.isBeat = true;
+        //RhythmManager.Instance.isBeat = true;
         //BattleManager.Instance.Judge();
-        Destroy(gameObject);
+        ReturnObj();
+    }
+
+    public void ReturnObj()
+    {
+        gameObject.SetActive(false);
     }
 
 
