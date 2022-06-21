@@ -60,6 +60,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     [Header("Player Info")]
     public string nickName;
+    public NickNameOnPlayer nameOnPlayer;
 
     [Header("Player State")]
     public CharacterStatus stat;
@@ -161,7 +162,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
-
+        //Debug.Log("확인"+PhotonNetwork.NickName);
         Dir = PlayerDir.Right;
 
         float angle = 0f;
@@ -189,16 +190,19 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SetUp()
     {
+        CinemachineVirtualCamera virtualCamera=null;
         if (photonView.IsMine)
         {
-            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
+            virtualCamera = GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>();
+            virtualCamera.Follow = transform;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-            
-            
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);   
         }
         Map map = MapManager.Instance.map;
         nickName = photonView.Owner.NickName;
+        
+        nameOnPlayer.SetNickName(nickName,virtualCamera);
+
         Point vec = map.startPos[photonView.Owner.GetPlayerNumber()];
         // 자신의 최초 노드를 지정
         TileNode tile = map.GetTileNode(vec);
