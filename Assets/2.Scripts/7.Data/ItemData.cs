@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum ItemType { HEAL, POWERUP, DASH, SEEINGTHORUGH, };
+public enum ItemType { HEAL, POWERUP, DASH, SEEINGTHORUGH, BREAKWALL,};
 
 
 [CreateAssetMenu(fileName = "ItemData", menuName = "Item/ItemData")]

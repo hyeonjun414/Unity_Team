@@ -44,6 +44,7 @@ public enum PlayerState
 [System.Serializable]
 public class CharacterStatus
 {
+    public int playerMoveDistance=1;
     public int damage;
     public int hp;
     public Point curPos;
@@ -245,6 +246,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void CharacterReset()
     {
         stat = new CharacterStatus();
+        stat.playerMoveDistance=1;
         stat.damage = 1;
         stat.hp = 5;
         stat.curPos.y = 0;

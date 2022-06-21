@@ -40,6 +40,9 @@ public class ItemManager : Singleton<ItemManager>
             case ItemType.SEEINGTHORUGH:
                 SeeingThrough(player);
                 break;
+            case ItemType.BREAKWALL:
+                BreakWall(player);
+                break;
         }
     }
 
@@ -78,7 +81,7 @@ public class ItemManager : Singleton<ItemManager>
         //같은 이동을 한 턴에 연속 두번 처리
         //이동 종류: 오른쪽 회전, 왼쪽 회전, 앞, 뒤, 좌, 우
         //앞뒤좌우 이동 시 같은 방향으로 2칸 이동, Vector로는 2씩 이동
-
+        StartCoroutine(TwiceMoveDIstance(player,5f));
         //현 아이템이 사용 되면
         Debug.Log(player.name + "의 이동이 두 배로 증가합니다.");
     }
@@ -137,7 +140,12 @@ public class ItemManager : Singleton<ItemManager>
         itemList.Reverse();
         Debug.Log("아이템 순서를 바꿉니다.");
     }
-
+    IEnumerator TwiceMoveDIstance(Character player, float time)
+    {
+        player.stat.playerMoveDistance +=1;
+        yield return new WaitForSeconds(time);
+        player.stat.playerMoveDistance -=1;
+    }
     IEnumerator TwiceDamage(Character player,float time)
     {
         player.stat.damage +=1;
