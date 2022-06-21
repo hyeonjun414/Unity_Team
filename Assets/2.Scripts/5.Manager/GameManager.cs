@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.Log("Disconnected : " + cause.ToString());
-        SceneManager.LoadScene("LobbyScene");
+        SceneManager.LoadScene("NewLobbyScene");
     }
 
     public override void OnLeftRoom()
@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (CheckAllCharacter())
             {
+                StartCoroutine(RegisterPlayer());
+
             }
             else
             {
@@ -141,6 +143,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log(info);
         infoText.text = info;
+    }
+
+
+    IEnumerator RegisterPlayer(){
+        yield return new WaitForSeconds(1f);
+        BattleManager.Instance.RegisterAllPlayer();
     }
 
 }
