@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TimeManager : Singleton<TimeManager>{
 
@@ -23,7 +24,17 @@ public class TimeManager : Singleton<TimeManager>{
     public void TimeOver(){
         if(Mathf.Round(limitTime) <= 0){
             timer.text = "TIME OVER!";
+            Debug.Log("제한 시간이 끝났습니다!");
+            StartCoroutine("GoToLobby");
+
         }
+    }
+
+    IEnumerator GoToLobby(){
+        yield return new WaitForSeconds(3f);
+        Debug.Log("시작화면으로 돌아갑니다.");
+        SceneManager.LoadScene("NewLobbyScene");
+
     }
    
 }
