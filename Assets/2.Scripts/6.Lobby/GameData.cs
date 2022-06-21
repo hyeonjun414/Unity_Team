@@ -9,6 +9,8 @@ public class GameData : MonoBehaviour
     public const string PLAYER_READY = "Ready";
     public const string PLAYER_LOAD = "Load";
     public const string PLAYER_GEN = "Character";
+
+    public const string PLAYER_INDEX = "PlayerIndex";
     
     public static Color GetColor(int playerNumber)
     {
