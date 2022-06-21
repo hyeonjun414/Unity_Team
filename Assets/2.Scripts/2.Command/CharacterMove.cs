@@ -124,7 +124,7 @@ public class CharacterMove : MoveCommand
         TileNode destNode = player.curNode;
 
 
-        Vector3 middlePos = (transform.position + destNode.transform.position) * 0.5f + Vector3.up;
+        Vector3 middlePos = (transform.position + destNode.transform.position) * 0.5f;
         Vector3 offset = Vector3.up * 0.5f;
         float curTime = 0;
         while (true)

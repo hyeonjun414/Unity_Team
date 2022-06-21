@@ -167,8 +167,6 @@ public class Character : MonoBehaviourPun, IPunObservable
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = camPos;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-            
-            
         }
         Map map = MapManager.Instance.map;
         nickName = photonView.Owner.NickName;
