@@ -30,7 +30,7 @@ public class CharacterAction : ActionCommand
     }
     private void Attack()
     {
-        
+        player.photonView.RPC("Attack", Photon.Pun.RpcTarget.All);
         RaycastHit target;
         if(Physics.Raycast(player.transform.position + Vector3.up + transform.forward *0.5f, player.transform.forward, out target, 0.5f))
         {
@@ -42,7 +42,7 @@ public class CharacterAction : ActionCommand
                     player.photonView.RPC("Stunned", Photon.Pun.RpcTarget.All);
                     return;
                 }
-                player.anim.SetTrigger("Right Punch Attack");
+                
                 print("Attack Enemy");
                 enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage);
             }

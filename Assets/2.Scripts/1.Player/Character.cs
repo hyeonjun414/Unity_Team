@@ -38,7 +38,8 @@ public enum PlayerState
     Move,
     Defend,
     Attack,
-    Stun
+    Stun,
+    Dead
 }
 
 [System.Serializable]
@@ -97,6 +98,12 @@ public class Character : MonoBehaviourPun, IPunObservable
     public CharacterMove moveCommand;
     public CharacterAction actionCommand;
 
+    [Header("Cam")]
+    public Transform camPos;
+
+    [Header("Effect")]
+    public GameObject stunEffect;
+    public GameObject shieldEffect;
     //private UnityAction OnRhythmHit;
 
     [HideInInspector]
@@ -149,7 +156,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         RhythmManager.Instance.OnRhythmHit += RhythmOnChange;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
-        (GameObject.Find("MinimapCamera")).GetComponent<CameraLock>().EnableCamera();
+        GameObject.Find("MinimapCamera").GetComponent<CameraLock>().EnableCamera();
     }
 
     [PunRPC]
@@ -157,7 +164,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
+            GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = camPos;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
             
@@ -226,15 +233,21 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void Damaged(int damageInt)
     {
         stat.hp -= damageInt;
-        anim.SetTrigger("Take Damage");
+        anim.SetTrigger("Hit");
         if (stat.hp <= 0)
         {
             Die();
         }
     }
     [PunRPC]
+    public void Attack()
+    {
+        anim.SetTrigger("Attack");
+    }
+    [PunRPC]
     public void Block()
     {
+        shieldEffect.gameObject.SetActive(true);
         anim.SetBool("Defend", true);
         DC = 5;
         state = PlayerState.Defend;
@@ -242,6 +255,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void Stunned()
     {
+        stunEffect.gameObject.SetActive(true);
         anim.SetBool("Stunned", true);
         SC = 5;
         state = PlayerState.Stun;
@@ -265,10 +279,12 @@ public class Character : MonoBehaviourPun, IPunObservable
         {
             case PlayerState.Defend:
                 anim.SetBool("Defend", false);
+                shieldEffect.gameObject.SetActive(false);
                 defenceCount = 0;
                 break;
             case PlayerState.Stun:
                 anim.SetBool("Stunned", false);
+                stunEffect.gameObject.SetActive(false);
                 stunCount = 0;
                 break;
         }
@@ -277,10 +293,6 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
-        // anim.SetTrigger("Die");
-        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).objectOnTile=null;
-        // MapManager_verStatic.Instance.map.GetTileNode(characterStatus.curPositionY,characterStatus.curPositionX).eOnTileObject=eTileOccupation.EMPTY;
-        // Destroy(gameObject);
 
         if (!photonView.IsMine) return;
 
@@ -288,19 +300,21 @@ public class Character : MonoBehaviourPun, IPunObservable
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append(" 이 사망하였습니다");
         string deadString = builder.ToString();
+        
         photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
     }
     
     [PunRPC]
     public void SendLogToPlayers(string msg)
     {
+        anim.SetTrigger("Die");
         GameLogManager.Instance.AddQueue(msg);
     }
 
     private void OnCollisionEnter(Collision other)
     {
         print("collide");
-        if (other.collider.CompareTag("Player"))
+        if (other.collider.CompareTag("Player") || other.collider.CompareTag("Wall"))
         {
             moveCommand.CollidedPlayer();
         }
