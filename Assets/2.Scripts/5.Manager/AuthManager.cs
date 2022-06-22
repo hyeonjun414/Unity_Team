@@ -154,13 +154,30 @@ public class AuthManager : Singleton<AuthManager>
         });
     }
 
-    public void CreateUserId()
+    public void NickNameCheck()
     {
         if(passwordCreateField.text.ToString() != passwordCreateFieldConfirm.text.ToString())
         {
             StartCoroutine(ErrorMessage("비밀번호를 다시 확인해주세요"));
              return;
         }
+
+            DataBaseManager.Instance.NickNameDuplicateCheck(nickNameField.text,(str)=>{
+                if(str == "nullString")
+                {
+                    CreateUserId();
+                }
+                else
+                {
+                    StartCoroutine(ErrorMessage("이미 사용중인 닉네임입니다"));
+                }
+            });
+
+    }
+
+    public void CreateUserId()
+    {
+
         firebaseAuth.CreateUserWithEmailAndPasswordAsync(idCreateField.text,passwordCreateField.text)
             .ContinueWithOnMainThread(task=>
             {
@@ -176,13 +193,15 @@ public class AuthManager : Singleton<AuthManager>
 
                     return;
                 }
-                else
+                else//성공
                 {
                     //userCreated
                     Firebase.Auth.FirebaseUser newUser = task.Result;
                     Debug.LogFormat("Firebase user created successfully: {0}({1})",
                         newUser.DisplayName,newUser.UserId);
+                    
                     DataBaseManager.Instance.WriteNewPlayerDB(newUser.UserId,idCreateField.text,nickNameField.text);
+                    
                     signInPanel.SetActive(false);
 
                     StartCoroutine(ErrorMessage("가입이 완료되었습니다"));

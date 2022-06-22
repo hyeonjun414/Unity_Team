@@ -71,6 +71,35 @@ public class DataBaseManager : Singleton<DataBaseManager>
 
         reference.Child("UserDatabase").Child(UID).SetRawJsonValueAsync(jsonData1);
     }
+    public void NickNameDuplicateCheck(string nickName, UnityAction<string> onDone) 
+    //새로 계정 생성시, 닉네임 중복체크함수
+    {
+        reference = FirebaseDatabase.DefaultInstance.GetReference("UserDatabase");
+        reference.GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            int childrenCount=0;
+            if(task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                foreach(DataSnapshot data in snapshot.Children)
+                {
+                    IDictionary dicUserData = (IDictionary)data.Value;
+                    if(dicUserData["nickName"].ToString() == nickName)
+                    {
+                        onDone?.Invoke(data.Key);
+                    }
+                    else
+                    {
+                        ++childrenCount;
+                        if(childrenCount == snapshot.ChildrenCount)
+                        {
+                            onDone?.Invoke("nullString");
+                        }
+                    }
+                }               
+            }
+        });
+    }
 
 
     public void ReadDB(string UID , string whatToFind, UnityAction<string> onDone)
