@@ -1090,6 +1090,7 @@ MonoBehaviour:
   itemSlotUI: {fileID: 505012186}
   maxCount: 2
   particleEffect: {fileID: 0}
+  wallMaterial: {fileID: 2100000, guid: 66e77000fa31b4b49acfd5ab2e94366e, type: 2}
 --- !u!114 &211671997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2998,6 +2999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 672350546}
   - component: {fileID: 672350543}
+  - component: {fileID: 672350544}
   m_Layer: 0
   m_Name: LocalCamera
   m_TagString: Untagged
@@ -3040,6 +3042,18 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 4853681}
+--- !u!114 &672350544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672350542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abcb16d3d40c881439f7dbf1a1322dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &672350546
 Transform:
   m_ObjectHideFlags: 0
@@ -4866,7 +4880,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1335
+    m_Bits: 3383
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

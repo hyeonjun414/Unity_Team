@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ab08612e63d71e8419000749e3c68d16, type: 2}
+  - {fileID: 2100000, guid: 66e77000fa31b4b49acfd5ab2e94366e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dde11e912dc8b94cad62413123631e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  opaqueMat: {fileID: 2100000, guid: ab08612e63d71e8419000749e3c68d16, type: 2}
+  opaqueMat: {fileID: 2100000, guid: 66e77000fa31b4b49acfd5ab2e94366e, type: 2}
   transparentMat: {fileID: 2100000, guid: e1e40521ed5f5184d9559a6e90faab67, type: 2}
 --- !u!65 &-7870483038102619310
 BoxCollider:
