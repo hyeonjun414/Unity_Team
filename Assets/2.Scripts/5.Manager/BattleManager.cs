@@ -15,13 +15,13 @@ public class BattleManager : MonoBehaviourPun
     //InputCheckManager.Judge() 호출 => MoveJudge => ActualMovement => Judge 
     //=> 플레이어 키 입력 가능하게 초기화
     [HideInInspector]
-    public int isReadyCount=0;
+    public int isReadyCount = 0;
 
     public List<Character> players;
 
 
     [Header("Player")]
-   
+
     //살아있는 플레이어 
     public List<Character> alivePlayer;
     //사망한 플레이어
@@ -34,14 +34,15 @@ public class BattleManager : MonoBehaviourPun
 
 
 
-    public static BattleManager Instance {get;private set;}
+    public static BattleManager Instance { get; private set; }
     private void Awake()
     {
-        if (Instance == null)  Instance = this;
-   
+        if (Instance == null) Instance = this;
+
     }
 
-    private void Update() {
+    private void Update()
+    {
         //FinalWinner();
     }
 
@@ -53,13 +54,13 @@ public class BattleManager : MonoBehaviourPun
 
         //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
         alivePlayer = FindObjectsOfType<Character>().ToList();
-      
+
     }
 
 
     public void Judge()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
 
         }
@@ -77,7 +78,7 @@ public class BattleManager : MonoBehaviourPun
 
     public void AttackJudge()
     {
-        
+
     }
     public void ItemJudge()
     {
@@ -85,7 +86,7 @@ public class BattleManager : MonoBehaviourPun
     [PunRPC]
     public void ResetPlayers()
     {
-        foreach(Character player in players)
+        foreach (Character player in players)
         {
             //player.eCurInput = ePlayerInput.NULL;
         }
@@ -95,7 +96,8 @@ public class BattleManager : MonoBehaviourPun
 
 
     //플레이어가 죽었을 때 판정
-    public void PlayerOut(Character deadPL){
+    public void PlayerOut(Character deadPL)
+    {
 
         //alivePlayer 리스트에서 죽은 플레이어를 뺀다.
         alivePlayer.Remove(deadPL);
@@ -104,20 +106,25 @@ public class BattleManager : MonoBehaviourPun
     }
 
 
-    public void BattleOverMessage(){
+    public void BattleOverMessage()
+    {
         //플레이어가 죽지 않았을 때
-        foreach(Character player in alivePlayer){
+        foreach (Character player in alivePlayer)
+        {
             resultText.text = "YOU WIN!";
-       }
+        }
         //플레이어가 죽었을 때
-        foreach(Character player in deadPlayer){
+        foreach (Character player in deadPlayer)
+        {
             resultText.text = "YOU LOSE!";
         }
     }
-    
+
     //플레이어가 한 명 남았을 때 그라운드를 끝냄.
-    public void FinalWinner(){
-        if(alivePlayer.Count == 1){
+    public void FinalWinner()
+    {
+        if (alivePlayer.Count == 1)
+        {
             //각 플레이어들에게 메시지를 보냄.
             BattleOverMessage();
         }
