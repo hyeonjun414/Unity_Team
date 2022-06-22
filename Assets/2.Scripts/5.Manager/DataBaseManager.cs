@@ -63,20 +63,20 @@ public class DataBaseManager : Singleton<DataBaseManager>
     {
         Debug.Log(cacheString);
     }
-    public void WriteDB(string UID,string emailID, string nickName)
+    public void WriteNewPlayerDB(string UID,string emailID, string nickName)
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
-        UserData data1 = new UserData(emailID,nickName);
+        UserData data1 = new UserData(emailID,nickName,0.ToString(),0.ToString());
         string jsonData1 = JsonUtility.ToJson(data1);
 
-        reference.Child("UserData").Child(UID).SetRawJsonValueAsync(jsonData1);
+        reference.Child("UserDatabase").Child(UID).SetRawJsonValueAsync(jsonData1);
     }
 
 
     public void ReadDB(string UID , string whatToFind, UnityAction<string> onDone)
     {
         //StartCoroutine(ExecuteReadDB());
-        reference = FirebaseDatabase.DefaultInstance.GetReference("UserData");
+        reference = FirebaseDatabase.DefaultInstance.GetReference("UserDatabase");
         reference.GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if(task.IsCompleted)
@@ -102,9 +102,40 @@ public class DataBaseManager : Singleton<DataBaseManager>
         });
     }
 
+    public void ReadPlayerInfo(string UID , UnityAction<string> onDone)
+    {
+        string returnString=null;
+        reference = FirebaseDatabase.DefaultInstance.GetReference("UserDatabase");
+        reference.GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if(task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                foreach(DataSnapshot data in snapshot.Children)
+                {
+                    if(data.Key == UID)
+                    {
+                        IDictionary dicUserData = (IDictionary)data.Value;
+                         Debug.Log("에러1.5: "+dicUserData["nickName"]);
+                        returnString =
+                            (dicUserData["nickName"].ToString() +"$"+ 
+                             dicUserData["totalGames"].ToString() +"$"+
+                             dicUserData["winGames"].ToString());     
+                        Debug.Log("에러2: "+returnString);   
+                    }
+                    else
+                    {
+                        Debug.Log("값이 없습니다. 확인해주세요");
+                    }
+                }
+                onDone?.Invoke(returnString);
+            }
+        });
+    }
+
     public void GetUserID(string emailID, UnityAction<string> onDone)
     {
-        reference = FirebaseDatabase.DefaultInstance.GetReference("UserData");
+        reference = FirebaseDatabase.DefaultInstance.GetReference("UserDatabase");
         reference.GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if(task.IsCompleted)
@@ -121,15 +152,48 @@ public class DataBaseManager : Singleton<DataBaseManager>
             }
         });
     }
+    public void GetUserIDbyNickName(string nickName, UnityAction<string> onDone)
+    {
+        reference = FirebaseDatabase.DefaultInstance.GetReference("UserDatabase");
+        reference.GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            int childrenCount=0;
+            if(task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                foreach(DataSnapshot data in snapshot.Children)
+                {
+                    IDictionary dicUserData = (IDictionary)data.Value;
+                    if(dicUserData["nickName"].ToString() == nickName)
+                    {
+                        onDone?.Invoke(data.Key);
+                    }
+                    else
+                    {
+                        ++childrenCount;
+                        if(childrenCount == snapshot.ChildrenCount)
+                        {
+                            onDone?.Invoke("nullString");
+                        }
+                    }
+                }               
+            }
+        });
+    }
     public class UserData
     {
         //public string
         public string emailID; 
         public string nickName;
-        public UserData(string emailID, string nickName)
+        public string totalGames;
+        public string winGames;
+
+        public UserData(string emailID, string nickName, string totalGames, string winGames)
         {
             this.emailID = emailID;
             this.nickName = nickName;
+            this.totalGames = totalGames;
+            this.winGames = winGames;
         }
     }
 

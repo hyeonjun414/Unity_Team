@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 using TMPro;
+using System;
 
 public class InRoomPanel : MonoBehaviour
 {
@@ -21,9 +22,18 @@ public class InRoomPanel : MonoBehaviour
     public TMP_Text readyButtonText;
     public PlayerEntry playerEntryPrefab;
 
+    public GameObject playerInfoPanel;
+
     private Dictionary<int, PlayerEntry> playerListEntries;
 
     private bool localPlayerIsReady = false;
+
+    [Header("PlayerInfoUI")]
+    public TMP_Text nickName;
+    public TMP_Text totalPlayTimes;
+    public TMP_Text winTimes;
+    public TMP_Text loseTimes;
+    public TMP_Text winRate;
 
     private void Update()
     {
@@ -167,12 +177,51 @@ public class InRoomPanel : MonoBehaviour
         return true;
     }
 
-
+    public void OnCloseInfoPanel()
+    {
+        playerInfoPanel.SetActive(false);
+    }
 
     public void LocalPlayerPropertiesUpdated()
     {
         startGameButton.interactable = CheckPlayersReady();
         //startGameButton.gameObject.SetActive(CheckPlayersReady());
+    }
+    public void ShowPlayerInfo(string UID)
+    {        
+        // Hashtable props = new Hashtable() { { GameData.PLAYER_READY, localPlayerIsReady } };
+        // PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        Debug.Log("에러1: "+UID);
+        DataBaseManager.Instance.ReadPlayerInfo(UID,(str)=>{
+            String value = str;
+            Debug.Log("에러3: "+str);
+            
+            string[] words = value.Split('$');
+            //닉네임 $ 총판수 $ 승리수
+            nickName.text = words[0];
+            totalPlayTimes.text = words[1];
+            winTimes.text = words[2];
+
+            int playTimesInt    = int.Parse(totalPlayTimes.text);
+            int winTimesInt     = int.Parse(winTimes.text);
+            int loseTimesInt    = playTimesInt - winTimesInt;
+            
+            loseTimes.text  = loseTimesInt.ToString();
+            if(winTimesInt!=0)
+            {
+                winRate.text    = (winTimesInt/playTimesInt).ToString("F1") + " %";
+            }
+            else
+            {
+                winRate.text = "- %";
+            }
+            
+
+            playerInfoPanel.SetActive(true);
+
+        });
+
+        
     }
 
     public void OnPlayerEnteredRoom(Player newPlayer)
