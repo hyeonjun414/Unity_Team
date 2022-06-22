@@ -10,6 +10,22 @@ using System;
 public class DataBaseManager : Singleton<DataBaseManager>
 {
     string DBURL = "https://unity-team-project-trim-default-rtdb.firebaseio.com/";
+
+    string cacheString=null;
+
+    private bool IsTaskFinished;
+    public bool isTaskFinished
+    {
+        get 
+        {
+            return IsTaskFinished;
+        }
+        set
+        {
+            IsTaskFinished = value;
+            testFunc();
+        } 
+    }
     DatabaseReference reference;
     private void Awake()
     {
@@ -18,17 +34,72 @@ public class DataBaseManager : Singleton<DataBaseManager>
     }
     private void Start()
     {
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
+        
         FirebaseApp.DefaultInstance.Options.DatabaseUrl = new Uri(DBURL);
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+    
+        ReadDB("awIhaxye4IOqouz6XCJZMjcvWmB2","emailID");
 
+    }
+    public void testFunc()
+    {
+        Debug.Log(cacheString);
+    }
+    public void WriteDB(string UID,string emailID, string nickName)
+    {
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+        UserData data1 = new UserData(emailID,nickName);
+        string jsonData1 = JsonUtility.ToJson(data1);
 
-        //WriteDB();
-        //ReadDB();
-        //WriteNickName("epsqjqhdl@naver.com","abcde");
-        Debug.Log(ReadNickName("epsqjqhdl@naver.com"));
+        reference.Child("UserData").Child(UID).SetRawJsonValueAsync(jsonData1);
+    }
+    public void ReadDB(string UID , string whatToFind)
+    {
+        reference = FirebaseDatabase.DefaultInstance.GetReference("UserData");
+        reference.GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if(task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                foreach(DataSnapshot data in snapshot.Children)
+                {
+                    if(data.Key == UID)
+                    {
+                        IDictionary dicUserData = (IDictionary)data.Value;
+                        Debug.Log("email : " + dicUserData["emailID"] + "/ nickName : " +dicUserData["nickName"]);
+                        cacheString = (dicUserData[whatToFind]).ToString();            
+                    }
+                    else
+                    {
+                        Debug.Log("값이 없습니다. 확인해주세요");
+                    }
+                }
+                isTaskFinished = true;
+            }
+        });
     }
 
-    public void WriteNickName(string emailID, string nickName)
+    public class UserData
+    {
+        //public string
+        public string emailID; 
+        public string nickName;
+        public UserData(string emailID, string nickName)
+        {
+            this.emailID = emailID;
+            this.nickName = nickName;
+        }
+    }
+
+    IEnumerator ExecuteReadDB()
+    {
+        yield return new WaitUntil(()=>isTaskFinished);
+        isTaskFinished = false;
+    }
+
+
+#region test
+        public void WriteNickName(string emailID, string nickName)
     {
         //UserNickName name = new UserNickName(nickName);
         //string jsonData = JsonUtility.ToJson(name);
@@ -111,14 +182,5 @@ public class DataBaseManager : Singleton<DataBaseManager>
         
         return returnValue;
     }
-    public class UserNickName
-    {
-        //public string 
-        public string nickName;
-        public UserNickName(string nickName)
-        {
-            //this.emailID = emailID;
-            this.nickName = nickName;
-        }
-    }
+#endregion
 }

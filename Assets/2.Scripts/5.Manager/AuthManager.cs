@@ -175,7 +175,7 @@ public class AuthManager : Singleton<AuthManager>
                     Firebase.Auth.FirebaseUser newUser = task.Result;
                     Debug.LogFormat("Firebase user created successfully: {0}({1})",
                         newUser.DisplayName,newUser.UserId);
-                    DataBaseManager.Instance.WriteNickName(idCreateField.text,nickNameField.text);
+                    DataBaseManager.Instance.WriteDB(newUser.UserId,idCreateField.text,nickNameField.text);
                     signInPanel.SetActive(false);
 
                     StartCoroutine(ErrorMessage("가입이 완료되었습니다"));
