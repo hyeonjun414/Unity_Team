@@ -16,13 +16,13 @@ public class BattleManager : MonoBehaviourPun
     //InputCheckManager.Judge() 호출 => MoveJudge => ActualMovement => Judge 
     //=> 플레이어 키 입력 가능하게 초기화
     [HideInInspector]
-    public int isReadyCount=0;
+    public int isReadyCount = 0;
 
     public List<Character> players;
 
 
     [Header("Player")]
-   
+
     //살아있는 플레이어 
     public List<Character> alivePlayer;
     //사망한 플레이어
@@ -38,11 +38,11 @@ public class BattleManager : MonoBehaviourPun
 
 
 
-    public static BattleManager Instance {get;private set;}
+    public static BattleManager Instance { get; private set; }
     private void Awake()
     {
-        if (Instance == null)  Instance = this;
-   
+        if (Instance == null) Instance = this;
+
     }
 
     private void Update() {
@@ -57,13 +57,13 @@ public class BattleManager : MonoBehaviourPun
 
         //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
         alivePlayer = FindObjectsOfType<Character>().ToList();
-      
+
     }
 
 
     public void Judge()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
 
         }
@@ -81,7 +81,7 @@ public class BattleManager : MonoBehaviourPun
 
     public void AttackJudge()
     {
-        
+
     }
     public void ItemJudge()
     {
@@ -89,7 +89,7 @@ public class BattleManager : MonoBehaviourPun
     [PunRPC]
     public void ResetPlayers()
     {
-        foreach(Character player in players)
+        foreach (Character player in players)
         {
             //player.eCurInput = ePlayerInput.NULL;
         }
@@ -97,7 +97,8 @@ public class BattleManager : MonoBehaviourPun
     }
 
     //플레이어가 죽었을 때 판정
-    public void PlayerOut(Character deadPL){
+    public void PlayerOut(Character deadPL)
+    {
 
         //alivePlayer 리스트에서 죽은 플레이어를 뺀다.
         alivePlayer.Remove(deadPL);

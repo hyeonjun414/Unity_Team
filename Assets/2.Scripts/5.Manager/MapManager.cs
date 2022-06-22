@@ -11,7 +11,7 @@ public class MapManager : Singleton<MapManager>
     public Map map;
     private void Awake()
     {
-        if (_instance == null) 
+        if (_instance == null)
             _instance = this;
     }
 
@@ -26,7 +26,7 @@ public class MapManager : Singleton<MapManager>
 
         if (curPoint.x < 0 || map.mapSize <= curPoint.x ||
             curPoint.y < 0 || map.mapSize <= curPoint.y ||
-            map.GetTileNode(curPoint).eOnTileObject != eTileOccupation.EMPTY)
+            map.GetTileNode(curPoint).eOnTileObject == eTileOccupation.WALL)
             return false;
         else
             return true;

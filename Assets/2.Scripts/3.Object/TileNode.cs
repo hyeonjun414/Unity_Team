@@ -6,14 +6,15 @@ public enum eTileOccupation
 {
     EMPTY,
     PLAYER,
-    OCCUPIED,
+    ITEM,
+    WALL,
     //DEAD_END,
 }
 
 public class TileNode : MonoBehaviour
 {
-    public GameObject objectOnTile;         //?�?�이 NULL???�닐 ???�에 ?�는 ?�브?�트
-    public eTileOccupation eOnTileObject;   //?�?�의 ?�유?�태 (빈상??, ?�레?�어가 ?�에 ?�음 , ?�이?�이 ?�에 ?�음)
+    public GameObject objectOnTile;         //?�?�이 NULL???�닐 ???�에 ?�는 ?�브?�트
+    public eTileOccupation eOnTileObject;   //?�?�의 ?�유?�태 (빈상??, ?�레?�어가 ?�에 ?�음 , ?�이?�이 ?�에 ?�음)
     public Point tilePos = new Point();
 
 
@@ -25,9 +26,9 @@ public class TileNode : MonoBehaviour
 
     private void Start()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 10f))
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 10f, LayerMask.GetMask("Wall")))
         {
-            eOnTileObject = eTileOccupation.OCCUPIED;
+            eOnTileObject = eTileOccupation.WALL;
         }
 
     }

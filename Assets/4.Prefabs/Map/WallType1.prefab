@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3352031670039183336}
   m_Layer: 11
   m_Name: block_stone1_8_LOD0
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: -6018216015246038286}
   m_Layer: 11
   m_Name: WallType1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dde11e912dc8b94cad62413123631e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  opaqueMat: {fileID: 0}
+  transparentMat: {fileID: 0}
 --- !u!65 &-6018216015246038286
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -151,7 +153,7 @@ GameObject:
   - component: {fileID: 8745468618916973978}
   m_Layer: 11
   m_Name: block_stone1_6_LOD0
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

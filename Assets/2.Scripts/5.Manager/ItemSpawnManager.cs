@@ -8,12 +8,8 @@ using Photon.Pun.UtilityScripts;
 
 public class ItemSpawnManager : Singleton<ItemSpawnManager>
 {
-    public string[] spawnItemType;                // 스폰될 아이템 타입
-    // public Item[] spawnItemType;                // 스폰될 아이템 타입
-
+    int itemSpawnTypeNum;
     public ItemDB itemDB;
-    int spawnItemTypeNum;
-    public Item[] item;
 
     public int maxItemCount = 25;           // 맵에 최대 소환될 수 있는 아이템 개수
     public int curItemCount = 0;
@@ -44,7 +40,6 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
             return;
         }
 
-        item = new Item[MapManager.Instance.map.grid.Count];
         maxItemCount = MapManager.Instance.map.grid.Count;
         emptyTileCheckList = new bool[MapManager.Instance.map.grid.Count];
 
@@ -109,17 +104,18 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
 
     public void SpawnItem()
     {
-        PhotonNetwork.Instantiate(itemDB.itemList[spawnItemTypeNum].prefab.name, SetSpawnPos(), Quaternion.identity);
+        PhotonNetwork.Instantiate(itemDB.itemList[itemSpawnTypeNum].prefab.name, SetSpawnPos(), Quaternion.identity);
 
         curItemCount++;
         emptyTileCheckList[itemSpawnTileNum] = false;
     }
 
-    public string SetSpawnItemType()
+    public int SetSpawnItemType()
     {
-        spawnItemTypeNum = Random.Range(0, itemDB.itemList.Length);
+        itemSpawnTypeNum = Random.Range(0, itemDB.itemList.Length);
+        //itemSpawnTypeNum = Random.Range(0, 3);
 
-        return spawnItemType[spawnItemTypeNum];
+        return itemSpawnTypeNum;
     }
 
     public void MakeSpawnEmptyCheckList()

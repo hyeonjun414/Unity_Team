@@ -14,16 +14,16 @@ public class Wall : MonoBehaviour
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        
+
     }
     private void Start()
     {
         curTile = MapManager.Instance.map.GetTileNode(transform.position);
-        curTile.eOnTileObject = eTileOccupation.OCCUPIED;
+        curTile.eOnTileObject = eTileOccupation.WALL;
     }
     public void UpdateMaterial(bool isTransparent)
     {
-        if(isTransparent)
+        if (isTransparent)
         {
             meshRenderer.material = transparentMat;
         }
