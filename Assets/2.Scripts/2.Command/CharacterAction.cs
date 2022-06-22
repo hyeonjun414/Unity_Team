@@ -32,12 +32,12 @@ public class CharacterAction : ActionCommand
     {
         player.photonView.RPC("Attack", Photon.Pun.RpcTarget.All);
         RaycastHit target;
-        if(Physics.Raycast(player.transform.position + Vector3.up + transform.forward *0.5f, player.transform.forward, out target, 0.5f))
+        if (Physics.Raycast(player.transform.position + Vector3.up + transform.forward * 0.5f, player.transform.forward, out target, 0.5f))
         {
             Character enemy = target.collider.gameObject.GetComponent<Character>();
             if (enemy != null)
             {
-                if(EnemyDefenceCheck(enemy))
+                if (EnemyDefenceCheck(enemy))
                 {
                     player.photonView.RPC("Stunned", Photon.Pun.RpcTarget.All);
                     return;
@@ -48,10 +48,10 @@ public class CharacterAction : ActionCommand
             }
         }
     }
-    
+
     public bool EnemyDefenceCheck(Character enemy)
     {
-        if(enemy.state == PlayerState.Defend)
+        if (enemy.state == PlayerState.Defend)
         {
             return DefenceDirCheck(enemy);
         }
@@ -79,14 +79,16 @@ public class CharacterAction : ActionCommand
     private void Block()
     {
         player.photonView.RPC("Block", Photon.Pun.RpcTarget.All);
-        
+
     }
     private void UseItem()
     {
-        if(ItemManager.Instance.itemList.Count == 0){
+        if (ItemManager.Instance.itemList.Count == 0)
+        {
             Debug.Log("사용할 아이템이 없습니다!");
         }
-        else{
+        else
+        {
             player.eCurInput = ePlayerInput.USE_ITEM;
             ItemManager.Instance.UseItem(player, ItemManager.Instance.itemList[0]);
             ItemManager.Instance.RemoveNum(ItemManager.Instance.itemList[0]);

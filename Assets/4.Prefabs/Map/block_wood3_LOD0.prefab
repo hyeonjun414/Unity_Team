@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9185248968290392177}
   - component: {fileID: 9159284276819962397}
   - component: {fileID: 9167753531611024871}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: block_wood3_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

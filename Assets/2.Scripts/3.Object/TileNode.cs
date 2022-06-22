@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,13 +23,12 @@ public class TileNode : MonoBehaviour
 
     RaycastHit hit;
 
-    private void Update()
+    private void Start()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, 2f, LayerMask.GetMask("Wall")))
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 10f))
         {
-            this.eOnTileObject = eTileOccupation.OCCUPIED;
+            eOnTileObject = eTileOccupation.OCCUPIED;
         }
 
-        // Debug.DrawRay(transform.position, Vector3.up * 2f, Color.red);
     }
 }
