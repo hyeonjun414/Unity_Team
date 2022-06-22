@@ -68,10 +68,10 @@ public class Character : MonoBehaviourPun, IPunObservable
     public int DC
     {
         get { return defenceCount; }
-        set 
-        { 
+        set
+        {
             defenceCount = value;
-            if(defenceCount <= 0)
+            if (defenceCount <= 0)
             {
                 photonView.RPC("SetNormalState", RpcTarget.All, state);
             }
@@ -84,7 +84,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         set
         {
             stunCount = value;
-            if (stunCount <= 0 )
+            if (stunCount <= 0)
             {
                 photonView.RPC("SetNormalState", RpcTarget.All, state);
             }
@@ -160,8 +160,8 @@ public class Character : MonoBehaviourPun, IPunObservable
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-            
-            
+
+
         }
         Map map = MapManager.Instance.map;
         nickName = photonView.Owner.NickName;
@@ -184,7 +184,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (!photonView.IsMine) return;
 
-        if(RhythmHit())
+        if (RhythmHit())
         {
             inputCommand.Execute();
             roteCommand.Execute();
@@ -249,11 +249,11 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void RhythmOnChange()
     {
         print(photonView.Owner.NickName);
-        if(state == PlayerState.Defend)
+        if (state == PlayerState.Defend)
         {
             DC--;
         }
-        if(state == PlayerState.Stun)
+        if (state == PlayerState.Stun)
         {
             SC--;
         }
@@ -261,7 +261,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SetNormalState(PlayerState ps)
     {
-        switch(ps)
+        switch (ps)
         {
             case PlayerState.Defend:
                 anim.SetBool("Defend", false);
@@ -288,9 +288,9 @@ public class Character : MonoBehaviourPun, IPunObservable
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append(" 이 사망하였습니다");
         string deadString = builder.ToString();
-        photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+        photonView.RPC("SendLogToPlayers", RpcTarget.All, deadString);
     }
-    
+
     [PunRPC]
     public void SendLogToPlayers(string msg)
     {

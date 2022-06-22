@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2808123207901944846}
   - component: {fileID: 2783223017380095274}
   - component: {fileID: 2790616953508678224}
-  - component: {fileID: -2682599000729738203}
+  - component: {fileID: -5328863322664154866}
   m_Layer: 0
   m_Name: snow_block_1_LOD0
   m_TagString: Untagged
@@ -80,7 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &-2682599000729738203
+--- !u!114 &-5328863322664154866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

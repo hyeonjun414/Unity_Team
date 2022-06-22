@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 641703517387342354}
   - component: {fileID: 620597109481954758}
   - component: {fileID: 628851314146336678}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: block_wood2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
