@@ -136,6 +136,13 @@ public class InRoomPanel : MonoBehaviour
     {
         startGameButton.gameObject.SetActive(CheckPlayersReady());
     }
+    // public void LocalPlayerPropertiesUpdateForAllPlayers(Button[] buttons)
+    // {
+    //     for(int i=0; i<buttons.Length;++i)
+    //     {
+    //         buttons[i].gameObject.SetActive(!CheckPlayersReady());
+    //     }
+    // }
 
     public void OnPlayerEnteredRoom(Player newPlayer)
     {

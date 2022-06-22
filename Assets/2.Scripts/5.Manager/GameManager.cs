@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             if (CheckAllPlayerLoadLevel())
             {
+                
                 object characterIndex=0;
                 PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(GameData.PLAYER_INDEX,out characterIndex);
                 StartCoroutine(StartCountDown((int)characterIndex));

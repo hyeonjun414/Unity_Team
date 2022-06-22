@@ -78,6 +78,12 @@ public class PlayerEntry : MonoBehaviour
         {
             LobbyManager.instance.LocalPlayerPropertiesUpdated();
         }
+
+        // Button[] buttons = new Button[2];
+        // buttons[0] = rightClickButton;
+        // buttons[1] = leftClickButton;
+        // LobbyManager.instance.LocalPlayerPropertiesUpdateForAllPlayers(buttons);
+
     }
 
     public void Initialize(int playerId, string playerName)
