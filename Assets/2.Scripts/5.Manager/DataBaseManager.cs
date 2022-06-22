@@ -145,12 +145,12 @@ public class DataBaseManager : Singleton<DataBaseManager>
                     if(data.Key == UID)
                     {
                         IDictionary dicUserData = (IDictionary)data.Value;
-                         Debug.Log("에러1.5: "+dicUserData["nickName"]);
+
                         returnString =
                             (dicUserData["nickName"].ToString() +"$"+ 
                              dicUserData["totalGames"].ToString() +"$"+
                              dicUserData["winGames"].ToString());     
-                        Debug.Log("에러2: "+returnString);   
+
                     }
                     else
                     {
@@ -233,7 +233,7 @@ public class DataBaseManager : Singleton<DataBaseManager>
     //     isTaskFinished = false;
     // }
 
-
+    
 #region test
         public void WriteNickName(string emailID, string nickName)
     {

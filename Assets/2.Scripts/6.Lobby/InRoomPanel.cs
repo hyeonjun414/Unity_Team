@@ -191,10 +191,10 @@ public class InRoomPanel : MonoBehaviour
     {        
         // Hashtable props = new Hashtable() { { GameData.PLAYER_READY, localPlayerIsReady } };
         // PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-        Debug.Log("에러1: "+UID);
+
         DataBaseManager.Instance.ReadPlayerInfo(UID,(str)=>{
             String value = str;
-            Debug.Log("에러3: "+str);
+
             
             string[] words = value.Split('$');
             //닉네임 $ 총판수 $ 승리수
@@ -249,6 +249,7 @@ public class InRoomPanel : MonoBehaviour
             startGameButton.gameObject.SetActive(false);
         }
     }
+    
 
     public void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -298,4 +299,7 @@ public class InRoomPanel : MonoBehaviour
             }
         }
     }
+
+    
+
 }
