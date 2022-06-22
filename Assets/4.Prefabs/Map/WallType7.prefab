@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8679234505577447547}
   m_Layer: 11
   m_Name: WallType7
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dde11e912dc8b94cad62413123631e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  opaqueMat: {fileID: 0}
+  transparentMat: {fileID: 0}
 --- !u!65 &8679234505577447547
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -75,6 +77,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182039048982143763, guid: a71741719d70d35418789ef2ef089bdf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 9185248968290392177, guid: a71741719d70d35418789ef2ef089bdf,
         type: 3}
@@ -210,6 +217,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 642570444187873752, guid: b43fdceb837d4b540997b46bc43036a1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b43fdceb837d4b540997b46bc43036a1, type: 3}

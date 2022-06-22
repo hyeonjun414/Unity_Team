@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -217251102000414585}
   m_Layer: 11
   m_Name: WallType6
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dde11e912dc8b94cad62413123631e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  opaqueMat: {fileID: 0}
+  transparentMat: {fileID: 0}
 --- !u!65 &-217251102000414585
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78,6 +80,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271547000960852703, guid: 455056f109b3128418c88734b3d1e13b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 2273675166859044013, guid: 455056f109b3128418c88734b3d1e13b,
         type: 3}
@@ -159,6 +166,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 2271547000960852703, guid: 455056f109b3128418c88734b3d1e13b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 2273675166859044013, guid: 455056f109b3128418c88734b3d1e13b,
         type: 3}
       propertyPath: m_RootOrder
@@ -238,6 +250,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271547000960852703, guid: 455056f109b3128418c88734b3d1e13b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 2273675166859044013, guid: 455056f109b3128418c88734b3d1e13b,
         type: 3}
@@ -374,6 +391,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 4023222877970137976, guid: b90da5c9861f1ca4b8ccacad7b485dbe,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b90da5c9861f1ca4b8ccacad7b485dbe, type: 3}
 --- !u!4 &6144488614547253925 stripped
@@ -398,6 +420,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271547000960852703, guid: 455056f109b3128418c88734b3d1e13b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 2273675166859044013, guid: 455056f109b3128418c88734b3d1e13b,
         type: 3}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -938974550896864037}
   m_Layer: 11
   m_Name: WallType3
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dde11e912dc8b94cad62413123631e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  opaqueMat: {fileID: 0}
+  transparentMat: {fileID: 0}
 --- !u!65 &-938974550896864037
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -75,6 +77,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140039954379664530, guid: 205ea8bd190d7b84fb39dc05ff3ff00b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 6141898767418244130, guid: 205ea8bd190d7b84fb39dc05ff3ff00b,
         type: 3}
@@ -155,6 +162,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140039954379664530, guid: 205ea8bd190d7b84fb39dc05ff3ff00b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 6141898767418244130, guid: 205ea8bd190d7b84fb39dc05ff3ff00b,
         type: 3}

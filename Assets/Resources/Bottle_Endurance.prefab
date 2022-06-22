@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4471729931723013785}
   - component: {fileID: 4377389596184031233}
   - component: {fileID: 4378077351601280711}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GlowParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9479,9 +9479,9 @@ GameObject:
   - component: {fileID: 8430931366105325036}
   - component: {fileID: -200258870148664702}
   - component: {fileID: -3728225972931593684}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bottle_Endurance
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9599,7 +9599,7 @@ GameObject:
   - component: {fileID: 4500729930426718313}
   - component: {fileID: 4490446376814606947}
   - component: {fileID: 4562552490539315813}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bottle_green
   m_TagString: Untagged
   m_Icon: {fileID: 0}

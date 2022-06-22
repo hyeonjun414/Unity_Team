@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 7549907469899943871}
   - component: {fileID: 2080774667240559770}
   - component: {fileID: -151659933898762236}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bottle_Mana
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 5682510982444716026}
   - component: {fileID: 5507075146411867096}
   - component: {fileID: 5481053543414391202}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GlowParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4883,7 +4883,7 @@ GameObject:
   - component: {fileID: 5667600950783402272}
   - component: {fileID: 5657601125629693840}
   - component: {fileID: 5729672040739024872}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bottle_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}

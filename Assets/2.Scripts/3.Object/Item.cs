@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
     private void Awake()
     {
         curTile = MapManager.Instance.map.GetTileNode(transform.position);
-        curTile.eOnTileObject = eTileOccupation.OCCUPIED;
+        curTile.eOnTileObject = eTileOccupation.ITEM;
         Invoke("ItemDestroy", holdingTime);
     }
 

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Note
   - NoteInit
+  - FxTemporaire
+  - Wall
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -19,7 +22,7 @@ TagManager:
   - Minimap
   - Map
   - Wall
-  - 
+  - Item
   - 
   - 
   - 
