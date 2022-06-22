@@ -11,16 +11,19 @@ public class InRoomPanel : MonoBehaviour
     [HideInInspector]
     public bool isEnterKeyEnabled=false;
     [Header("RoomPanel")]
-    public GameObject RoomPanel;
     public TMP_Text[] ChatText;
     public TMP_InputField ChatInput;
     
     
     public GameObject playerListContent;
     public Button startGameButton;
-    public GameObject playerEntryPrefab;
+    public Button readyGameButton;
+    public TMP_Text readyButtonText;
+    public PlayerEntry playerEntryPrefab;
 
-    private Dictionary<int, GameObject> playerListEntries;
+    private Dictionary<int, PlayerEntry> playerListEntries;
+
+    private bool localPlayerIsReady = false;
 
     private void Update()
     {
@@ -33,37 +36,52 @@ public class InRoomPanel : MonoBehaviour
     }
     private void OnEnable()
     {
-        ChatInput.Select();
+        //ChatInput.Select();
         isEnterKeyEnabled = true;
         if (playerListEntries == null)
         {
-            playerListEntries = new Dictionary<int, GameObject>();
+            playerListEntries = new Dictionary<int, PlayerEntry>();
         }
 
         foreach (Player p in PhotonNetwork.PlayerList)
         {
-            GameObject entry = Instantiate(playerEntryPrefab);
+            PlayerEntry entry = Instantiate(playerEntryPrefab);
             entry.transform.SetParent(playerListContent.transform);
             entry.transform.SetPositionAndRotation(playerListContent.transform.position,Quaternion.identity);
             entry.transform.localScale = Vector3.one;
-            entry.GetComponent<PlayerEntry>().Initialize(p.ActorNumber, p.NickName);
+            entry.Initialize(p.ActorNumber, p.NickName);
 
-            object isPlayerReady;
-            if (p.CustomProperties.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
-            {
-                entry.GetComponent<PlayerEntry>().SetPlayerReady((bool)isPlayerReady);
-            }
+           
 
             object characterIndex;
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
             {
-                entry.GetComponent<PlayerEntry>().SetPlayerCharacter((int)characterIndex);
+                entry.SetPlayerCharacter((int)characterIndex);
             }
+
+            
         
 
             playerListEntries.Add(p.ActorNumber, entry);
         }
 
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // 마스터 클라이언트만 게임시작을 나타내고 다른 플레이어가 준비상태가 아니라면 버튼을 상호작용 불가상태로 만든다.
+            // 로딩 완료의 플레이어가 마스터 클라이언트를 제외하므로 -1을 해야한다.
+            LocalPlayerPropertiesUpdated();
+            startGameButton.gameObject.SetActive(true);
+            readyGameButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            // 마스터 클라이언트가 아니라며 게임시작 버튼을 비활성화 하고 
+            localPlayerIsReady = false;
+            readyButtonText.text = "준비";
+            startGameButton.gameObject.SetActive(false);
+            readyGameButton.gameObject.SetActive(true);
+        }
 
         startGameButton.gameObject.SetActive(CheckPlayersReady());
 
@@ -78,7 +96,7 @@ public class InRoomPanel : MonoBehaviour
     private void OnDisable()
     {
         isEnterKeyEnabled = false;
-        foreach (GameObject entry in playerListEntries.Values)
+        foreach (PlayerEntry entry in playerListEntries.Values)
         {
             Destroy(entry.gameObject);
         }
@@ -86,13 +104,11 @@ public class InRoomPanel : MonoBehaviour
         playerListEntries.Clear();
         playerListEntries = null;
     }
-    public void RoomRenewal()
-    {
-
-    }
 
     public void OnLeaveRoomClicked()
     {
+        Hashtable props = new Hashtable() { { GameData.PLAYER_READY, false } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         PhotonNetwork.LeaveRoom();
     }
 
@@ -102,6 +118,26 @@ public class InRoomPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
         PhotonNetwork.LoadLevel("mapTest"); 
+    }
+
+    public void OnReadyGameButtonClicked()
+    {
+        localPlayerIsReady = !localPlayerIsReady;
+        FindLocalPlayerEntry()?.SetPlayerReadyImage(localPlayerIsReady);
+
+        Hashtable props = new Hashtable() { { GameData.PLAYER_READY, localPlayerIsReady } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            LocalPlayerPropertiesUpdated();
+        }
+    }
+
+    public PlayerEntry FindLocalPlayerEntry()
+    {
+        // 자기 자신의 엔트리를 가져옴
+        return playerListEntries[PhotonNetwork.LocalPlayer.ActorNumber];
     }
 
     private bool CheckPlayersReady()
@@ -114,6 +150,7 @@ public class InRoomPanel : MonoBehaviour
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             object isPlayerReady;
+            if (p == PhotonNetwork.MasterClient) continue;
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
             {
                 if (!(bool)isPlayerReady)
@@ -134,28 +171,34 @@ public class InRoomPanel : MonoBehaviour
 
     public void LocalPlayerPropertiesUpdated()
     {
-        startGameButton.gameObject.SetActive(CheckPlayersReady());
+        startGameButton.interactable = CheckPlayersReady();
+        //startGameButton.gameObject.SetActive(CheckPlayersReady());
     }
-    // public void LocalPlayerPropertiesUpdateForAllPlayers(Button[] buttons)
-    // {
-    //     for(int i=0; i<buttons.Length;++i)
-    //     {
-    //         buttons[i].gameObject.SetActive(!CheckPlayersReady());
-    //     }
-    // }
 
     public void OnPlayerEnteredRoom(Player newPlayer)
     {
-        GameObject entry = Instantiate(playerEntryPrefab);
+        PlayerEntry entry = Instantiate(playerEntryPrefab);
         entry.transform.SetPositionAndRotation(playerListContent.transform.position,Quaternion.identity);
         entry.transform.SetParent(playerListContent.transform);
-        //entry.transform.position = Vector3.zero;
         entry.transform.localScale = Vector3.one;
-        entry.GetComponent<PlayerEntry>().Initialize(newPlayer.ActorNumber, newPlayer.NickName);
+        entry.Initialize(newPlayer.ActorNumber, newPlayer.NickName);
 
         playerListEntries.Add(newPlayer.ActorNumber, entry);
 
-        startGameButton.gameObject.SetActive(CheckPlayersReady());
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // 마스터 클라이언트만 게임시작을 나타내고 다른 플레이어가 준비상태가 아니라면 버튼을 상호작용 불가상태로 만든다.
+            // 로딩 완료의 플레이어가 마스터 클라이언트를 제외하므로 -1을 해야한다.
+            LocalPlayerPropertiesUpdated();
+            readyGameButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            // 마스터 클라이언트가 아니라며 게임시작 버튼을 비활성화 하고 
+            localPlayerIsReady = false;
+            readyButtonText.text = "준비";
+            startGameButton.gameObject.SetActive(false);
+        }
     }
 
     public void OnPlayerLeftRoom(Player otherPlayer)
@@ -163,14 +206,17 @@ public class InRoomPanel : MonoBehaviour
         Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
         playerListEntries.Remove(otherPlayer.ActorNumber);
 
-        startGameButton.gameObject.SetActive(CheckPlayersReady());
+        startGameButton.interactable = CheckPlayersReady();
     }
 
     public void OnMasterClientSwitched(Player newMasterClient)
     {
         if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
         {
-            startGameButton.gameObject.SetActive(CheckPlayersReady());
+            readyGameButton.gameObject.SetActive(false);
+            startGameButton.gameObject.SetActive(true);
+            startGameButton.interactable = CheckPlayersReady();
+            FindLocalPlayerEntry().SetPlayerReadyImage(false);
         }
     }
 
@@ -178,20 +224,20 @@ public class InRoomPanel : MonoBehaviour
     {
         if (playerListEntries == null)
         {
-            playerListEntries = new Dictionary<int, GameObject>();
+            playerListEntries = new Dictionary<int, PlayerEntry>();
         }
 
-        GameObject entry;
+        PlayerEntry entry;
         if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
         {
             object isPlayerReady;
             if (changedProps.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
             {
-                entry.GetComponent<PlayerEntry>().SetPlayerReady((bool)isPlayerReady);
+                entry.SetPlayerReadyImage((bool)isPlayerReady);
             }
         }
 
-        startGameButton.gameObject.SetActive(CheckPlayersReady());
+        startGameButton.interactable = CheckPlayersReady();
         
 
         if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
