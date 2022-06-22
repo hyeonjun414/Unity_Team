@@ -61,7 +61,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     [Header("Player Info")]
     public string nickName;
-    public NickNameOnPlayer nameOnPlayer;
+    private NickNameOnPlayer nameOnPlayer;
 
     [Header("Player State")]
     public CharacterStatus stat;
@@ -159,6 +159,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        nameOnPlayer = GetComponentInChildren<NickNameOnPlayer>();
+
 
         inputCommand = gameObject.AddComponent<CharacterInput>();
         inputCommand.SetUp(this);
@@ -197,7 +199,6 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SetUp()
     {
-        CinemachineVirtualCamera virtualCamera=null;
         if (photonView.IsMine)
         {
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = camPos;
@@ -207,7 +208,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         Map map = MapManager.Instance.map;
         nickName = photonView.Owner.NickName;
         
-        nameOnPlayer.SetNickName(nickName,virtualCamera);
+        nameOnPlayer.SetNickName(nickName);
 
         Point vec = map.startPos[photonView.Owner.GetPlayerNumber()];
         // 자신의 최초 노드를 지정

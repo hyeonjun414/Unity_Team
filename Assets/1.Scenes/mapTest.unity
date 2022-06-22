@@ -994,6 +994,7 @@ MonoBehaviour:
   serverText: {fileID: 1279937884}
   pingText: {fileID: 850943242}
   infoText: {fileID: 160096979}
+  data: {fileID: 0}
   spawnPos: []
 --- !u!114 &211671992
 MonoBehaviour:
@@ -1071,7 +1072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4102f409ce5e914c9e09c4f06d6dbfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limitTime: 0
+  limitTime: 300
   timer: {fileID: 2044995185}
 --- !u!114 &211671996
 MonoBehaviour:
