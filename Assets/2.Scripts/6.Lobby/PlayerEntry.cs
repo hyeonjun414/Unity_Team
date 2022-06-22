@@ -13,8 +13,6 @@ public class PlayerEntry : MonoBehaviour
 {
     [Header("UI References")]
     public TMP_Text playerNameText;
-    public Button playerReadyButton;
-    public Image playerReadyImage;
     public Image characterPanel;
     [Header("Character")]
     public CharacterData characterData;
@@ -25,7 +23,10 @@ public class PlayerEntry : MonoBehaviour
     public int characterDataSize;
     public Button rightClickButton;
     public Button leftClickButton;
-    
+
+    [Header("Ready")]
+    public GameObject readyImage;
+
     private int ownerId;
     private bool isPlayerReady;
 
@@ -34,7 +35,6 @@ public class PlayerEntry : MonoBehaviour
         characterDataSize = characterData.players.Length;
         if (PhotonNetwork.LocalPlayer.ActorNumber != ownerId)
         {
-            playerReadyButton.gameObject.SetActive(false);
             rightClickButton.gameObject.SetActive(false);
             leftClickButton.gameObject.SetActive(false);
         }
@@ -49,6 +49,7 @@ public class PlayerEntry : MonoBehaviour
     }
     public void OnRightButtonClicked()
     {
+        if (isPlayerReady) return;
         //characterData.players[++characterIndex];
 
         ++characterIndex;
@@ -60,30 +61,13 @@ public class PlayerEntry : MonoBehaviour
     }
     public void OnLeftButtonClicked()
     {
+        if (isPlayerReady) return;
+
         --characterIndex;
         if(characterIndex<=0)characterIndex = characterDataSize-1;
         SetPlayerCharacter(characterIndex);
         Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-    }
-    public void OnReadyButtonClicked()
-    {
-        isPlayerReady = !isPlayerReady;
-        SetPlayerReady(isPlayerReady);
-
-        Hashtable props = new Hashtable() { { GameData.PLAYER_READY, isPlayerReady } };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            LobbyManager.instance.LocalPlayerPropertiesUpdated();
-        }
-
-        // Button[] buttons = new Button[2];
-        // buttons[0] = rightClickButton;
-        // buttons[1] = leftClickButton;
-        // LobbyManager.instance.LocalPlayerPropertiesUpdateForAllPlayers(buttons);
-
     }
 
     public void Initialize(int playerId, string playerName)
@@ -92,28 +76,19 @@ public class PlayerEntry : MonoBehaviour
         playerNameText.text = playerName;
     }
 
-    public void SetPlayerReady(bool playerReady)
+    public void SetPlayerReadyImage(bool playerReady)
     {
-        playerReadyImage.color = playerReady ? Color.green : Color.red;
+        isPlayerReady = playerReady;
+        readyImage.SetActive(playerReady);
     }
 
     public void SetPlayerCharacter(int index)
     {
-
-        // StringBuilder stringBuilder = new StringBuilder();
-        // stringBuilder.Append("CharactersEmpty/Character");
-        // stringBuilder.Append(index.ToString("D2"));
-        // string stringMerged = stringBuilder.ToString();
-        // GameObject obj = PhotonNetwork.Instantiate(stringMerged,characterPanel.transform.position,Quaternion.identity);
-        // obj.transform.SetParent(characterPanel.transform);
-        // obj.transform.rotation = Quaternion.Euler(0,180,0);
-        // obj.transform.localScale = new Vector3(100f,100f,100f);
-        // obj.transform.position = new Vector3(0,0,0);
         for(int i=0; i<characterDataSize;++i)
         {
-            (characterSet.transform.GetChild(i)).gameObject.SetActive(false);
+            characterSet.transform.GetChild(i).gameObject.SetActive(false);
         }
-        GameObject charac = (characterSet.transform.GetChild(index)).gameObject;
+        GameObject charac = characterSet.transform.GetChild(index).gameObject;
         charac.SetActive(true);
         DummyPlayer dummy = charac.GetComponent<DummyPlayer>();
         int randomAnim = Random.Range(1,4);
