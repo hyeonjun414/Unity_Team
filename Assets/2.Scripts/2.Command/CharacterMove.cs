@@ -14,21 +14,22 @@ public class CharacterMove : MoveCommand
     }
     public void MoveToNode()
     {
+
         if (player.eCurInput == ePlayerInput.MOVE_LEFT)
         {
-            MoveNextNode(new Point(0, -1));
+            MoveNextNode(new Point(0, -player.stat.playerMoveDistance));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_RIGHT)
         {
-            MoveNextNode(new Point(0, 1));
+            MoveNextNode(new Point(0, player.stat.playerMoveDistance));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_UP)
         {
-            MoveNextNode(new Point(-1, 0));
+            MoveNextNode(new Point(-player.stat.playerMoveDistance, 0));
         }
         else if (player.eCurInput == ePlayerInput.MOVE_DOWN)
         {
-            MoveNextNode(new Point(1, 0));
+            MoveNextNode(new Point(player.stat.playerMoveDistance, 0));
         }
     }
     private IEnumerator MoveRoutine(Point point)

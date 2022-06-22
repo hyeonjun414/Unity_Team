@@ -45,6 +45,7 @@ public enum PlayerState
 [System.Serializable]
 public class CharacterStatus
 {
+    public int playerMoveDistance=1;
     public int damage;
     public int hp;
     public Point curPos;
@@ -60,11 +61,45 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     [Header("Player Info")]
     public string nickName;
+    public NickNameOnPlayer nameOnPlayer;
 
     [Header("Player State")]
     public CharacterStatus stat;
     public ePlayerInput eCurInput = ePlayerInput.NULL;
     public PlayerState state = PlayerState.Normal;
+    private int killStreak;//연속킬
+    public int KillStreak
+    {
+        get{return killStreak;}
+        set
+        {
+            killStreak = value;
+
+            var builder = new StringBuilder();
+            if(killStreak==3)
+            {             
+                builder.Append(PhotonNetwork.LocalPlayer.NickName);
+                builder.Append(" 을 막을 수 없습니다");
+                string deadString = builder.ToString();
+                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+            }
+            if(killStreak==4)
+            {            
+                builder.Append(PhotonNetwork.LocalPlayer.NickName);
+                builder.Append(" 이 게임을 지배하고 있습니다");
+                string deadString = builder.ToString();
+                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+            }
+            if(killStreak==4)
+            {            
+                builder.Append(PhotonNetwork.LocalPlayer.NickName);
+                builder.Append(" 이 미쳐 날뛰고 있습니다");
+                string deadString = builder.ToString();
+                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+            }
+
+        }
+    }
     public int defenceCount;
     public int DC
     {
@@ -134,7 +169,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
-
+        //Debug.Log("확인"+PhotonNetwork.NickName);
         Dir = PlayerDir.Right;
 
         float angle = 0f;
@@ -162,16 +197,18 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SetUp()
     {
+        CinemachineVirtualCamera virtualCamera=null;
         if (photonView.IsMine)
         {
             GameObject.Find("LocalCamera").GetComponent<CinemachineVirtualCamera>().Follow = camPos;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-            
-            
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);   
         }
         Map map = MapManager.Instance.map;
         nickName = photonView.Owner.NickName;
+        
+        nameOnPlayer.SetNickName(nickName,virtualCamera);
+
         Point vec = map.startPos[photonView.Owner.GetPlayerNumber()];
         // 자신의 최초 노드를 지정
         TileNode tile = map.GetTileNode(vec);
@@ -219,6 +256,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void CharacterReset()
     {
         stat = new CharacterStatus();
+        stat.playerMoveDistance=1;
         stat.damage = 1;
         stat.hp = 5;
         stat.curPos.y = 0;
@@ -226,7 +264,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         stat.currentCombo = 0;
         stat.killCount = 0;
         stat.deathCount = 0;
-
     }
 
     [PunRPC]
@@ -295,7 +332,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
 
         if (!photonView.IsMine) return;
-
+        KillStreak = 0;
         var builder = new StringBuilder();
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append(" 이 사망하였습니다");

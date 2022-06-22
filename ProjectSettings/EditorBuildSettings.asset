@@ -5,13 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scenes/LoginAuthScene.unity
     guid: 79d286cd1b0af254f98c0d3ab57f89d8
   - enabled: 1
     path: Assets/1.Scenes/NewLobbyScene.unity
     guid: a4e5c9476310cdb45aef1efd2cbd7096
   - enabled: 1
-    path: Assets/1.Scenes/JHJ/mapTest.unity
-    guid: 6c48db51dbf24e84fb6eef038d7abaea
+    path: Assets/1.Scenes/mapTest.unity
+    guid: f280dda53c124ec4c9da2d8eb9a0d304
+  - enabled: 0
+    path: Assets/1.Scenes/JSY/mapTest.unity
+    guid: 032d779c90d425c4fa76de8799008d49
   m_configObjects: {}

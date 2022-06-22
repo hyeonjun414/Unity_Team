@@ -124,6 +124,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         inRoomPanel.LocalPlayerPropertiesUpdated();
     }
+    // public void LocalPlayerPropertiesUpdateForAllPlayers(Button[] buttons)
+    // {
+    //     inRoomPanel.LocalPlayerPropertiesUpdateForAllPlayers(buttons);
+    // }
 
     #endregion
 

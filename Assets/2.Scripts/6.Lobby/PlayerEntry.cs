@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using System.Text;
+using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using ExitGames.Client.Photon;
@@ -12,18 +15,57 @@ public class PlayerEntry : MonoBehaviour
     public TMP_Text playerNameText;
     public Button playerReadyButton;
     public Image playerReadyImage;
-
+    public Image characterPanel;
+    [Header("Character")]
+    public CharacterData characterData;
+    public GameObject characterSet;
+    [HideInInspector]
+    public int characterIndex;
+    [HideInInspector]
+    public int characterDataSize;
+    public Button rightClickButton;
+    public Button leftClickButton;
+    
     private int ownerId;
     private bool isPlayerReady;
 
     public void Start()
     {
+        characterDataSize = characterData.players.Length;
         if (PhotonNetwork.LocalPlayer.ActorNumber != ownerId)
         {
             playerReadyButton.gameObject.SetActive(false);
+            rightClickButton.gameObject.SetActive(false);
+            leftClickButton.gameObject.SetActive(false);
         }
-    }
+        else
+        {
+            characterIndex = Random.Range(0,characterDataSize);
+            SetPlayerCharacter(characterIndex);
+            Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        }
 
+    }
+    public void OnRightButtonClicked()
+    {
+        //characterData.players[++characterIndex];
+
+        ++characterIndex;
+        if(characterIndex>=characterDataSize)characterIndex = 0;
+        SetPlayerCharacter(characterIndex);
+        Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+    }
+    public void OnLeftButtonClicked()
+    {
+        --characterIndex;
+        if(characterIndex<=0)characterIndex = characterDataSize-1;
+        SetPlayerCharacter(characterIndex);
+        Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+    }
     public void OnReadyButtonClicked()
     {
         isPlayerReady = !isPlayerReady;
@@ -36,6 +78,12 @@ public class PlayerEntry : MonoBehaviour
         {
             LobbyManager.instance.LocalPlayerPropertiesUpdated();
         }
+
+        // Button[] buttons = new Button[2];
+        // buttons[0] = rightClickButton;
+        // buttons[1] = leftClickButton;
+        // LobbyManager.instance.LocalPlayerPropertiesUpdateForAllPlayers(buttons);
+
     }
 
     public void Initialize(int playerId, string playerName)
@@ -47,5 +95,37 @@ public class PlayerEntry : MonoBehaviour
     public void SetPlayerReady(bool playerReady)
     {
         playerReadyImage.color = playerReady ? Color.green : Color.red;
+    }
+
+    public void SetPlayerCharacter(int index)
+    {
+
+        // StringBuilder stringBuilder = new StringBuilder();
+        // stringBuilder.Append("CharactersEmpty/Character");
+        // stringBuilder.Append(index.ToString("D2"));
+        // string stringMerged = stringBuilder.ToString();
+        // GameObject obj = PhotonNetwork.Instantiate(stringMerged,characterPanel.transform.position,Quaternion.identity);
+        // obj.transform.SetParent(characterPanel.transform);
+        // obj.transform.rotation = Quaternion.Euler(0,180,0);
+        // obj.transform.localScale = new Vector3(100f,100f,100f);
+        // obj.transform.position = new Vector3(0,0,0);
+        for(int i=0; i<characterDataSize;++i)
+        {
+            (characterSet.transform.GetChild(i)).gameObject.SetActive(false);
+        }
+        GameObject charac = (characterSet.transform.GetChild(index)).gameObject;
+        charac.SetActive(true);
+        DummyPlayer dummy = charac.GetComponent<DummyPlayer>();
+        int randomAnim = Random.Range(1,4);
+        switch(randomAnim)
+        {
+            case 1:dummy.anim.SetTrigger("Wave Hand"); break;
+            case 2:dummy.anim.SetTrigger("Clapping"); break;
+            case 3:dummy.anim.SetTrigger("Victory"); break;
+        }
+
+        characterIndex = index;
+
+
     }
 }

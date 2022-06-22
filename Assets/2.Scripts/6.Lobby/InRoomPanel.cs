@@ -44,6 +44,7 @@ public class InRoomPanel : MonoBehaviour
         {
             GameObject entry = Instantiate(playerEntryPrefab);
             entry.transform.SetParent(playerListContent.transform);
+            entry.transform.SetPositionAndRotation(playerListContent.transform.position,Quaternion.identity);
             entry.transform.localScale = Vector3.one;
             entry.GetComponent<PlayerEntry>().Initialize(p.ActorNumber, p.NickName);
 
@@ -53,8 +54,16 @@ public class InRoomPanel : MonoBehaviour
                 entry.GetComponent<PlayerEntry>().SetPlayerReady((bool)isPlayerReady);
             }
 
+            object characterIndex;
+            if (p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
+            {
+                entry.GetComponent<PlayerEntry>().SetPlayerCharacter((int)characterIndex);
+            }
+        
+
             playerListEntries.Add(p.ActorNumber, entry);
         }
+
 
         startGameButton.gameObject.SetActive(CheckPlayersReady());
 
@@ -92,7 +101,7 @@ public class InRoomPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        PhotonNetwork.LoadLevel("mapTest 1");
+        PhotonNetwork.LoadLevel("mapTest"); 
     }
 
     private bool CheckPlayersReady()
@@ -121,15 +130,26 @@ public class InRoomPanel : MonoBehaviour
         return true;
     }
 
+
+
     public void LocalPlayerPropertiesUpdated()
     {
         startGameButton.gameObject.SetActive(CheckPlayersReady());
     }
+    // public void LocalPlayerPropertiesUpdateForAllPlayers(Button[] buttons)
+    // {
+    //     for(int i=0; i<buttons.Length;++i)
+    //     {
+    //         buttons[i].gameObject.SetActive(!CheckPlayersReady());
+    //     }
+    // }
 
     public void OnPlayerEnteredRoom(Player newPlayer)
     {
         GameObject entry = Instantiate(playerEntryPrefab);
+        entry.transform.SetPositionAndRotation(playerListContent.transform.position,Quaternion.identity);
         entry.transform.SetParent(playerListContent.transform);
+        //entry.transform.position = Vector3.zero;
         entry.transform.localScale = Vector3.one;
         entry.GetComponent<PlayerEntry>().Initialize(newPlayer.ActorNumber, newPlayer.NickName);
 
@@ -172,5 +192,15 @@ public class InRoomPanel : MonoBehaviour
         }
 
         startGameButton.gameObject.SetActive(CheckPlayersReady());
+        
+
+        if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
+        {
+            object characterIndex;
+            if (changedProps.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
+            {
+                entry.GetComponent<PlayerEntry>().SetPlayerCharacter((int)characterIndex);
+            }
+        }
     }
 }

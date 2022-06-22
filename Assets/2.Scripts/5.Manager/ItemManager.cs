@@ -49,6 +49,9 @@ public class ItemManager : Singleton<ItemManager>
             case ItemType.SEEINGTHORUGH:
                 SeeingThrough(player);
                 break;
+            case ItemType.BREAKWALL:
+                BreakWall(player);
+                break;
         }
     }
 
@@ -76,15 +79,18 @@ public class ItemManager : Singleton<ItemManager>
     public void PowerUpPotion(Character player)
     {
         //공격력이 2배로 증가
-        Debug.Log(player.nickName + "의 공격력이 두 배로 증가합니다.");
+        //후에 틱(노트)당으로 변경하기
+        StartCoroutine(TwiceDamage(player,5f));
+        Debug.Log(player.name + "의 공격력이 두 배로 증가합니다.");
     }
+
 
     public void DashItem(Character player)
     {
         //같은 이동을 한 턴에 연속 두번 처리
         //이동 종류: 오른쪽 회전, 왼쪽 회전, 앞, 뒤, 좌, 우
         //앞뒤좌우 이동 시 같은 방향으로 2칸 이동, Vector로는 2씩 이동
-
+        StartCoroutine(TwiceMoveDIstance(player,5f));
         //현 아이템이 사용 되면
         Debug.Log(player.nickName + "의 이동이 두 배로 증가합니다.");
     }
@@ -92,8 +98,36 @@ public class ItemManager : Singleton<ItemManager>
     public void SeeingThrough(Character player)
     {
         //벽 투시
+        // GameObject wall = Resources.Load<GameObject>("Wall");
+        // MeshRenderer renderer = (wall.transform.GetChild(0)).GetComponent<MeshRenderer>();
+        // Material[] wallMaterial = renderer.sharedMaterials;
+        
+        RaycastHit target;
+        if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
+        {
+            Wall wall= target.collider.gameObject.GetComponent<Wall>();
+            if (wall != null)
+            {
+                StartCoroutine(TransparentTroughWall(wall, 5f));
+            }
+        }      
         //오브젝트 알파값
         Debug.Log(player.nickName + "이(가) 벽을 투시합니다.");
+    }
+
+    public void BreakWall(Character player)
+    {
+        RaycastHit target;
+        if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
+        {
+            Wall wall= target.collider.gameObject.GetComponent<Wall>();
+            if (wall != null)
+            {
+                //후에 애니메이션이나 폭발or 부서지는 이펙트 추가
+                Destroy(wall.gameObject);
+            }
+        }
+        Debug.Log(player.name + "가 벽을 부숩니다");
     }
 
 
@@ -118,6 +152,24 @@ public class ItemManager : Singleton<ItemManager>
         Debug.Log("아이템 순서를 바꿉니다.");
       
     }
-
+    IEnumerator TwiceMoveDIstance(Character player, float time)
+    {
+        player.stat.playerMoveDistance +=1;
+        yield return new WaitForSeconds(time);
+        player.stat.playerMoveDistance -=1;
+    }
+    IEnumerator TwiceDamage(Character player,float time)
+    {
+        player.stat.damage +=1;
+        yield return new WaitForSeconds(time);
+        player.stat.damage -=1;
+    }
+    IEnumerator TransparentTroughWall(Wall wall , float time)
+    {
+        Debug.Log("들어왔니");
+        wall.UpdateMaterial(true);
+        yield return new WaitForSeconds(time);
+        wall.UpdateMaterial(false);
+    }
 
 }

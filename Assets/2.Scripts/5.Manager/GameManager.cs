@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Text;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public Text serverText;
     public Text pingText;
     public Text infoText;
+    public CharacterData data;
     public Transform[] spawnPos;
 
     private void Awake()
@@ -49,9 +51,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (changedProps.ContainsKey(GameData.PLAYER_LOAD))
         {
+
             if (CheckAllPlayerLoadLevel())
             {
-                StartCoroutine(StartCountDown());
+                
+                object characterIndex=0;
+                PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(GameData.PLAYER_INDEX,out characterIndex);
+                StartCoroutine(StartCountDown((int)characterIndex));
+
             }
             else
             {
@@ -75,7 +82,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #endregion PHOTON CALLBACK
 
-    private IEnumerator StartCountDown()
+    private IEnumerator StartCountDown(int index)
     {
         PrintInfo("All Player Loaded, Start Count Down");
         yield return new WaitForSeconds(1.0f);
@@ -87,8 +94,31 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         PrintInfo("Start Game!");
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append("Characters/Character");
+        if(++index ==19) index =1;
+        stringBuilder.Append(index.ToString("D2"));
+        string characterIndexString = stringBuilder.ToString();
+        PhotonNetwork.Instantiate(characterIndexString, Vector3.zero, Quaternion.identity, 0);
+
         
-        PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
+
+        // StringBuilder stringBuilder = new StringBuilder();
+        // stringBuilder.Append("Characters/Character");
+        // int index = 0;
+        // object characterIndex;
+        // photonView.Owner.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex);
+        // index = (int)characterIndex;
+        // if(++index ==19) index =1;
+        
+        // stringBuilder.Append(index.ToString("D2"));
+        //Debug.Log("1 "+index);
+        
+        
+        //Debug.Log("2 "+characterIndexString);
+        
     }
 
     private bool CheckAllPlayerLoadLevel()
