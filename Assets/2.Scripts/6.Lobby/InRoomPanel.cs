@@ -101,7 +101,7 @@ public class InRoomPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        PhotonNetwork.LoadLevel("mapTest");
+        PhotonNetwork.LoadLevel("mapTest"); 
     }
 
     private bool CheckPlayersReady()
@@ -185,6 +185,7 @@ public class InRoomPanel : MonoBehaviour
         }
 
         startGameButton.gameObject.SetActive(CheckPlayersReady());
+        
 
         if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
         {

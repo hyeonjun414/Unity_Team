@@ -1076,6 +1076,7 @@ MonoBehaviour:
   serverText: {fileID: 1279937884}
   pingText: {fileID: 850943242}
   infoText: {fileID: 160096979}
+  data: {fileID: 11400000, guid: a4fda9769a26e67479eddc63e9dae2ad, type: 2}
   spawnPos: []
 --- !u!114 &211671992
 MonoBehaviour:

@@ -201,7 +201,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         Map map = MapManager.Instance.map;
         nickName = photonView.Owner.NickName;
         
-        nameOnPlayer.SetNickName(nickName,virtualCamera);
+        //nameOnPlayer.SetNickName(nickName,virtualCamera);
 
         Point vec = map.startPos[photonView.Owner.GetPlayerNumber()];
         // 자신의 최초 노드를 지정
@@ -258,7 +258,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         stat.currentCombo = 0;
         stat.killCount = 0;
         stat.deathCount = 0;
-
     }
 
     [PunRPC]

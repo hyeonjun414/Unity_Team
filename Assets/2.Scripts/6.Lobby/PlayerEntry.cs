@@ -120,5 +120,6 @@ public class PlayerEntry : MonoBehaviour
 
         characterIndex = index;
 
+
     }
 }
