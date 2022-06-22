@@ -18,8 +18,8 @@ public class Wall : MonoBehaviour
     }
     private void Start()
     {
-        curTile = MapManager.Instance.map.GetTileNode(transform.position);
-        curTile.eOnTileObject = eTileOccupation.WALL;
+//        curTile = MapManager.Instance.map.GetTileNode(transform.position);
+//        curTile.eOnTileObject = eTileOccupation.OCCUPIED;
     }
     public void UpdateMaterial(bool isTransparent)
     {

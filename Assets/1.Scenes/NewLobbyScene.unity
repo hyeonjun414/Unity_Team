@@ -499,6 +499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNameInput: {fileID: 103126261}
   nameData: {fileID: 11400000, guid: c75a6d6220c2d6b4c9e4fb63d5496cbf, type: 2}
+  loginButton: {fileID: 1976800409}
 --- !u!1 &98911062
 GameObject:
   m_ObjectHideFlags: 0
@@ -3680,6 +3681,7 @@ GameObject:
   - component: {fileID: 484014393}
   - component: {fileID: 484014392}
   - component: {fileID: 484014394}
+  - component: {fileID: 484014395}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -3754,6 +3756,18 @@ MonoBehaviour:
   sceneViewId: 500
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &484014395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484014390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13bd6025463ac42468e196a6bcecce16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &485687591
 GameObject:
   m_ObjectHideFlags: 0

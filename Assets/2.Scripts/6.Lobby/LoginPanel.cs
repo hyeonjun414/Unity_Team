@@ -7,11 +7,31 @@ public class LoginPanel : MonoBehaviour
 {
     public TMP_InputField playerNameInput;
     public NickNameData nameData;
+    public Button loginButton;
     void Start()
     {
-        //playerNameInput.text = "Player " + Random.Range(1000, 10000);
-        playerNameInput.text = nameData.prefix[Random.Range(0, nameData.prefix.Length)] +" "+
+        if(DataBaseManager.isLoginEmail)
+        {
+            loginButton.gameObject.SetActive(false);
+            playerNameInput.gameObject.SetActive(false);
+        }
+        else
+        {
+            playerNameInput.text = nameData.prefix[Random.Range(0, nameData.prefix.Length)] +" "+
             nameData.suffix[Random.Range(0, nameData.suffix.Length)];
+        }
+
+    }
+    public void NickNameSet()
+    {
+        if(DataBaseManager.isLoginEmail)
+        {
+            DataBaseManager.Instance.ReadDB(DataBaseManager.userID,"nickName",(str)=>{
+                PhotonNetwork.LocalPlayer.NickName = str;
+
+                PhotonNetwork.ConnectUsingSettings();
+            });
+        }
     }
 
     public void OnLoginButtonClicked()

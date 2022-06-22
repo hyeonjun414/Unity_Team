@@ -7,15 +7,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+public enum eBlendMode
+{
+    Opaque,
+    Cutout,
+    Transparent,
+    Fade,
+}
 public class ItemManager : Singleton<ItemManager>
 {
+    eBlendMode blendMode;
     public List<ItemData> itemList = new List<ItemData>();
     public ItemSlotUI itemSlotUI;
     public int maxCount = 2;
 
     public ParticleSystem particleEffect;
 
+    public Material wallMaterial;
 
 
     private void Start()
@@ -95,6 +103,73 @@ public class ItemManager : Singleton<ItemManager>
         Debug.Log(player.nickName + "의 이동이 두 배로 증가합니다.");
     }
 
+
+    public void ChangeRender(eBlendMode mode)
+    {
+        blendMode = mode;
+        int minRenderQueue = -1;
+        int maxRenderQueue = 5000;
+        int defaultRenderQueue = -1;
+        switch (blendMode)
+        {
+            case eBlendMode.Opaque:
+                wallMaterial.SetOverrideTag("RenderType", "");
+                wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                wallMaterial.SetInt("_ZWrite", 1);
+                wallMaterial.DisableKeyword("_ALPHATEST_ON");
+                wallMaterial.DisableKeyword("_ALPHABLEND_ON");
+                wallMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                minRenderQueue = -1;
+                maxRenderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest - 1;
+                defaultRenderQueue = -1;
+
+                wallMaterial.color = new Color(wallMaterial.color.r,wallMaterial.color.g,wallMaterial.color.b,1f);
+                break;
+            case eBlendMode.Cutout:
+                wallMaterial.SetOverrideTag("RenderType", "TransparentCutout");
+                wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                wallMaterial.SetInt("_ZWrite", 1);
+                wallMaterial.EnableKeyword("_ALPHATEST_ON");
+                wallMaterial.DisableKeyword("_ALPHABLEND_ON");
+                wallMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                minRenderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
+                maxRenderQueue = (int)UnityEngine.Rendering.RenderQueue.GeometryLast;
+                defaultRenderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
+                break;
+            case eBlendMode.Fade:
+                wallMaterial.SetOverrideTag("RenderType", "Transparent");
+                wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                wallMaterial.SetInt("_ZWrite", 0);
+                wallMaterial.DisableKeyword("_ALPHATEST_ON");
+                wallMaterial.EnableKeyword("_ALPHABLEND_ON");
+                wallMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                minRenderQueue = (int)UnityEngine.Rendering.RenderQueue.GeometryLast + 1;
+                maxRenderQueue = (int)UnityEngine.Rendering.RenderQueue.Overlay - 1;
+                defaultRenderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                break;
+            case eBlendMode.Transparent:
+                wallMaterial.SetOverrideTag("RenderType", "Transparent");
+                wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                wallMaterial.SetInt("_ZWrite", 0);
+                wallMaterial.DisableKeyword("_ALPHATEST_ON");
+                wallMaterial.DisableKeyword("_ALPHABLEND_ON");
+                wallMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                minRenderQueue = (int)UnityEngine.Rendering.RenderQueue.GeometryLast + 1;
+                maxRenderQueue = (int)UnityEngine.Rendering.RenderQueue.Overlay - 1;
+                defaultRenderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+                wallMaterial.color = new Color(wallMaterial.color.r,wallMaterial.color.g,wallMaterial.color.b,0.4f);
+                break;
+        }
+    }
+    public void test()
+    {
+        StartCoroutine(TransparentTroughWall(5f));
+    }
     public void SeeingThrough(Character player)
     {
         //벽 투시
@@ -102,15 +177,21 @@ public class ItemManager : Singleton<ItemManager>
         // MeshRenderer renderer = (wall.transform.GetChild(0)).GetComponent<MeshRenderer>();
         // Material[] wallMaterial = renderer.sharedMaterials;
         
-        RaycastHit target;
-        if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
-        {
-            Wall wall= target.collider.gameObject.GetComponent<Wall>();
-            if (wall != null)
-            {
-                StartCoroutine(TransparentTroughWall(wall, 5f));
-            }
-        }      
+        // RaycastHit target;
+        // if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
+        // {
+        //     Wall wall= target.collider.gameObject.GetComponent<Wall>();
+        //     if (wall != null)
+        //     {
+        //         StartCoroutine(TransparentTroughWall(wall, 5f));
+        //     }
+        // }      
+
+
+
+        StartCoroutine(TransparentTroughWall(5f));
+
+
         //오브젝트 알파값
         Debug.Log(player.nickName + "이(가) 벽을 투시합니다.");
     }
@@ -164,12 +245,11 @@ public class ItemManager : Singleton<ItemManager>
         yield return new WaitForSeconds(time);
         player.stat.damage -=1;
     }
-    IEnumerator TransparentTroughWall(Wall wall , float time)
+    IEnumerator TransparentTroughWall(float time)
     {
-        Debug.Log("들어왔니");
-        wall.UpdateMaterial(true);
+        ChangeRender(eBlendMode.Transparent);
         yield return new WaitForSeconds(time);
-        wall.UpdateMaterial(false);
+        ChangeRender(eBlendMode.Opaque);
     }
 
 }
