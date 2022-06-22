@@ -79,21 +79,21 @@ public class Character : MonoBehaviourPun, IPunObservable
             if(killStreak==3)
             {             
                 builder.Append(PhotonNetwork.LocalPlayer.NickName);
-                builder.Append(" 을 막을 수 없습니다");
+                builder.Append("을(를) 막을 수 없습니다");
                 string deadString = builder.ToString();
                 photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
             }
             if(killStreak==4)
             {            
                 builder.Append(PhotonNetwork.LocalPlayer.NickName);
-                builder.Append(" 이 게임을 지배하고 있습니다");
+                builder.Append("이(가) 게임을 지배하고 있습니다");
                 string deadString = builder.ToString();
                 photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
             }
             if(killStreak==4)
             {            
                 builder.Append(PhotonNetwork.LocalPlayer.NickName);
-                builder.Append(" 이 미쳐 날뛰고 있습니다");
+                builder.Append("이(가) 미쳐 날뛰고 있습니다");
                 string deadString = builder.ToString();
                 photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
             }
@@ -336,9 +336,11 @@ public class Character : MonoBehaviourPun, IPunObservable
         KillStreak = 0;
         var builder = new StringBuilder();
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
-        builder.Append(" 이 사망하였습니다");
+        builder.Append("이(가) 사망하였습니다");
         string deadString = builder.ToString();
         photonView.RPC("SendLogToPlayers", RpcTarget.All, deadString);
+        photonView.RPC("SendLogToPlayersDead", RpcTarget.All);
+        
     }
 
     [PunRPC]
@@ -346,6 +348,16 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         anim.SetTrigger("Die");
         GameLogManager.Instance.AddQueue(msg);
+    }
+
+    [PunRPC]
+    public void SendLogToPlayersDead(){
+        BattleManager.Instance.PlayerOut(this);
+
+    }
+
+    public void GetResultMessage(){
+
     }
 
     private void OnCollisionEnter(Collision other)

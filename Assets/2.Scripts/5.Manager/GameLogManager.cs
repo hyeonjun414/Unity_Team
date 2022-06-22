@@ -22,20 +22,20 @@ public class GameLogManager : Singleton<GameLogManager>
     public void AddQueue(string msg)
     {
         eventQueue.Enqueue(msg);
-        if(eventQueue.Count==1)
+        if(eventQueue.Count == 1)
         {
             StartCoroutine(ShowLogOnScreen(msg));
         }
     }
     IEnumerator ShowLogOnScreen(string msg)
     {
-        while(eventQueue.Count>0)
+        while(eventQueue.Count > 0)
         {
             yield return new WaitForSeconds(0.5f);
             GameObject obj = Instantiate(Resources.Load<GameObject>("FloatingTextCanvas"),Vector3.zero,Quaternion.identity);
             TMP_Text text = (obj.transform.GetChild(0))?.GetComponent<TMP_Text>();
             text.text = msg;
-            if(eventQueue.Count>0) eventQueue.Dequeue();
+            if(eventQueue.Count > 0) eventQueue.Dequeue();
             yield return new WaitForSeconds(1f);
             Destroy(obj);
         }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviourPun
 {
@@ -31,6 +32,9 @@ public class BattleManager : MonoBehaviourPun
     [Header("Text")]
 
     public Text resultText;
+    public GameObject resultTextObj;
+    private void Start() {
+    }
 
 
 
@@ -42,7 +46,7 @@ public class BattleManager : MonoBehaviourPun
     }
 
     private void Update() {
-        //FinalWinner();
+        FinalWinner();
     }
 
 
@@ -92,8 +96,6 @@ public class BattleManager : MonoBehaviourPun
         RhythmManager.Instance.isBeat = true;
     }
 
-
-
     //플레이어가 죽었을 때 판정
     public void PlayerOut(Character deadPL){
 
@@ -103,24 +105,50 @@ public class BattleManager : MonoBehaviourPun
         deadPlayer.Add(deadPL);
     }
 
+    [PunRPC]
+    public void BattleOverMessage()
+    {
+        resultTextObj.SetActive(true);
 
-    public void BattleOverMessage(){
+        string myNickName = PhotonNetwork.LocalPlayer.NickName;
+
         //플레이어가 죽지 않았을 때
         foreach(Character player in alivePlayer){
-            resultText.text = "YOU WIN!";
+            if(player.nickName == myNickName)
+            {
+                resultText.text = "YOU WIN!";
+                return;
+            }
        }
         //플레이어가 죽었을 때
         foreach(Character player in deadPlayer){
-            resultText.text = "YOU LOSE!";
+            if(player.nickName == myNickName)
+            {
+                resultText.text = "YOU LOSE!";
+                return;
+            }
         }
+
     }
     
+    
+
     //플레이어가 한 명 남았을 때 그라운드를 끝냄.
+
     public void FinalWinner(){
         if(alivePlayer.Count == 1){
             //각 플레이어들에게 메시지를 보냄.
-            BattleOverMessage();
+            //BattleOverMessage();
+            Debug.Log("게임이 끝났습니다.");
+            photonView.RPC("BattleOverMessage", RpcTarget.All);
+
         }
+    }
+
+    IEnumerator GameOver(){
+        yield return new WaitForSeconds(3f);  
+        SceneManager.LoadScene("NewLobbyScene");
+
     }
 
 }
