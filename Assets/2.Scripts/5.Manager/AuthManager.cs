@@ -86,8 +86,15 @@ public class AuthManager : Singleton<AuthManager>
                 else
                 {
                     user = task.Result;
+                    DataBaseManager.isLoginEmail=true;
+                    DataBaseManager.Instance.GetUserID(idField.text,(str)=>{
+                        DataBaseManager.userID = str;
+                        LobbyManager.instance.loginPanel.NickNameSet();
+                        
+                    });
                     StartCoroutine(ErrorMessage(user.Email+"확인"));
                     Debug.Log(user.Email);
+                    
                     SceneManager.LoadScene("NewLobbyScene");
                 }
 
