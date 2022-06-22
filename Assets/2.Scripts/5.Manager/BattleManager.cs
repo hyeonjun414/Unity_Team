@@ -128,7 +128,6 @@ public class BattleManager : MonoBehaviourPun
                 return;
             }
         }
-
     }
     
     
@@ -145,10 +144,14 @@ public class BattleManager : MonoBehaviourPun
         }
     }
 
+
+    /*
     IEnumerator GameOver(){
         yield return new WaitForSeconds(3f);  
         SceneManager.LoadScene("NewLobbyScene");
 
     }
+
+    */
 
 }

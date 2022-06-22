@@ -181,4 +181,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         BattleManager.Instance.RegisterAllPlayer();
     }
 
+
+    IEnumerator GoToEndingScene(){
+        yield return new WaitForSeconds(3f);
+        //PhotonNetwork
+    }
+
+    public void GotoEnding(){
+        if(!PhotonNetwork.IsMasterClient)
+        {
+            Debug.LogError("PhotonNetwork : Trying to load a level but we are not the master Client");
+        }
+       // PhotonNetwork.LoadLevel()
+    }
+
+
 }
