@@ -393,7 +393,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     private void Die()
     {
         ++(stat.deathCount);
-        if (!photonView.IsMine) return;
+        //if (!photonView.IsMine) return;
 
         state = PlayerState.Dead;
         if(photonView.IsMine)

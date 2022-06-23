@@ -1518,6 +1518,7 @@ MonoBehaviour:
   - {fileID: 7378869442130515112}
   - {fileID: 6654743689538091291}
   nickName: 
+  playerId: 0
   stat:
     playerMoveDistance: 1
     damage: 0
@@ -1537,6 +1538,10 @@ MonoBehaviour:
   inputCommand: {fileID: 0}
   moveCommand: {fileID: 0}
   actionCommand: {fileID: 0}
+  attackSound: {fileID: 0}
+  attackMissSound: {fileID: 0}
+  shieldSound: {fileID: 0}
+  getItemSound: {fileID: 0}
   camPos: {fileID: 4426714954687848135}
   stunEffect: {fileID: 8979888785911371022}
   shieldEffect: {fileID: 7012852634407452626}

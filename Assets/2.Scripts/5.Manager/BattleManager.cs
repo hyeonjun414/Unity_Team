@@ -26,7 +26,7 @@ public class BattleManager : MonoBehaviourPun
 
 
     [Header("Player")]
-    public List<Character> players;
+
     //살아있는 플레이어 
     public List<Character> alivePlayer;
     //사망한 플레이어
