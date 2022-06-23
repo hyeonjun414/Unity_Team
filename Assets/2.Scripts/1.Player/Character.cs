@@ -133,6 +133,14 @@ public class Character : MonoBehaviourPun, IPunObservable
     public CharacterMove moveCommand;
     public CharacterAction actionCommand;
 
+    [Header("Audio Effect")]
+    public AudioClip attackSound;
+    public AudioClip attackMissSound;
+    public AudioClip shieldSound;
+    public AudioClip getItemSound;
+    AudioSource audioSource;
+
+
     [Header("Cam")]
     public Transform camPos;
 
@@ -160,6 +168,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         anim = GetComponent<Animator>();
         nameOnPlayer = GetComponentInChildren<NickNameOnPlayer>();
+        this.audioSource = GetComponent<AudioSource>();
 
 
         inputCommand = gameObject.AddComponent<CharacterInput>();
@@ -275,6 +284,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         stat.hp -= damageInt;
         anim.SetTrigger("Hit");
+        audioSource.PlayOneShot(attackSound);
+
         if (stat.hp <= 0)
         {
             Die();
@@ -284,11 +295,17 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void Attack()
     {
         anim.SetTrigger("Attack");
+        audioSource.PlayOneShot(attackMissSound);
+
+
     }
     [PunRPC]
     public void Block()
     {
+        PlaySound((int)eCurInput);
         shieldEffect.gameObject.SetActive(true);
+        audioSource.PlayOneShot(shieldSound);
+
         anim.SetBool("Defend", true);
         DC = 5;
         state = PlayerState.Defend;
@@ -403,4 +420,46 @@ public class Character : MonoBehaviourPun, IPunObservable
             Dir = (PlayerDir)stream.ReceiveNext();
         }
     }
+
+
+    [PunRPC]
+    void PlaySound(int inputType){
+        ePlayerInput eCurInput = (ePlayerInput)inputType;
+        switch(eCurInput){
+            
+            case ePlayerInput.ATTACK:
+            audioSource.PlayOneShot(attackSound);
+            break;
+
+            case ePlayerInput.BLOCK:
+            audioSource.PlayOneShot(shieldSound);
+            break;
+        }
+    }
+
+ //캐릭터 부활
+
+    [PunRPC]
+    public void Revive(){
+
+        //캐릭터 목숨 리셋
+        stat.hp = 5;
+        StartCoroutine(Revival());
+
+    }
+
+
+    IEnumerator Revival(){
+        yield return new WaitForSeconds(5f);
+        //애니메이션 리셋 
+
+    }
+
+
+
+
+
+
+
 }
+
