@@ -7,7 +7,6 @@ using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using Cinemachine;
-using Photon.Realtime;
 
 public enum ePlayerInput
 {
@@ -395,7 +394,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         
         // 죽은 대상이 해당 클라이언트 플레이어가 아니라면 실행하지 않는다.
         if (!photonView.IsMine) return;
-        ++(stat.deathCount);
+        ++stat.deathCount;
         state = PlayerState.Dead;
         if(photonView.IsMine)
         {

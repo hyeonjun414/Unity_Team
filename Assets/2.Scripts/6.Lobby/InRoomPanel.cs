@@ -35,6 +35,9 @@ public class InRoomPanel : MonoBehaviour
     public TMP_Text loseTimes;
     public TMP_Text winRate;
 
+    [Header("RoomSetting Panel")]
+    public RoomSettingPanel settingPanel;
+
     private void Update()
     {
         if(!isEnterKeyEnabled)return;
@@ -71,6 +74,8 @@ public class InRoomPanel : MonoBehaviour
             }
 
             playerListEntries.Add(p.ActorNumber, entry);
+
+            settingPanel.SetUp();
         }
         
    
