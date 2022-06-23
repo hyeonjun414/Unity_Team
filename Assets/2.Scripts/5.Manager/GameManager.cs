@@ -95,29 +95,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         PrintInfo("Start Game!");
 
+        PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append("Characters/Character");
-        if(++index ==19) index =1;
-        stringBuilder.Append(index.ToString("D2"));
-        string characterIndexString = stringBuilder.ToString();
-        PhotonNetwork.Instantiate(characterIndexString, Vector3.zero, Quaternion.identity, 0);
-
-        
-
-        // StringBuilder stringBuilder = new StringBuilder();
-        // stringBuilder.Append("Characters/Character");
-        // int index = 0;
-        // object characterIndex;
-        // photonView.Owner.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex);
-        // index = (int)characterIndex;
-        // if(++index ==19) index =1;
-        
-        // stringBuilder.Append(index.ToString("D2"));
-        //Debug.Log("1 "+index);
-        
-        
-        //Debug.Log("2 "+characterIndexString);
         
     }
 

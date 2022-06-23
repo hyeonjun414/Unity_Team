@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun;
+using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using Cinemachine;
 
@@ -59,6 +60,9 @@ public class Character : MonoBehaviourPun, IPunObservable
     [Header("Node")]
     public TileNode curNode;
 
+    [Header("Custom")]
+    public GameObject[] characterform;   
+    
     [Header("Player Info")]
     public string nickName;
     private NickNameOnPlayer nameOnPlayer;
@@ -171,7 +175,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
-        //Debug.Log("확인"+PhotonNetwork.NickName);
         Dir = PlayerDir.Right;
 
         float angle = 0f;
@@ -193,7 +196,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         RhythmManager.Instance.OnRhythmHit += RhythmOnChange;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
-        CamManager.Instance.miniMapCam.GetComponent<CameraLock>().EnableCamera();
+        CamManager.Instance.miniMapCam.GetComponent<CameraLock>().EnableCamera(this);
     }
 
     [PunRPC]
@@ -201,30 +204,50 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-/*            GameObject playerObj = GameObject.Find("LocalCamera");
-            playerObj.GetComponent<CinemachineVirtualCamera>().Follow = camPos;
-            CameraTransparent camTrans = playerObj.GetComponent<CameraTransparent>();
-            camTrans.SetPlayer(this);*/
             CamManager.Instance.FollowPlayerCam(this);
             CamManager.Instance.ActiveCam(CamType.Player);
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(props);   
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         }
+        Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;
-        nickName = photonView.Owner.NickName;
-        
+        // 닉네임 지정
+        nickName = ownerPlayer.NickName;
         nameOnPlayer.SetNickName(nickName);
 
-        Point vec = map.startPos[photonView.Owner.GetPlayerNumber()];
+        // 노드 위치 지정
+        Point vec = map.startPos[ownerPlayer.GetPlayerNumber()];
+
         // 자신의 최초 노드를 지정
         TileNode tile = map.GetTileNode(vec);
         curNode = tile;
         CharacterReset();
 
+        // 플레이어 외형 지정
+        object characterIndex;
+        if (ownerPlayer.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
+        {
+            int index = (int)characterIndex;
+            for(int i = 0; i<characterform.Length; i++)
+            {
+                if(i == index)
+                {
+                    // 인덱스에 해당하는 캐릭터를 활성화하고 animator를 연결함.
+                    characterform[i].SetActive(true);
+                    anim = characterform[i].GetComponent<Animator>();
+                }
+                else
+                {
+                    characterform[i].SetActive(false);
+                }
+            }
+        }
+
+
         // 현재 플레이어 위치 = 최초 노드 위치
         stat.curPos = curNode.tilePos;
         curNode.eOnTileObject = eTileOccupation.PLAYER;
-        transform.position = tile.transform.position + Vector3.up * 0.5f;
+        transform.position = tile.transform.position + Vector3.up;
         anim.speed = 2f;
 
 
@@ -241,8 +264,6 @@ public class Character : MonoBehaviourPun, IPunObservable
             moveCommand.Execute();
             actionCommand.Execute();
         }
-
-
         eCurInput = ePlayerInput.NULL;
     }
     public bool RhythmHit()
@@ -336,9 +357,9 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
-        
-        // if (!photonView.IsMine) return;
 
+        // if (!photonView.IsMine) return;
+        state = PlayerState.Dead;
         CamManager.Instance.ActiveCam(CamType.Dead);
         KillStreak = 0;
         var builder = new StringBuilder();
@@ -363,9 +384,6 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     }
 
-    public void GetResultMessage(){
-
-    }
 
     private void OnCollisionEnter(Collision other)
     {
@@ -376,13 +394,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Vector3 playerPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-
-        Debug.DrawRay(playerPos, transform.forward, Color.green);
-
-    }
     [PunRPC]
     public void SetCommand(ePlayerInput input, int curY, int curX)
     {

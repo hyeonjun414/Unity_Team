@@ -142,7 +142,6 @@ public class BattleManager : MonoBehaviourPun
             //BattleOverMessage();
             Debug.Log("게임이 끝났습니다.");
             photonView.RPC("BattleOverMessage", RpcTarget.All);
-
         }
     }
 

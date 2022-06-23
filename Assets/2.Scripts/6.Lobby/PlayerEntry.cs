@@ -50,7 +50,6 @@ public class PlayerEntry : MonoBehaviour
     public void OnRightButtonClicked()
     {
         if (isPlayerReady) return;
-        //characterData.players[++characterIndex];
 
         ++characterIndex;
         if(characterIndex>=characterDataSize)characterIndex = 0;
@@ -98,8 +97,6 @@ public class PlayerEntry : MonoBehaviour
             case 2:dummy.anim.SetTrigger("Clapping"); break;
             case 3:dummy.anim.SetTrigger("Victory"); break;
         }
-
-        characterIndex = index;
 
 
     }
