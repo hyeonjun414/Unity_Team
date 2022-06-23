@@ -1530,6 +1530,7 @@ MonoBehaviour:
     deathCount: 0
   eCurInput: 0
   state: 0
+  isRegen: 0
   defenceCount: 0
   stunCount: 0
   roteCommand: {fileID: 0}
@@ -1540,6 +1541,7 @@ MonoBehaviour:
   stunEffect: {fileID: 8979888785911371022}
   shieldEffect: {fileID: 7012852634407452626}
   anim: {fileID: 0}
+  coll: {fileID: 0}
   dir: 0
 --- !u!114 &167766027733695763
 MonoBehaviour:
@@ -29347,13 +29349,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6499236460664562051}
-  m_LocalRotation: {x: 0.2588191, y: -0, z: -0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: 0.17298737, y: -0.085831694, z: 0.015134441, w: 0.98106027}
+  m_LocalPosition: {x: 0.5, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 470816017258877339}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: -10, z: 0}
 --- !u!1 &6654743689538046227
 GameObject:
   m_ObjectHideFlags: 0

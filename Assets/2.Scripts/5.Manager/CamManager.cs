@@ -7,6 +7,7 @@ public enum CamType
 {
     Player,
     Dead,
+    Map
 }
 
 public class CamManager : MonoBehaviour

@@ -72,6 +72,9 @@ public class Character : MonoBehaviourPun, IPunObservable
     public ePlayerInput eCurInput = ePlayerInput.NULL;
     public PlayerState state = PlayerState.Normal;
     private int killStreak;//연속킬
+
+    [Header("Option")]
+    public bool isRegen = false;
     public int KillStreak
     {
         get{return killStreak;}
@@ -147,6 +150,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     [HideInInspector]
     public Animator anim;
+    public BoxCollider coll;
     public PlayerDir dir;
     public PlayerDir Dir
     {
@@ -163,6 +167,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        coll = GetComponent<BoxCollider>();
         nameOnPlayer = GetComponentInChildren<NickNameOnPlayer>();
 
 
@@ -250,6 +255,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         transform.position = tile.transform.position + Vector3.up;
         anim.speed = 2f;
 
+        isRegen = true;
 
     }
 
@@ -357,24 +363,56 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
+        if (!photonView.IsMine) return;
 
-        // if (!photonView.IsMine) return;
         state = PlayerState.Dead;
-        CamManager.Instance.ActiveCam(CamType.Dead);
+        if(photonView.IsMine)
+        {
+            CamManager.Instance.ActiveCam(CamType.Dead);
+            
+        }
         KillStreak = 0;
+        anim.SetTrigger("Die");
         var builder = new StringBuilder();
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append("이(가) 사망하였습니다");
         string deadString = builder.ToString();
         photonView.RPC("SendLogToPlayers", RpcTarget.All, deadString);
         photonView.RPC("SendLogToPlayersDead", RpcTarget.All);
+
+        if(isRegen && photonView.IsMine)
+        {
+            // 부활이 가능하고 해당 클라이언트의 플레이어라면
+            // 해당 클라이언트에 부활 UI를 표기한다.
+            BattleManager.Instance.regenUI.RegenStart(this);
+        }
         
+    }
+    [PunRPC]
+    public void Revive(int y, int x)
+    {
+        curNode.eOnTileObject = eTileOccupation.EMPTY;
+        curNode = null;
+
+        // 체력 채우고, 위치 초기화하고, 애니메이션 Idle 실행시키기
+        if(photonView.IsMine)
+        {
+            CamManager.Instance.ActiveCam(CamType.Player);
+        }
+        state = PlayerState.Normal;
+        stat.hp = 5;
+        curNode = MapManager.Instance.map.GetTileNode(new Point(y, x));
+        stat.curPos = curNode.tilePos;
+        anim.Play("Idle");
+        curNode.eOnTileObject = eTileOccupation.PLAYER;
+        transform.position = curNode.transform.position + Vector3.up;
+
     }
 
     [PunRPC]
     public void SendLogToPlayers(string msg)
     {
-        anim.SetTrigger("Die");
+        
         GameLogManager.Instance.AddQueue(msg);
     }
 

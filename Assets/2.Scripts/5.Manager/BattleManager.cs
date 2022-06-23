@@ -10,34 +10,20 @@ using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviourPun
 {
-    //input 종류 - null(입력실패) , 움직임, 회전, 공격, 방어, 아이템사용, 슬롯체인지
-    //null , 슬롯체인지는 영향없음
-    //의식의 흐름()=> 매 노트카운트 끝부분 콜라이더에 닿으면 
-    //InputCheckManager.Judge() 호출 => MoveJudge => ActualMovement => Judge 
-    //=> 플레이어 키 입력 가능하게 초기화
-    [HideInInspector]
-    public int isReadyCount = 0;
-
-    public List<Character> players;
-
-
     [Header("Player")]
-
+    public List<Character> players;
     //살아있는 플레이어 
     public List<Character> alivePlayer;
     //사망한 플레이어
     public List<Character> deadPlayer;
 
-
     [Header("Text")]
-
     public Text resultText;
     public GameObject resultTextObj;
-    private void Start() {
-    }
 
-
-
+    [Header("UI")]
+    public RegenUI regenUI;
+  
     public static BattleManager Instance { get; private set; }
     private void Awake()
     {
@@ -45,11 +31,52 @@ public class BattleManager : MonoBehaviourPun
 
     }
 
-    private void Update() {
-        FinalWinner();
+    public void SetUpMode()
+    {
+        object mode;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out mode))
+        {
+            int modeNum = (int)mode;
+            switch (modeNum)
+            {
+                case 0:
+                    SetUpDeathMatch();
+                    break;
+                case 1:
+                    SetUpDeathMatch();
+                    break;
+                case 2:
+                    SetUpTimerMode();
+                    break;
+            }
+        }
     }
 
+    private void Update() {
+        //FinalWinner();
+    }
 
+    public void SetUpDeathMatch()
+    {
+
+    }
+    
+    public void SetUpOneShotMode()
+    {
+        // 한대 맞으면 죽는 데스매치
+        foreach(Character p in players)
+        {
+            p.stat.hp = 1;
+        }
+    }
+    public void SetUpTimerMode()
+    {
+        TimeManager.Instance.limitTime = 180f;
+        foreach (Character p in players)
+        {
+            p.isRegen = true;
+        }
+    }
 
     public void RegisterAllPlayer()
     {
@@ -58,42 +85,6 @@ public class BattleManager : MonoBehaviourPun
         //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
         alivePlayer = FindObjectsOfType<Character>().ToList();
 
-    }
-
-
-    public void Judge()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-
-        }
-        //CheckPlayersAvailability();
-        //AttackJudge();
-        //ItemJudge();
-
-    }
-    public void CheckPlayersAvailability()
-    {
-        // 플레이어 명령 기반
-        // 입력이 없다면 NULL 
-
-    }
-
-    public void AttackJudge()
-    {
-
-    }
-    public void ItemJudge()
-    {
-    }
-    [PunRPC]
-    public void ResetPlayers()
-    {
-        foreach (Character player in players)
-        {
-            //player.eCurInput = ePlayerInput.NULL;
-        }
-        RhythmManager.Instance.isBeat = true;
     }
 
     //플레이어가 죽었을 때 판정

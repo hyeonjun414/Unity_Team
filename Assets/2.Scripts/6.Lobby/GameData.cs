@@ -11,7 +11,7 @@ public class GameData : MonoBehaviour
     public const string PLAYER_GEN = "Character";
 
     public const string PLAYER_INDEX = "PlayerIndex";
-    
+    public const string GAME_MODE = "GameMode";
     public static Color GetColor(int playerNumber)
     {
         switch(playerNumber)

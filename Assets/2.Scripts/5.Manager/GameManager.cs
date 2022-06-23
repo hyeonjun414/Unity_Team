@@ -84,6 +84,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private IEnumerator StartCountDown(int index)
     {
+
+        // TODO : 선택된 맵을 생성해야함.
+
         PrintInfo("All Player Loaded, Start Count Down");
         yield return new WaitForSeconds(1.0f);
 
@@ -97,7 +100,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0);
 
-        
+        yield return new WaitForSeconds(1.0f);
+        infoText.gameObject.SetActive(false);
     }
 
     private bool CheckAllPlayerLoadLevel()
