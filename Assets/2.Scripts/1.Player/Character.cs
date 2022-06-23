@@ -193,7 +193,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         RhythmManager.Instance.OnRhythmHit += RhythmOnChange;
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
-        GameObject.Find("MinimapCamera").GetComponent<CameraLock>().EnableCamera();
+        CamManager.Instance.miniMapCam.GetComponent<CameraLock>().EnableCamera();
     }
 
     [PunRPC]
@@ -201,10 +201,12 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            GameObject playerObj = GameObject.Find("LocalCamera");
+/*            GameObject playerObj = GameObject.Find("LocalCamera");
             playerObj.GetComponent<CinemachineVirtualCamera>().Follow = camPos;
             CameraTransparent camTrans = playerObj.GetComponent<CameraTransparent>();
-            camTrans.SetPlayer(this);
+            camTrans.SetPlayer(this);*/
+            CamManager.Instance.FollowPlayerCam(this);
+            CamManager.Instance.ActiveCam(CamType.Player);
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);   
         }
@@ -334,8 +336,10 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
+        
+        // if (!photonView.IsMine) return;
 
-        if (!photonView.IsMine) return;
+        CamManager.Instance.ActiveCam(CamType.Dead);
         KillStreak = 0;
         var builder = new StringBuilder();
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
@@ -390,15 +394,11 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            //stream.SendNext(transform.position);
-            //stream.SendNext(transform.rotation);
             stream.SendNext(state);
             stream.SendNext(Dir);
         }
         else
         {
-            //transform.position = (Vector3)stream.ReceiveNext();
-            //transform.rotation = (Quaternion)stream.ReceiveNext();
             state = (PlayerState)stream.ReceiveNext();
             Dir = (PlayerDir)stream.ReceiveNext();
         }

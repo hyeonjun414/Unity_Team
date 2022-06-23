@@ -136,7 +136,8 @@ public class BattleManager : MonoBehaviourPun
     //플레이어가 한 명 남았을 때 그라운드를 끝냄.
 
     public void FinalWinner(){
-        if(alivePlayer.Count == 1){
+        if(alivePlayer.Count == 1 && PhotonNetwork.IsMasterClient){
+            
             //각 플레이어들에게 메시지를 보냄.
             //BattleOverMessage();
             Debug.Log("게임이 끝났습니다.");
@@ -146,13 +147,5 @@ public class BattleManager : MonoBehaviourPun
     }
 
 
-    /*
-    IEnumerator GameOver(){
-        yield return new WaitForSeconds(3f);  
-        SceneManager.LoadScene("NewLobbyScene");
-
-    }
-
-    */
 
 }
