@@ -10,5 +10,5 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ResultSceneManager : MonoBehaviourPun
 {
-
+    
 }

@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Cinemachine;
+using Photon.Realtime;
 
 public enum ePlayerInput
 {
@@ -62,6 +63,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     [Header("Player Info")]
     public string nickName;
     private NickNameOnPlayer nameOnPlayer;
+    public int playerId;
 
     [Header("Player State")]
     public CharacterStatus stat;
@@ -90,7 +92,7 @@ public class Character : MonoBehaviourPun, IPunObservable
                 string deadString = builder.ToString();
                 photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
             }
-            if(killStreak==4)
+            if(killStreak==5)
             {            
                 builder.Append(PhotonNetwork.LocalPlayer.NickName);
                 builder.Append("이(가) 미쳐 날뛰고 있습니다");
@@ -210,7 +212,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
         Map map = MapManager.Instance.map;
         nickName = photonView.Owner.NickName;
-        
+
         nameOnPlayer.SetNickName(nickName);
 
         Point vec = map.startPos[photonView.Owner.GetPlayerNumber()];
@@ -271,13 +273,23 @@ public class Character : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    public void Damaged(int damageInt)
+    public void Damaged(int damageInt, int actorNum)
     {
         stat.hp -= damageInt;
+
         anim.SetTrigger("Hit");
         if (stat.hp <= 0)
         {
+            
+            foreach (Player p in PhotonNetwork.PlayerList)
+            {
+                if(actorNum == p.ActorNumber)
+                {
+                    p.AddScore(1);
+                }
+            }
             Die();
+            
         }
     }
     [PunRPC]
@@ -334,7 +346,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
-
+        ++(stat.deathCount);
         if (!photonView.IsMine) return;
         KillStreak = 0;
         var builder = new StringBuilder();

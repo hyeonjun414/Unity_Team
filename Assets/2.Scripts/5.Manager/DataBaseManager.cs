@@ -52,8 +52,36 @@ public class DataBaseManager : Singleton<DataBaseManager>
         // ReadDB("awIhaxye4IOqouz6XCJZMjcvWmB2","emailID", (str) =>{
         //     Debug.Log(str);
         // });
-    }
+        //ReadDBTest();
 
+    }
+// public void ReadDBTest()
+//     {
+//         //StartCoroutine(ExecuteReadDB());
+//         reference = FirebaseDatabase.DefaultInstance.GetReference("UserData");
+//         reference.GetValueAsync().ContinueWithOnMainThread(task =>
+//         {
+//             if(task.IsCompleted)
+//             {
+//                 DataSnapshot snapshot = task.Result;
+//                 foreach(DataSnapshot data in snapshot.Children)
+//                 {
+//                    // if(data.Key == UID)
+//                     {
+//                         IDictionary dicUserData = (IDictionary)data.Value;
+//                         Debug.Log("email : " + dicUserData["emailID"] + "/ nickName : " +dicUserData["nickName"]);
+         
+//                     }
+//                    // else
+//                     {
+//                    //     Debug.Log("값이 없습니다. 확인해주세요");
+//                     }
+//                 }
+//                 //isTaskFinished = true;
+                
+//             }
+//         });
+//     }
     public void OnDone(string result)
     {
         Debug.Log(result);

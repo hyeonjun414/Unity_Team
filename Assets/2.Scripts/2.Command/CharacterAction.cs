@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CharacterAction : ActionCommand
 {
@@ -44,7 +45,7 @@ public class CharacterAction : ActionCommand
                 }
                 
                 print("Attack Enemy");
-                enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage);
+                enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage ,PhotonNetwork.LocalPlayer.ActorNumber);//player.playerId);
             }
         }
     }

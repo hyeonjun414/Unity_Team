@@ -11,6 +11,10 @@ public class GameData : MonoBehaviour
     public const string PLAYER_GEN = "Character";
 
     public const string PLAYER_INDEX = "PlayerIndex";
+    public const string PLAYER_OWNERID = "OwnerID";
+
+    public const string PLAYER_KILL = "PlayerKill";
+    public const string PLAYER_DEAD = "PlayerDead";
     
     public static Color GetColor(int playerNumber)
     {

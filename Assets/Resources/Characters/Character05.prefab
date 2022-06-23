@@ -142,6 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curNode: {fileID: 0}
   nickName: 
+  playerId: 0
   stat:
     playerMoveDistance: 1
     damage: 0

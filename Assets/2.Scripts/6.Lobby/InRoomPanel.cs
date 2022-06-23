@@ -61,7 +61,8 @@ public class InRoomPanel : MonoBehaviour
             entry.transform.localScale = Vector3.one;
             entry.Initialize(p.ActorNumber, p.NickName);
 
-           
+            // ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_OWNERID, p.ActorNumber } };
+            // p.SetCustomProperties(prop); 
 
             object characterIndex;
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
@@ -69,11 +70,11 @@ public class InRoomPanel : MonoBehaviour
                 entry.SetPlayerCharacter((int)characterIndex);
             }
 
-            
-        
-
             playerListEntries.Add(p.ActorNumber, entry);
         }
+        
+   
+           
 
 
         if (PhotonNetwork.IsMasterClient)
@@ -231,7 +232,8 @@ public class InRoomPanel : MonoBehaviour
         entry.transform.SetParent(playerListContent.transform);
         entry.transform.localScale = Vector3.one;
         entry.Initialize(newPlayer.ActorNumber, newPlayer.NickName);
-
+            
+ 
         playerListEntries.Add(newPlayer.ActorNumber, entry);
 
         if (PhotonNetwork.IsMasterClient)
