@@ -46,6 +46,7 @@ public class ResultSceneManager : MonoBehaviourPun
         {
             winnerNic[i] = BattleManager.Instance.alivePlayer[i].nickName;
             winnerNicUIText[i].text = winnerNic[i];
+            // PhotonNetwork.Instantiate(BattleManager.Instance.alivePlayer[i].);
         }
     }
 
@@ -56,6 +57,7 @@ public class ResultSceneManager : MonoBehaviourPun
         {
             loserNic[i] = BattleManager.Instance.deadPlayer[i].nickName;
             loserNicUIText[i].text = loserNic[i];
+            // PhotonNetwork.Instantiate(BattleManager.Instance.deadPlayer[i].);
         }
     }
 
