@@ -164,7 +164,7 @@ MonoBehaviour:
   attackSound: {fileID: 8300000, guid: aa45563233cd8e741b397232c6fc3359, type: 3}
   attackMissSound: {fileID: 8300000, guid: 468b04977adc5bc46bba4bf14d7ad040, type: 3}
   shieldSound: {fileID: 8300000, guid: e4f83b212697f6240883216b9a7b6b6c, type: 3}
-  getItemSound: {fileID: 8300000, guid: aa45563233cd8e741b397232c6fc3359, type: 3}
+  getItemSound: {fileID: 8300000, guid: 5ff71a501a5e6cb46afb18ecf53a5686, type: 3}
   camPos: {fileID: 7878694792868856385}
   stunEffect: {fileID: 756321558107768492}
   shieldEffect: {fileID: 8099616351638386734}

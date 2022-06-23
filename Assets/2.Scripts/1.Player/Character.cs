@@ -437,6 +437,20 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
     }
 
+
+    public void OnTriggerEnter(Collider other){
+        if(other.gameObject.tag == "Item"){
+            audioSource.PlayOneShot(getItemSound);
+        }
+
+    }
+
+
+
+
+
+
+
  //캐릭터 부활
 
     [PunRPC]
