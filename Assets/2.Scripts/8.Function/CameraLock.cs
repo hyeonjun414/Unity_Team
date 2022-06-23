@@ -8,9 +8,9 @@ public class CameraLock : MonoBehaviour
 {
 
 
-    public void EnableCamera()
+    public void EnableCamera(Character player)
     {
-        GameObject[] objs = (GameObject.FindGameObjectsWithTag("Player"));
+/*        GameObject[] objs = (GameObject.FindGameObjectsWithTag("Player"));
         for(int i=0; i<objs.Length;++i)
         {
             Character player = objs[i].GetComponent<Character>();
@@ -19,8 +19,13 @@ public class CameraLock : MonoBehaviour
                 transform.position = new Vector3(player.transform.position.x,player.transform.position.y+5f,player.transform.position.z);
                 transform.SetParent(player.transform);
             }
+        }*/
+
+        if (player.photonView.IsMine)
+        {
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 5f, player.transform.position.z);
+            transform.SetParent(player.transform);
         }
-        
 
     }
 }

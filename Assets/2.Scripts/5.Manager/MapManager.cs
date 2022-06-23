@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,5 +30,20 @@ public class MapManager : Singleton<MapManager>
             return false;
         else
             return true;
+    }
+
+    public TileNode GetEmptyNode()
+    {
+        TileNode emptyNode = null;
+        while(true)
+        {
+            Point point = new Point(Random.Range(0, map.mapSize), Random.Range(0, map.mapSize));
+            emptyNode = map.GetTileNode(point);
+            if(emptyNode.eOnTileObject == eTileOccupation.EMPTY)
+            {
+                break;
+            }
+        }
+        return emptyNode;
     }
 }

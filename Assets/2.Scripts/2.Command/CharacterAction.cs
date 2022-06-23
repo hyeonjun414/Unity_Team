@@ -33,7 +33,7 @@ public class CharacterAction : ActionCommand
         player.photonView.RPC("Attack", Photon.Pun.RpcTarget.All);
 
         RaycastHit target;
-        if (Physics.Raycast(player.transform.position + Vector3.up + transform.forward * 0.5f, player.transform.forward, out target, 0.5f))
+        if (Physics.Raycast(player.transform.position + Vector3.up + transform.forward * 0.5f, player.transform.forward, out target, 2f))
         {
             Character enemy = target.collider.gameObject.GetComponent<Character>();
             if (enemy != null)
