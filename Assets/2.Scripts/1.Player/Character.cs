@@ -179,7 +179,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         anim = GetComponent<Animator>();
         coll = GetComponent<BoxCollider>();
         nameOnPlayer = GetComponentInChildren<NickNameOnPlayer>();
-        this.audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
 
 
         inputCommand = gameObject.AddComponent<CharacterInput>();
@@ -392,9 +392,10 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
+        
+        // 죽은 대상이 해당 클라이언트 플레이어가 아니라면 실행하지 않는다.
+        if (!photonView.IsMine) return;
         ++(stat.deathCount);
-        //if (!photonView.IsMine) return;
-
         state = PlayerState.Dead;
         if(photonView.IsMine)
         {
@@ -402,7 +403,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             
         }
         KillStreak = 0;
-        anim.SetTrigger("Die");
+        
         var builder = new StringBuilder();
         builder.Append(PhotonNetwork.LocalPlayer.NickName);
         builder.Append("이(가) 사망하였습니다");
@@ -442,13 +443,13 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SendLogToPlayers(string msg)
     {
-        
+        anim.SetTrigger("Die");
         GameLogManager.Instance.AddQueue(msg);
     }
 
     [PunRPC]
     public void SendLogToPlayersDead(){
-        BattleManager.Instance.PlayerOut(this);
+        //BattleManager.Instance.PlayerOut(this);
 
     }
 

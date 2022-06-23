@@ -160,7 +160,6 @@ public class BattleManager : MonoBehaviourPun
     }
     private void SetBattleResult()
     {
-        Debug.Log("sssssssssssssssssssssssssssss왜안됨");
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             
