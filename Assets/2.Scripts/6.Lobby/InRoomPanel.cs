@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 using TMPro;
+using System;
 
 public class InRoomPanel : MonoBehaviour
 {
@@ -21,9 +22,18 @@ public class InRoomPanel : MonoBehaviour
     public TMP_Text readyButtonText;
     public PlayerEntry playerEntryPrefab;
 
+    public GameObject playerInfoPanel;
+
     private Dictionary<int, PlayerEntry> playerListEntries;
 
     private bool localPlayerIsReady = false;
+
+    [Header("PlayerInfoUI")]
+    public TMP_Text nickName;
+    public TMP_Text totalPlayTimes;
+    public TMP_Text winTimes;
+    public TMP_Text loseTimes;
+    public TMP_Text winRate;
 
     private void Update()
     {
@@ -51,7 +61,8 @@ public class InRoomPanel : MonoBehaviour
             entry.transform.localScale = Vector3.one;
             entry.Initialize(p.ActorNumber, p.NickName);
 
-           
+            // ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_OWNERID, p.ActorNumber } };
+            // p.SetCustomProperties(prop); 
 
             object characterIndex;
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
@@ -59,11 +70,11 @@ public class InRoomPanel : MonoBehaviour
                 entry.SetPlayerCharacter((int)characterIndex);
             }
 
-            
-        
-
             playerListEntries.Add(p.ActorNumber, entry);
         }
+        
+   
+           
 
 
         if (PhotonNetwork.IsMasterClient)
@@ -167,12 +178,51 @@ public class InRoomPanel : MonoBehaviour
         return true;
     }
 
-
+    public void OnCloseInfoPanel()
+    {
+        playerInfoPanel.SetActive(false);
+    }
 
     public void LocalPlayerPropertiesUpdated()
     {
         startGameButton.interactable = CheckPlayersReady();
         //startGameButton.gameObject.SetActive(CheckPlayersReady());
+    }
+    public void ShowPlayerInfo(string UID)
+    {        
+        // Hashtable props = new Hashtable() { { GameData.PLAYER_READY, localPlayerIsReady } };
+        // PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        DataBaseManager.Instance.ReadPlayerInfo(UID,(str)=>{
+            String value = str;
+
+            
+            string[] words = value.Split('$');
+            //닉네임 $ 총판수 $ 승리수
+            nickName.text = words[0];
+            totalPlayTimes.text = words[1];
+            winTimes.text = words[2];
+
+            int playTimesInt    = int.Parse(totalPlayTimes.text);
+            int winTimesInt     = int.Parse(winTimes.text);
+            int loseTimesInt    = playTimesInt - winTimesInt;
+            
+            loseTimes.text  = loseTimesInt.ToString();
+            if(winTimesInt!=0)
+            {
+                winRate.text    = (winTimesInt/playTimesInt).ToString("F1") + " %";
+            }
+            else
+            {
+                winRate.text = "- %";
+            }
+            
+
+            playerInfoPanel.SetActive(true);
+
+        });
+
+        
     }
 
     public void OnPlayerEnteredRoom(Player newPlayer)
@@ -182,7 +232,8 @@ public class InRoomPanel : MonoBehaviour
         entry.transform.SetParent(playerListContent.transform);
         entry.transform.localScale = Vector3.one;
         entry.Initialize(newPlayer.ActorNumber, newPlayer.NickName);
-
+            
+ 
         playerListEntries.Add(newPlayer.ActorNumber, entry);
 
         if (PhotonNetwork.IsMasterClient)
@@ -200,6 +251,7 @@ public class InRoomPanel : MonoBehaviour
             startGameButton.gameObject.SetActive(false);
         }
     }
+    
 
     public void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -249,4 +301,7 @@ public class InRoomPanel : MonoBehaviour
             }
         }
     }
+
+    
+
 }

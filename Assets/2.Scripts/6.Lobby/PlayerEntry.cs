@@ -23,6 +23,7 @@ public class PlayerEntry : MonoBehaviour
     public int characterDataSize;
     public Button rightClickButton;
     public Button leftClickButton;
+    
 
     [Header("Ready")]
     public GameObject readyImage;
@@ -46,6 +47,24 @@ public class PlayerEntry : MonoBehaviour
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         }
 
+    }
+    public void OnInfoButtonClicked()
+    {
+        
+        DataBaseManager.Instance.GetUserIDbyNickName(playerNameText.text,(str)=>{
+            
+            if(str == "nullString")
+            {
+                LobbyManager.instance.ShowError("게스트 계정의 프로필 정보는 제공되지 않습니다");
+            }
+            else
+            {
+                LobbyManager.instance.ShowPlayerInfo(str);
+            }
+
+        });
+        
+        //게스트계정 클릭 시 => 게스트 계정의 정보는 제공되지 않습니다.
     }
     public void OnRightButtonClicked()
     {
@@ -98,6 +117,6 @@ public class PlayerEntry : MonoBehaviour
             case 3: dummy.anim.SetTrigger("Victory"); break;
         }
 
-
     }
+     
 }

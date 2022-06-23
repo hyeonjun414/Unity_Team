@@ -124,6 +124,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         inRoomPanel.LocalPlayerPropertiesUpdated();
     }
+    public void ShowPlayerInfo(string UID)
+    {
+        inRoomPanel.ShowPlayerInfo(UID);
+    }
 
     #endregion
 
@@ -155,4 +159,5 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+    
 }

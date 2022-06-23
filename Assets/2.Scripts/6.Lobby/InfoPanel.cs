@@ -26,6 +26,6 @@ public class InfoPanel : MonoBehaviour
     {
         errorPanel.SetActive(true);
         errorText.text = error;
-        Debug.LogError(error);
+        Debug.LogWarning(error);
     }
 }
