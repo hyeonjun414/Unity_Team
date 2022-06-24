@@ -44,7 +44,16 @@ public class CharacterMove : MoveCommand
         }
         else
         {
-            destNode = MapManager.Instance.map.GetTileNode(player.stat.curPos);
+            point /= 2;
+            if (player.stat.playerMoveDistance == 2 && MapManager.Instance.BoundaryCheck(player.stat.curPos, point))
+            {
+                destNode = MapManager.Instance.map.GetTileNode(player.stat.curPos + point);
+            }
+            else
+            {
+                destNode = MapManager.Instance.map.GetTileNode(player.stat.curPos);
+
+            }
         }
 
         Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;

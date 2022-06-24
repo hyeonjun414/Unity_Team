@@ -43,6 +43,7 @@ public class RhythmBox : MonoBehaviour
         if(curNote != null)
         {
             curNote.anim.SetTrigger("Hit");
+            curNote.coll.enabled = false;
             curNote = null;
         }
     }

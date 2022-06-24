@@ -10,19 +10,21 @@ public class RhythmNote : MonoBehaviourPun
     public float velocity;
     public float timing;
     public Animator anim;
+    public BoxCollider2D coll;
     Vector3 destPos;
 
     private void Start()
     {
         transform.SetParent(RhythmManager.Instance.notePos[0], true);
-        transform.localScale = Vector3.one;
     }
     public void SetUp(Transform start,GameObject dest, float time)
     {
         gameObject.SetActive(true);
+        transform.localScale = Vector3.one;
         transform.position = start.position;
         destPos = dest.transform.position;
         this.time = time;
+        coll.enabled = true;
         velocity = Vector3.Distance(destPos, transform.position) / time;
     }
 

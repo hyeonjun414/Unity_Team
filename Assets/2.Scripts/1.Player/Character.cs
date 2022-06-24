@@ -224,8 +224,9 @@ public class Character : MonoBehaviourPun, IPunObservable
         anim.SetTrigger("Die");
         ++stat.deathCount;
         state = PlayerState.Dead;
-
-        // 죽은 대상이 해당 클라이언트 플레이어가 아니라면 실행하지 않는다.
+        coll.enabled = false;
+        StartCoroutine("DieRoutine");
+        // 죽은 대상이 해당 클라이언트 플레이어가 아니라면 로그를 보내지 않는다.
         if (!photonView.IsMine) return;
 
         GameLogManager.Instance.SendDeadLog(nickName);
@@ -239,6 +240,22 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
     }
 
+    IEnumerator DieRoutine()
+    {
+        float curTime = 0;
+        while(true)
+        {
+            if(curTime >= 2f)
+            {
+                break;
+            }
+            curTime += Time.deltaTime;
+            transform.Translate(Vector3.down * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+
     [PunRPC]
     public void RequestDeleteMe()
     {
@@ -248,6 +265,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void Revive(int y, int x)
     {
+        coll.enabled = true;
+
         curNode.eOnTileObject = eTileOccupation.EMPTY;
         curNode = null;
 
@@ -257,7 +276,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             CamManager.Instance.ActiveCam(CamType.Player);
         }
         state = PlayerState.Normal;
-        stat.hp = 1;
+        stat.hp = 1; // 임시로 피 1로 처리함.
         curNode = MapManager.Instance.map.GetTileNode(new Point(y, x));
         stat.curPos = curNode.tilePos;
         anim.Play("Idle");

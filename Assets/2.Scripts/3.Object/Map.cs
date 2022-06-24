@@ -18,6 +18,14 @@ public struct Point
     {
         return new Point(a.y + b.y, a.x + b.x);
     }
+    public static Point operator /(Point a, Point b)
+    {
+        return new Point(a.y / b.y, a.x / b.x);
+    }
+    public static Point operator /(Point a, int b)
+    {
+        return new Point(a.y / b, a.x / b);
+    }
     public override string ToString()
     {
         return y.ToString() + ", " + x.ToString();
