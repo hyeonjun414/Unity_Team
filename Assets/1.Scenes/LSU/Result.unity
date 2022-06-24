@@ -21518,6 +21518,7 @@ GameObject:
   - component: {fileID: 891133233}
   - component: {fileID: 891133234}
   - component: {fileID: 891133235}
+  - component: {fileID: 891133236}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -21552,6 +21553,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resultWindow: {fileID: 0}
+  characterData: {fileID: 0}
+  characterSet: {fileID: 0}
+  characterIndex: 0
   winnerNicUIText: []
   loserNicUIText: []
 --- !u!114 &891133235
@@ -21567,11 +21571,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isReadyCount: 0
+  battleResultPanel: {fileID: 0}
   players: []
   alivePlayer: []
   deadPlayer: []
   resultText: {fileID: 0}
   resultTextObj: {fileID: 0}
+  regenUI: {fileID: 0}
+--- !u!114 &891133236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891133232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13bd6025463ac42468e196a6bcecce16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &891865181
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -8,8 +8,8 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using UnityEngine.SceneManagement;
-//using GooglePlayGames;
-//using GooglePlayGames.BasicApi;
+using Photon.Pun;
+
 
 public class AuthManager : Singleton<AuthManager>
 {
@@ -39,6 +39,7 @@ public class AuthManager : Singleton<AuthManager>
     }
     private void Start()
     {
+
         signInBtn.interactable=false;
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task=>
         {
@@ -93,6 +94,9 @@ public class AuthManager : Singleton<AuthManager>
                         
                     });
                     StartCoroutine(ErrorMessage(user.Email+"확인"));
+
+                    ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable() { { GameData.IS_EMAIL, true } };
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(prop);
                     Debug.Log(user.Email);
                     
                     SceneManager.LoadScene("NewLobbyScene");
@@ -144,6 +148,9 @@ public class AuthManager : Singleton<AuthManager>
             }
             else
             {
+                ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable() { { GameData.IS_EMAIL, false } };
+                PhotonNetwork.LocalPlayer.SetCustomProperties(prop);
+
                 SceneManager.LoadScene("NewLobbyScene");
                 Firebase.Auth.FirebaseUser newUser = task.Result;
                 Debug.LogFormat("User signed in successfully: {0} ({1})",
