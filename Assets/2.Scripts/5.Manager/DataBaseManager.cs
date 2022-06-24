@@ -44,7 +44,7 @@ public class DataBaseManager : Singleton<DataBaseManager>
     private void Start()
     {
         
-        FirebaseApp.DefaultInstance.Options.DatabaseUrl = new Uri(DBURL);
+        //FirebaseApp.DefaultInstance.Options.DatabaseUrl = new Uri(DBURL);
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     
         //ReadDB("awIhaxye4IOqouz6XCJZMjcvWmB2","emailID");

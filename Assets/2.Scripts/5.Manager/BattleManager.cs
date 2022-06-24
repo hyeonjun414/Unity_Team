@@ -118,6 +118,7 @@ public class BattleManager : MonoBehaviourPun
 
 
     //플레이어가 죽었을 때 판정 || 플레이어가 disconnect되었을 때 호출
+
     public void PlayerOut(Character deadPL)
     {
 
@@ -232,7 +233,6 @@ public class BattleManager : MonoBehaviourPun
         battleResultPanel.SetActive(true);
     }
 
-        
     IEnumerator GameOver(){
         yield return new WaitForSeconds(3f);  
         
@@ -261,9 +261,6 @@ public class BattleManager : MonoBehaviourPun
         //SceneManager.LoadScene("NewLobbyScene");
 
     }
-    
-    
-
     //플레이어가 한 명 남았을 때 그라운드를 끝냄.
 
     public void FinalWinner(){
@@ -275,9 +272,4 @@ public class BattleManager : MonoBehaviourPun
 
         //}
     }
-
-
-
-
-    
 }

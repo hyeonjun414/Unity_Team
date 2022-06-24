@@ -2,6 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ePlayerInput
+{
+    NULL,
+    MOVE_UP,
+    MOVE_RIGHT,
+    MOVE_DOWN,
+    MOVE_LEFT,
+    ROTATE_RIGHT,
+    ROTATE_LEFT,
+    ATTACK,
+    BLOCK,
+    USE_ITEM,
+    CHANGE_ITEM_SLOT,
+}
+
+public enum PlayerDir
+{
+    Start,
+    Up,
+    Right,
+    Down,
+    Left,
+    End
+}
+
+public enum PlayerState
+{
+    Normal,
+    Move,
+    Defend,
+    Attack,
+    Stun,
+    Dead
+}
+
 public enum ModeType
 {
     LastFighter,

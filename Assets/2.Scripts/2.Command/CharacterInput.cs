@@ -52,11 +52,7 @@ public class CharacterInput : InputCommand
             SetCommand(ePlayerInput.CHANGE_ITEM_SLOT);
         }
     }
-/*    public void SetCommand(ePlayerInput input)
-    {
-        player.photonView.RPC("SetCommand", RpcTarget.All,
-                new object[3] { input, player.stat.curPos.y, player.stat.curPos.x });
-    }*/
+
     public void SetCommand(ePlayerInput input)
     {
         player.eCurInput = input;

@@ -10,7 +10,6 @@ public class CharacterRote : RoteCommand
         PlayerRotation();
         
     }
-
     public void PlayerRotation()
     {
         if (player.eCurInput == ePlayerInput.ROTATE_RIGHT)
@@ -23,10 +22,7 @@ public class CharacterRote : RoteCommand
             player.Dir--;
             SetDirection();
         }
-
-        
     }
-
     public void SetDirection()
     {
         float angle = 0f;

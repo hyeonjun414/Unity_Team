@@ -1533,8 +1533,6 @@ MonoBehaviour:
   eCurInput: 0
   state: 0
   isRegen: 0
-  defenceCount: 0
-  stunCount: 0
   roteCommand: {fileID: 0}
   inputCommand: {fileID: 0}
   moveCommand: {fileID: 0}
@@ -1543,6 +1541,7 @@ MonoBehaviour:
   attackMissSound: {fileID: 8300000, guid: 468b04977adc5bc46bba4bf14d7ad040, type: 3}
   shieldSound: {fileID: 8300000, guid: e4f83b212697f6240883216b9a7b6b6c, type: 3}
   getItemSound: {fileID: 8300000, guid: 5ff71a501a5e6cb46afb18ecf53a5686, type: 3}
+  audioSource: {fileID: 0}
   camPos: {fileID: 4426714954687848135}
   stunEffect: {fileID: 8979888785911371022}
   shieldEffect: {fileID: 7012852634407452626}
