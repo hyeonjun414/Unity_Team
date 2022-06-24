@@ -67,6 +67,8 @@ public class BattleResultPanel : MonoBehaviour
             {
                 ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
                 winnerEntry.BattleResult(sortedList[0].nickName, sortedList[0].stat.killCount ,sortedList[0].stat.deathCount , 1 ,mode);
+            
+                SetCustomValue(p,sortedList[0].nickName, sortedList[0].stat.killCount ,sortedList[0].stat.deathCount , 1 );
             }
             for(int i=1; i<sortedList.Count;++i)
             {
@@ -77,15 +79,15 @@ public class BattleResultPanel : MonoBehaviour
                         ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
                         winnerEntry.BattleResult(sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , 1,mode);
 
-                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.deathCount ,sortedList[i].stat.deathCount , 1 );
+                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , 1 );
 
                     }
                     else
                     {
                         ResultEntry loserEntry = Instantiate(Resources.Load<ResultEntry>("LoserEntry"),resultPanel.transform);
-                        loserEntry.BattleResult(sortedList[i].nickName, sortedList[i].stat.deathCount ,sortedList[i].stat.deathCount , i+1,mode);
+                        loserEntry.BattleResult(sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , i+1,mode);
 
-                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.deathCount ,sortedList[i].stat.deathCount , i+1 );
+                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , i+1 );
 
                     }
 
@@ -127,12 +129,12 @@ public class BattleResultPanel : MonoBehaviour
     private void SetCustomValue(Player p, string nickName, int _kill, int _death, int _rank)
     {
             ExitGames.Client.Photon.Hashtable name = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_NAME, nickName } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(name);
+            p.SetCustomProperties(name);
             ExitGames.Client.Photon.Hashtable kill = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_KILL, _kill } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(kill);
+            p.SetCustomProperties(kill);
             ExitGames.Client.Photon.Hashtable death = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_DEAD, _death } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(death);
+            p.SetCustomProperties(death);
             ExitGames.Client.Photon.Hashtable rank = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, _rank } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(rank);
+            p.SetCustomProperties(rank);
     }
 }

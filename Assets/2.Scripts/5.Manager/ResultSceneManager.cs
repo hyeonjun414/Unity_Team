@@ -29,15 +29,15 @@ public class PlayerResultInfo
 }
 public class ResultSceneManager : MonoBehaviourPun
 {
-    private int _sycFinished=0;
+    private int _syncFinished=0;
     public int syncFinished
     {
         get{
-            return _sycFinished;
+            return _syncFinished;
         }
         set{
-            _sycFinished = value;
-            Debug.Log(_sycFinished+ "명의 플레이어 정보 동기화 완료");
+            _syncFinished = value;
+            Debug.Log(_syncFinished+ "명의 플레이어 정보 동기화 완료");
         }
     }
     public GameObject resultWindow;
@@ -107,13 +107,17 @@ public class ResultSceneManager : MonoBehaviourPun
             if((bool)isMail)
             {
                 SyncUpdatedInformation(p.NickName);
-            }
-            
+            }   
         }
+        for(int i=0; i<resultInfoList.Count;++i)
+        {
+            Debug.Log(resultInfoList[i].name+" : "+resultInfoList[i].kill+" : "+resultInfoList[i].death+" : "+resultInfoList[i].rank );
+        }
+        
     }
     private void SyncUpdatedInformation(string nickName)
     {
-
+        
         Debug.Log("0번성공");
         DataBaseManager.Instance.GetUserIDbyNickName(nickName,(str)=>{
             Debug.Log("1번성공");
@@ -130,13 +134,16 @@ public class ResultSceneManager : MonoBehaviourPun
                     Debug.Log(resultInfoList[i].name + " :: "+words[1]);
                     if(resultInfoList[i].name == words[1])
                     {
+                        Debug.Log("resultInfoList[i].rank: "+ resultInfoList[i].rank);
                         if(resultInfoList[i].rank == 1)
                         {
+                            Debug.Log("2.5번성공; 승리카운트 올라가야함");
                             int wins = int.Parse(words[3]);
                             ++wins;
                             words[3] = wins.ToString();
                         }
                         int totals = int.Parse(words[2]);
+                        Debug.Log("totals: "+totals +" words[2]: "+words[2]);
                         ++totals;
                         words[2] = totals.ToString();
                         Debug.Log("3번성공");
@@ -145,8 +152,9 @@ public class ResultSceneManager : MonoBehaviourPun
                     }
                 }
                 
-                
-                ++_sycFinished;
+                Debug.Log("5번성공");
+                ++syncFinished;
+                Debug.Log("6번성공");
             });
          });
     }
