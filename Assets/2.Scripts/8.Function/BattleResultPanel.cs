@@ -10,6 +10,7 @@ using TMPro;
 
 public class BattleResultPanel : MonoBehaviour
 {
+    public bool isBattleFinished=false;
     public GameObject battleResultPanel;
     private GameObject resultPanel;
     public void SetBattleResult()
@@ -44,21 +45,19 @@ public class BattleResultPanel : MonoBehaviour
         
         battleResultPanel.SetActive(true);
     }
+    public void ClearPanel()
+    {
+        ResultEntry[] resultEntries = resultPanel.transform.GetComponentsInChildren<ResultEntry>();
+        for(int i=0; i<resultEntries.Length;++i)
+        {
+            Destroy(resultEntries[i].gameObject);
+        }
+    }
     
     public void DeathMatchResult(string mode)
     {
         List<Character> players = BattleManager.Instance.players;
 
-        foreach (Player p in PhotonNetwork.PlayerList)
-        {
-            for(int i=0; i<players.Count;++i)
-            {
-                if(players[i].photonView.Owner.ActorNumber == p.ActorNumber)
-                {
-                    players[i].stat.killCount = p.GetScore();
-                }       
-            }  
-        }
         List<Character> sortedList = new List<Character>();
         sortedList = players.OrderByDescending(Character => Character.stat.killCount).ToList();
 
@@ -67,7 +66,7 @@ public class BattleResultPanel : MonoBehaviour
             if(sortedList[0].photonView.Owner.ActorNumber == p.ActorNumber)
             {
                 ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
-                winnerEntry.BattleResult(sortedList[0].nickName, p.GetScore() ,sortedList[0].stat.deathCount , 1 ,mode);
+                winnerEntry.BattleResult(sortedList[0].nickName, sortedList[0].stat.killCount ,sortedList[0].stat.deathCount , 1 ,mode);
             }
             for(int i=1; i<sortedList.Count;++i)
             {
@@ -76,17 +75,17 @@ public class BattleResultPanel : MonoBehaviour
                     if(sortedList[i].stat.killCount == sortedList[0].stat.killCount)
                     {
                         ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
-                        winnerEntry.BattleResult(sortedList[i].nickName, p.GetScore() ,sortedList[i].stat.deathCount , 1,mode);
+                        winnerEntry.BattleResult(sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , 1,mode);
 
-                        SetCustomValue(p,sortedList[i].nickName, p.GetScore() ,sortedList[i].stat.deathCount , 1 );
+                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.deathCount ,sortedList[i].stat.deathCount , 1 );
 
                     }
                     else
                     {
                         ResultEntry loserEntry = Instantiate(Resources.Load<ResultEntry>("LoserEntry"),resultPanel.transform);
-                        loserEntry.BattleResult(sortedList[i].nickName, p.GetScore() ,sortedList[i].stat.deathCount , i+1,mode);
+                        loserEntry.BattleResult(sortedList[i].nickName, sortedList[i].stat.deathCount ,sortedList[i].stat.deathCount , i+1,mode);
 
-                        SetCustomValue(p,sortedList[i].nickName, p.GetScore() ,sortedList[i].stat.deathCount , i+1 );
+                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.deathCount ,sortedList[i].stat.deathCount , i+1 );
 
                     }
 
@@ -105,9 +104,9 @@ public class BattleResultPanel : MonoBehaviour
             if(alives[0].photonView.Owner.ActorNumber == p.ActorNumber)
             {
                 ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
-                winnerEntry.BattleResult(alives[0].nickName, p.GetScore() ,alives[0].stat.deathCount , 1,mode);
+                winnerEntry.BattleResult(alives[0].nickName, alives[0].stat.killCount ,alives[0].stat.deathCount , 1,mode);
                 
-                SetCustomValue(p,alives[0].nickName, p.GetScore() ,alives[0].stat.deathCount , 1 );
+                SetCustomValue(p,alives[0].nickName, alives[0].stat.killCount ,alives[0].stat.deathCount , 1 );
                
             }
             for(int i=0; i<deads.Count;++i)
@@ -115,9 +114,9 @@ public class BattleResultPanel : MonoBehaviour
                 if(deads[i].photonView.Owner.ActorNumber == p.ActorNumber)
                 {
                     ResultEntry loserEntry = Instantiate(Resources.Load<ResultEntry>("LoserEntry"),resultPanel.transform);
-                    loserEntry.BattleResult(deads[i].nickName, p.GetScore() ,deads[i].stat.deathCount , 2,mode);
+                    loserEntry.BattleResult(deads[i].nickName, deads[i].stat.killCount ,deads[i].stat.deathCount , 2,mode);
                     
-                    SetCustomValue(p,deads[i].nickName, p.GetScore() ,deads[i].stat.deathCount , 2 );
+                    SetCustomValue(p,deads[i].nickName, deads[i].stat.killCount ,deads[i].stat.deathCount , 2 );
 
                 }
             }
