@@ -225,6 +225,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             CamManager.Instance.ActiveCam(CamType.Player);
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+            BattleManager.Instance.hUDUI.SetUp(this);
         }
         Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;
@@ -508,6 +509,9 @@ public class Character : MonoBehaviourPun, IPunObservable
         if (other.gameObject.tag == "Item")
         {
             audioSource.PlayOneShot(getItemSound);
+        }
+        else{
+
         }
 
     }
