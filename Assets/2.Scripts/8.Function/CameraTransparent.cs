@@ -17,12 +17,11 @@ public class CameraTransparent : MonoBehaviour
         if(player == null) return;
         Wall[] wall= new Wall[4];
 
-        Vector3 dir = ((player.transform.position + player.transform.forward * 0.5f + player.transform.right * 0.5f) - (transform.position - transform.forward * 2f)).normalized;
+        Vector3 dir = (player.transform.position - transform.position).normalized;
         RaycastHit[] target = Physics.RaycastAll(
-            transform.position - transform.forward * 2f,
-            dir,
-            Vector3.Distance(transform.position - transform.forward * 2f,
-            player.transform.position + player.transform.forward * 0.5f + player.transform.right * 0.5f),
+            player.transform.position,
+            -dir,
+            15f,
             LayerMask.GetMask("Wall"));
 
         if(target.Length>0)

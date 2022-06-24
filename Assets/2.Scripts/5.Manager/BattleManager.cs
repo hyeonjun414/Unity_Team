@@ -133,8 +133,9 @@ public class BattleManager : MonoBehaviourPun
         if(alivePlayer.Count ==1)
         {
             photonView.RPC("BattleOverMessage", RpcTarget.All);
+            StartCoroutine(GameOver());
         }
-        StartCoroutine(GameOver());
+        
     }
 
     [PunRPC]

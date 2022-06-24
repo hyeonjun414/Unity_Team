@@ -45,7 +45,7 @@ public class CharacterAction : ActionCommand
             if (enemy != null)
             {
                 // 적이 방어 상태인지 체크
-                if (EnemyDefenceCheck(enemy))
+                if (EnemyDefenseCheck(enemy))
                 {
                     // 방어가 유효하면 공격한 플레이어 스턴
                     Stunned();
@@ -73,19 +73,19 @@ public class CharacterAction : ActionCommand
         yield return new WaitForSeconds(time);
 
         player.stunEffect.gameObject.SetActive(false);
-        player.anim.SetBool("Stunned", true);
+        player.anim.SetBool("Stunned", false);
         player.state = PlayerState.Normal;
     }
 
-    public bool EnemyDefenceCheck(Character enemy)
+    public bool EnemyDefenseCheck(Character enemy)
     {
         if (enemy.state == PlayerState.Defend)
         {
-            return DefenceDirCheck(enemy);
+            return DefenseDirCheck(enemy);
         }
         return false;
     }
-    public bool DefenceDirCheck(Character enemy)
+    public bool DefenseDirCheck(Character enemy)
     {
         PlayerDir originDir = enemy.Dir;
 
