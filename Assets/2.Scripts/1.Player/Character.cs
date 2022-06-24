@@ -7,7 +7,6 @@ using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using Cinemachine;
-using Photon.Realtime;
 
 public enum ePlayerInput
 {
@@ -47,7 +46,7 @@ public enum PlayerState
 [System.Serializable]
 public class CharacterStatus
 {
-    public int playerMoveDistance=1;
+    public int playerMoveDistance = 1;
     public int damage;
     public int hp;
     public Point curPos;
@@ -62,8 +61,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     public TileNode curNode;
 
     [Header("Custom")]
-    public GameObject[] characterform;   
-    
+    public GameObject[] characterform;
+
     [Header("Player Info")]
     public string nickName;
     private NickNameOnPlayer nameOnPlayer;
@@ -79,32 +78,32 @@ public class Character : MonoBehaviourPun, IPunObservable
     public bool isRegen = false;
     public int KillStreak
     {
-        get{return killStreak;}
+        get { return killStreak; }
         set
         {
             killStreak = value;
 
             var builder = new StringBuilder();
-            if(killStreak==3)
-            {             
+            if (killStreak == 3)
+            {
                 builder.Append(PhotonNetwork.LocalPlayer.NickName);
                 builder.Append("을(를) 막을 수 없습니다");
                 string deadString = builder.ToString();
-                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+                photonView.RPC("SendLogToPlayers", RpcTarget.All, deadString);
             }
-            if(killStreak==4)
-            {            
+            if (killStreak == 4)
+            {
                 builder.Append(PhotonNetwork.LocalPlayer.NickName);
                 builder.Append("이(가) 게임을 지배하고 있습니다");
                 string deadString = builder.ToString();
-                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+                photonView.RPC("SendLogToPlayers", RpcTarget.All, deadString);
             }
-            if(killStreak==5)
-            {            
+            if (killStreak == 5)
+            {
                 builder.Append(PhotonNetwork.LocalPlayer.NickName);
                 builder.Append("이(가) 미쳐 날뛰고 있습니다");
                 string deadString = builder.ToString();
-                photonView.RPC("SendLogToPlayers",RpcTarget.All,deadString);
+                photonView.RPC("SendLogToPlayers", RpcTarget.All, deadString);
             }
 
         }
@@ -244,9 +243,9 @@ public class Character : MonoBehaviourPun, IPunObservable
         if (ownerPlayer.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
         {
             int index = (int)characterIndex;
-            for(int i = 0; i<characterform.Length; i++)
+            for (int i = 0; i < characterform.Length; i++)
             {
-                if(i == index)
+                if (i == index)
                 {
                     // 인덱스에 해당하는 캐릭터를 활성화하고 animator를 연결함.
                     characterform[i].SetActive(true);
@@ -300,7 +299,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void CharacterReset()
     {
         stat = new CharacterStatus();
-        stat.playerMoveDistance=1;
+        stat.playerMoveDistance = 1;
         stat.damage = 1;
         stat.hp = 5;
         stat.curPos.y = 0;
@@ -320,16 +319,16 @@ public class Character : MonoBehaviourPun, IPunObservable
 
         if (stat.hp <= 0)
         {
-            
+
             foreach (Player p in PhotonNetwork.PlayerList)
             {
-                if(actorNum == p.ActorNumber)
+                if (actorNum == p.ActorNumber)
                 {
                     p.AddScore(1);
                 }
             }
             Die();
-            
+
         }
     }
     [PunRPC]
@@ -396,10 +395,10 @@ public class Character : MonoBehaviourPun, IPunObservable
         //if (!photonView.IsMine) return;
 
         state = PlayerState.Dead;
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             CamManager.Instance.ActiveCam(CamType.Dead);
-            
+
         }
         KillStreak = 0;
         anim.SetTrigger("Die");
@@ -410,13 +409,13 @@ public class Character : MonoBehaviourPun, IPunObservable
         photonView.RPC("SendLogToPlayers", RpcTarget.All, deadString);
         photonView.RPC("SendLogToPlayersDead", RpcTarget.All);
 
-        if(isRegen && photonView.IsMine)
+        if (isRegen && photonView.IsMine)
         {
             // 부활이 가능하고 해당 클라이언트의 플레이어라면
             // 해당 클라이언트에 부활 UI를 표기한다.
             BattleManager.Instance.regenUI.RegenStart(this);
         }
-        
+
     }
     [PunRPC]
     public void Revive(int y, int x)
@@ -425,7 +424,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         curNode = null;
 
         // 체력 채우고, 위치 초기화하고, 애니메이션 Idle 실행시키기
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             CamManager.Instance.ActiveCam(CamType.Player);
         }
@@ -442,12 +441,13 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SendLogToPlayers(string msg)
     {
-        
+
         GameLogManager.Instance.AddQueue(msg);
     }
 
     [PunRPC]
-    public void SendLogToPlayersDead(){
+    public void SendLogToPlayersDead()
+    {
         BattleManager.Instance.PlayerOut(this);
 
     }
@@ -485,23 +485,27 @@ public class Character : MonoBehaviourPun, IPunObservable
 
 
     [PunRPC]
-    void PlaySound(int inputType){
+    void PlaySound(int inputType)
+    {
         ePlayerInput eCurInput = (ePlayerInput)inputType;
-        switch(eCurInput){
-            
+        switch (eCurInput)
+        {
+
             case ePlayerInput.ATTACK:
-            audioSource.PlayOneShot(attackSound);
-            break;
+                audioSource.PlayOneShot(attackSound);
+                break;
 
             case ePlayerInput.BLOCK:
-            audioSource.PlayOneShot(shieldSound);
-            break;
+                audioSource.PlayOneShot(shieldSound);
+                break;
         }
     }
 
 
-    public void OnTriggerEnter(Collider other){
-        if(other.gameObject.tag == "Item"){
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Item")
+        {
             audioSource.PlayOneShot(getItemSound);
         }
 
@@ -513,10 +517,11 @@ public class Character : MonoBehaviourPun, IPunObservable
 
 
 
- //캐릭터 부활
+    //캐릭터 부활
 
     [PunRPC]
-    public void Revive(){
+    public void Revive()
+    {
 
         //캐릭터 목숨 리셋
         stat.hp = 5;
@@ -525,7 +530,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     }
 
 
-    IEnumerator Revival(){
+    IEnumerator Revival()
+    {
         yield return new WaitForSeconds(5f);
         //애니메이션 리셋 
 

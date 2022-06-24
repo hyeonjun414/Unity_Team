@@ -14,10 +14,13 @@ public class Option : MonoBehaviour
     public Slider musicSoundSlider;
     public Slider effectSoundSlider;
 
-    public float tempMusicValue;
-    public float tempEffectValue;
-    public float curMusicValue;
-    public float curEffectValue;
+    float firstMusicValue;
+    float firstEffectValue;
+    float changeMusicValue = 0;
+    float changeEffectValue = 0;
+
+    bool firstMusicOn = true;
+    bool firstEffectOn = true;
 
     private void Start()
     {
@@ -27,60 +30,74 @@ public class Option : MonoBehaviour
     public void OnClickOptionButton()
     {
         optionWindow.SetActive(true);
+        firstMusicValue = musicSoundSlider.value;
+        firstEffectValue = effectSoundSlider.value;
+        changeMusicValue = firstMusicValue;
+        changeEffectValue = firstEffectValue;
+
+        musicSoundButton.isOn = firstMusicOn;
+        effectSoundButton.isOn = firstEffectOn;
     }
 
     public void OnClickApply()
     {
+        firstMusicValue = changeMusicValue;
+        firstEffectValue = changeEffectValue;
+        firstMusicOn = musicSoundButton.isOn;
+        firstEffectOn = effectSoundButton.isOn;
         optionWindow.SetActive(false);
-        // TODO : 현재 슬라이드의 값을 음악,효과음 사운드로 설정
     }
 
     public void OnClickMusicSoundButton()
     {
         if (musicSoundButton.isOn == true)
         {
-            musicSoundSlider.value = tempMusicValue;
+            SoundManager.Instance.BGSoundVolume(changeMusicValue);
         }
         else
         {
-            musicSoundSlider.value = 0;
+            SoundManager.Instance.BGSoundVolume(musicSoundSlider.minValue);
         }
-        // TODO : 음악 사운드 0으로 설정
     }
 
     public void OnClickEffectSoundButton()
     {
         if (effectSoundButton.isOn == true)
         {
-            effectSoundSlider.value = tempEffectValue;
+            SoundManager.Instance.SFXVolume(changeEffectValue);
         }
         else
         {
-            effectSoundSlider.value = 0;
+            SoundManager.Instance.SFXVolume(musicSoundSlider.minValue);
         }
-        // TODO : 효과음 사운드 0으로 설정
     }
 
     public void MusicSoundSlider()
     {
-        tempMusicValue = curMusicValue;
-
-        curMusicValue = musicSoundSlider.value;
-        // TODO : 음악 슬라이드 크기에 따라 사운드 크기 변경
+        changeMusicValue = musicSoundSlider.value;
+        if (musicSoundButton.isOn)
+        {
+            SoundManager.Instance.BGSoundVolume(changeMusicValue);
+        }
     }
 
     public void EffectSoundSlider()
     {
-        tempEffectValue = curEffectValue;
+        changeEffectValue = effectSoundSlider.value;
+        if (musicSoundButton.isOn)
+        {
+            SoundManager.Instance.SFXVolume(changeEffectValue);
+        }
 
-        curEffectValue = effectSoundSlider.value;
-        // TODO : 효과음 슬라이드 크기에 따라 사운드 크기 변경
     }
 
 
     public void OnClickCancel()
     {
-
+        musicSoundSlider.value = firstMusicValue;
+        effectSoundSlider.value = firstEffectValue;
+        musicSoundButton.isOn = firstMusicOn;
+        effectSoundButton.isOn = firstEffectOn;
         optionWindow.SetActive(false);
     }
 
