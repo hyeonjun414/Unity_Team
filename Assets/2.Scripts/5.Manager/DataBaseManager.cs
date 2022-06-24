@@ -32,7 +32,6 @@ public class DataBaseManager : Singleton<DataBaseManager>
         set
         {
             IsTaskFinished = value;
-            testFunc();
         } 
     }
     DatabaseReference reference;
@@ -46,55 +45,20 @@ public class DataBaseManager : Singleton<DataBaseManager>
         
         FirebaseApp.DefaultInstance.Options.DatabaseUrl = new Uri(DBURL);
         reference = FirebaseDatabase.DefaultInstance.RootReference;
-    
-        //ReadDB("awIhaxye4IOqouz6XCJZMjcvWmB2","emailID");
-        // ReadDB("awIhaxye4IOqouz6XCJZMjcvWmB2","emailID", OnDone);
-        // ReadDB("awIhaxye4IOqouz6XCJZMjcvWmB2","emailID", (str) =>{
-        //     Debug.Log(str);
-        // });
-        //ReadDBTest();
-
-    }
-// public void ReadDBTest()
-//     {
-//         //StartCoroutine(ExecuteReadDB());
-//         reference = FirebaseDatabase.DefaultInstance.GetReference("UserData");
-//         reference.GetValueAsync().ContinueWithOnMainThread(task =>
-//         {
-//             if(task.IsCompleted)
-//             {
-//                 DataSnapshot snapshot = task.Result;
-//                 foreach(DataSnapshot data in snapshot.Children)
-//                 {
-//                    // if(data.Key == UID)
-//                     {
-//                         IDictionary dicUserData = (IDictionary)data.Value;
-//                         Debug.Log("email : " + dicUserData["emailID"] + "/ nickName : " +dicUserData["nickName"]);
-         
-//                     }
-//                    // else
-//                     {
-//                    //     Debug.Log("값이 없습니다. 확인해주세요");
-//                     }
-//                 }
-//                 //isTaskFinished = true;
-                
-//             }
-//         });
-//     }
-    public void OnDone(string result)
-    {
-        Debug.Log(result);
     }
 
-    public void testFunc()
-    {
-        Debug.Log(cacheString);
-    }
     public void WriteNewPlayerDB(string UID,string emailID, string nickName)
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
         UserData data1 = new UserData(emailID,nickName,0.ToString(),0.ToString());
+        string jsonData1 = JsonUtility.ToJson(data1);
+
+        reference.Child("UserDatabase").Child(UID).SetRawJsonValueAsync(jsonData1);
+    }
+    public void WriteExistingPlayerDB(string UID,string emailID, string nickName,string totalGame, string winGames)
+    {
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+        UserData data1 = new UserData(emailID,nickName,totalGame,winGames);
         string jsonData1 = JsonUtility.ToJson(data1);
 
         reference.Child("UserDatabase").Child(UID).SetRawJsonValueAsync(jsonData1);
@@ -159,7 +123,7 @@ public class DataBaseManager : Singleton<DataBaseManager>
         });
     }
 
-    public void ReadPlayerInfo(string UID , UnityAction<string> onDone)
+    public void ReadPlayerInfo(string UID , bool withMail, UnityAction<string> onDone)
     {
         string returnString=null;
         reference = FirebaseDatabase.DefaultInstance.GetReference("UserDatabase");
@@ -173,11 +137,22 @@ public class DataBaseManager : Singleton<DataBaseManager>
                     if(data.Key == UID)
                     {
                         IDictionary dicUserData = (IDictionary)data.Value;
-
-                        returnString =
-                            (dicUserData["nickName"].ToString() +"$"+ 
-                             dicUserData["totalGames"].ToString() +"$"+
-                             dicUserData["winGames"].ToString());     
+                        if(withMail)
+                        {
+                            returnString =
+                                (dicUserData["emailID"].ToString() +"$"+
+                                dicUserData["nickName"].ToString() +"$"+ 
+                                dicUserData["totalGames"].ToString() +"$"+
+                                dicUserData["winGames"].ToString());                           
+                        }
+                        else
+                        {
+                            returnString =
+                                (dicUserData["nickName"].ToString() +"$"+ 
+                                dicUserData["totalGames"].ToString() +"$"+
+                                dicUserData["winGames"].ToString());
+                        }
+     
 
                     }
                     else
@@ -254,97 +229,4 @@ public class DataBaseManager : Singleton<DataBaseManager>
         }
     }
 
-    // IEnumerator ExecuteReadDB()
-    // {
-    //     yield return new WaitUntil(()=>isTaskFinished);
-    //     //cacheString;
-    //     isTaskFinished = false;
-    // }
-
-    
-#region test
-        public void WriteNickName(string emailID, string nickName)
-    {
-        //UserNickName name = new UserNickName(nickName);
-        //string jsonData = JsonUtility.ToJson(name);
-        //reference.Child("Users").Child(emailID).Child("username").SetValueAsync(nickName);
-        //ContinueWith(task=>
-        // {
-        //     if(task.IsCompleted)
-        //     {
-        //         Debug.Log("saveSuccess");
-        //     }
-        //     else
-        //     {
-        //         Debug.Log("saveNotSuccess");
-        //     }
-        // });
-        String value = emailID;
-        string[] words = value.Split('.');
-        value = words[0];
-        reference.Child("USERS").Child(value).Child("UserNickname").SetValueAsync(nickName);
-        //reference.Child("useruser").SetValueAsync(nickName);
-    }
-    public string ReadNickName(string emailID)
-    {
-        String key = emailID;
-        string[] words = key.Split('.');
-        key = words[0];
-        Debug.Log(key);
-        string returnValue=null;
-        
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
-       // var getValue = reference.EqualTo(value);
-       // Query query;
-
-        reference.Child(key)
-            .GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsFaulted)
-            {
-                // Handle the error...
-            }
-            else if (task.IsCompleted)
-            {
-                DataSnapshot snapshot = task.Result;
-                // Do something with snapshot...
-            
-                //Debug.Log(snapshot.Child(key).Child("UserNickname").Value);
-                Debug.Log((snapshot.Child("UserNickName").Value).ToString());
-            }
-        });
-        // FirebaseDatabase.DefaultInstance.GetReference("USERS").GetValueAsync().ContinueWithOnMainThread(task=>
-        // {
-        //     if(task.IsFaulted)
-        //     {
-
-        //     }
-        //     else if(task.IsCompleted)
-        //     {
-        //         DataSnapshot snapshot = task.Result;
-        //         for(int i=0; i<snapshot.ChildrenCount;++i)
-        //         {
-        //             snapshot.GetRawJsonValue().ToString();
-        //         }
-        //     }
-        // });
-        // reference.Child(key).GetValueAsync().ContinueWithOnMainThread(task=>
-        // {
-        //     if(task.IsCompleted)
-        //     {
-        //         Debug.Log("성공");
-        //         DataSnapshot snapshot = task.Result;
-        //         returnValue = snapshot.Value.ToString();
-        //     }
-        //     else
-        //     {
-        //         AuthManager.Instance.StartCoroutine(AuthManager.Instance.ErrorMessage("별명을 불러오지 못했습니다"));
-                
-        //     }
-        // });
-        
-        
-        return returnValue;
-    }
-#endregion
 }

@@ -16,6 +16,7 @@ public class GameData : MonoBehaviour
 
     public const string PLAYER_OWNERID = "OwnerID";
 
+    public const string IS_EMAIL = "IsEmail";
 
     [Header("게임결과정보 저장")]
     public const string PLAYER_NAME = "PlayerName";

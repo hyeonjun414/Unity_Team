@@ -56,6 +56,7 @@ public class PlayerEntry : MonoBehaviour
             if(str == "nullString")
             {
                 LobbyManager.instance.ShowError("게스트 계정의 프로필 정보는 제공되지 않습니다");
+                
             }
             else
             {
