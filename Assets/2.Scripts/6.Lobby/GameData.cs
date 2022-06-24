@@ -2,6 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ePlayerInput
+{
+    NULL,
+    MOVE_UP,
+    MOVE_RIGHT,
+    MOVE_DOWN,
+    MOVE_LEFT,
+    ROTATE_RIGHT,
+    ROTATE_LEFT,
+    ATTACK,
+    BLOCK,
+    USE_ITEM,
+    CHANGE_ITEM_SLOT,
+}
+
+public enum PlayerDir
+{
+    Start,
+    Up,
+    Right,
+    Down,
+    Left,
+    End
+}
+
+public enum PlayerState
+{
+    Normal,
+    Move,
+    Defend,
+    Attack,
+    Stun,
+    Dead
+}
+
+public enum ModeType
+{
+    LastFighter,
+    OneShot,
+    TimeToKill,
+    End,
+}
+
+public enum MapType
+{
+    Normal,
+    Forest,
+    Snow,
+    End
+}
+
 public class GameData : MonoBehaviour
 {
     public const int COUNTDOWN = 0;
@@ -12,11 +63,40 @@ public class GameData : MonoBehaviour
 
     public const string PLAYER_INDEX = "PlayerIndex";
     public const string GAME_MODE = "GameMode";
-    public const string PLAYER_OWNERID = "OwnerID";
+    public const string GAME_MAP = "GameMap";
+  
 
     public const string PLAYER_KILL = "PlayerKill";
     public const string PLAYER_DEAD = "PlayerDead";
     
+    public static string GetMode(ModeType type)
+    {
+        switch (type)
+        {
+            case ModeType.LastFighter:
+                return "Last Fighter";
+            case ModeType.OneShot:
+                return "One Shot";
+            case ModeType.TimeToKill:
+                return "Time To Kill";
+            default: return "";
+        }
+
+    }
+    public static string GetMap(MapType type)
+    {
+        switch (type)
+        {
+            case MapType.Normal:
+                return "Normal";
+            case MapType.Forest:
+                return "Forest";
+            case MapType.Snow:
+                return "Snow";
+            default: return "";
+        }
+    }
+
     public static Color GetColor(int playerNumber)
     {
         switch(playerNumber)

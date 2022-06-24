@@ -15,11 +15,15 @@ public class CameraTransparent : MonoBehaviour
     private void CheckWall()
     {
         if(player == null) return;
-        Wall[] wall= new Wall[2];
-        
-       // Vector3 fixedPos = new Vector3(player.transform.position.x,player.transform.position.y+1f,transform.position.z);
+        Wall[] wall= new Wall[4];
+
         Vector3 dir = (player.transform.position - transform.position).normalized;
-        RaycastHit[] target = Physics.RaycastAll(transform.position, dir,10f,LayerMask.GetMask("Wall"));
+        RaycastHit[] target = Physics.RaycastAll(
+            player.transform.position,
+            -dir,
+            15f,
+            LayerMask.GetMask("Wall"));
+
         if(target.Length>0)
         {
             for(int i=0; i<target.Length;++i)

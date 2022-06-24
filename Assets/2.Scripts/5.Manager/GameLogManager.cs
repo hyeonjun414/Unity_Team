@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
+using System.Text;
 
-public class GameLogManager : Singleton<GameLogManager>
+public class GameLogManager : MonoBehaviourPun
 {
+    public static GameLogManager Instance;
     public Queue<string> eventQueue;
     private void Awake()
     {
-        if (_instance == null)
-            _instance = this;
+        if (Instance == null)
+            Instance = this;
 
 
         eventQueue = new Queue<string>();   
@@ -19,6 +22,16 @@ public class GameLogManager : Singleton<GameLogManager>
     //=> 그걸 queue에 담아서 코루틴으로 n초마다 한번씩 화면에 표시 그리고 m초후에 queue에서 삭제 후 destroy
     //큐가 0보다 크면 코루틴을 돌려서 n초마다 한번씩 표시
 
+    public void SendDeadLog(string msg)
+    {
+        var builder = new StringBuilder();
+        builder.Append(msg);
+        builder.Append("이(가) 사망하였습니다");
+        string deadString = builder.ToString();
+        photonView.RPC("AddQueue", RpcTarget.All, deadString);
+    }
+
+    [PunRPC]
     public void AddQueue(string msg)
     {
         eventQueue.Enqueue(msg);

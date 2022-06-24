@@ -14,11 +14,11 @@ public class CharacterAction : ActionCommand
     {
         if (player.eCurInput == ePlayerInput.ATTACK)
         {
-            Attack();
+            photonView.RPC("Attack", RpcTarget.All);
         }
         else if (player.eCurInput == ePlayerInput.BLOCK)
         {
-            Block();
+            photonView.RPC("Block", RpcTarget.All);
         }
         else if (player.eCurInput == ePlayerInput.USE_ITEM)
         {
@@ -29,41 +29,63 @@ public class CharacterAction : ActionCommand
             ChangeItemSlot();
         }
     }
-    private void Attack()
+    [PunRPC]
+    public void Attack()
     {
-        player.photonView.RPC("Attack", Photon.Pun.RpcTarget.All);
+        // 공격 애니메이션과 효과음을 재생.
+        player.anim.SetTrigger("Attack");
+        player.audioSource.PlayOneShot(player.attackMissSound);
 
+        // 전방으로 레이캐스트를 실행하여 다른 캐릭터가 검출되면 해당 캐릭터에게 공격 로직을 실행
         RaycastHit target;
         if (Physics.Raycast(player.transform.position + Vector3.up + transform.forward * 0.5f, player.transform.forward, out target, 2f))
         {
             Character enemy = target.collider.gameObject.GetComponent<Character>();
+            // 공격 로직
             if (enemy != null)
             {
-                if (EnemyDefenceCheck(enemy))
+                // 적이 방어 상태인지 체크
+                if (EnemyDefenseCheck(enemy))
                 {
-                    player.photonView.RPC("Stunned", Photon.Pun.RpcTarget.All);
-                    return;
+                    // 방어가 유효하면 공격한 플레이어 스턴
+                    Stunned();
                 }
-                
-                print("Attack Enemy");
-               // player.photonView.RPC("PlaySound", Photon.Pun.RpcTarget.All, (int)player.eCurInput);
-                enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage ,PhotonNetwork.LocalPlayer.ActorNumber);//player.playerId);
+                else
+                {
+                    // 방어가 유효하지 않다면 대상은 공격을 받는다.
+                    enemy.Damaged(player.stat.damage);
+                    if (enemy.state == PlayerState.Dead)
+                        player.stat.killCount++;
+                }
             }
         }
-        else{
-            
-        }
+    }
+    public void Stunned()
+    {
+        StartCoroutine("StunRoutine", 3f);
+    }
+    IEnumerator StunRoutine(float time)
+    {
+        player.stunEffect.gameObject.SetActive(true);
+        player.anim.SetBool("Stunned", true);
+        player.state = PlayerState.Stun;
+
+        yield return new WaitForSeconds(time);
+
+        player.stunEffect.gameObject.SetActive(false);
+        player.anim.SetBool("Stunned", false);
+        player.state = PlayerState.Normal;
     }
 
-    public bool EnemyDefenceCheck(Character enemy)
+    public bool EnemyDefenseCheck(Character enemy)
     {
         if (enemy.state == PlayerState.Defend)
         {
-            return DefenceDirCheck(enemy);
+            return DefenseDirCheck(enemy);
         }
         return false;
     }
-    public bool DefenceDirCheck(Character enemy)
+    public bool DefenseDirCheck(Character enemy)
     {
         PlayerDir originDir = enemy.Dir;
 
@@ -82,10 +104,25 @@ public class CharacterAction : ActionCommand
         }
     }
 
-    private void Block()
+    [PunRPC]
+    public void Block()
     {
-        player.photonView.RPC("Block", Photon.Pun.RpcTarget.All);
+        player.shieldEffect.gameObject.SetActive(true);
+        player.audioSource.PlayOneShot(player.shieldSound);
 
+        StartCoroutine("BlockRoutine", 2f);
+    }
+    IEnumerator BlockRoutine(float time)
+    {
+        player.shieldEffect.gameObject.SetActive(true);
+        player.state = PlayerState.Defend;
+        player.anim.SetBool("Defend", true);
+
+        yield return new WaitForSeconds(time);
+
+        player.shieldEffect.gameObject.SetActive(false);
+        player.state = PlayerState.Normal;
+        player.anim.SetBool("Defend", false);
     }
     private void UseItem()
     {
@@ -106,11 +143,4 @@ public class CharacterAction : ActionCommand
         player.eCurInput = ePlayerInput.CHANGE_ITEM_SLOT;
         ItemManager.Instance.SwitchItems();
     }
-
- 
-
- 
-
-
-
 }

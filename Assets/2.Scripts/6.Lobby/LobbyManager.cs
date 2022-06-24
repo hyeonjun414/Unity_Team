@@ -82,8 +82,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        string roomName = "Room " + Random.Range(1000, 10000);
+        string roomName = $"{PhotonNetwork.LocalPlayer.NickName}의 방";
         RoomOptions options = new RoomOptions { MaxPlayers = 15 };
+        options.CustomRoomProperties = new Hashtable { { GameData.GAME_MODE, 0 }, { GameData.GAME_MAP, 0 } };
         PhotonNetwork.CreateRoom(roomName, options, null);
     }
 
@@ -113,12 +114,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         inRoomPanel.OnMasterClientSwitched(newMasterClient);
+        inRoomPanel.settingPanel.OnMasterClientSwitched(newMasterClient);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         inRoomPanel.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
     }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        inRoomPanel.settingPanel.OnRoomPropertiesUpdate(propertiesThatChanged);
+    }
+
 
     public void LocalPlayerPropertiesUpdated()
     {

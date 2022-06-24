@@ -35,6 +35,9 @@ public class InRoomPanel : MonoBehaviour
     public TMP_Text loseTimes;
     public TMP_Text winRate;
 
+    [Header("RoomSetting Panel")]
+    public RoomSettingPanel settingPanel;
+
     private void Update()
     {
         if (!isEnterKeyEnabled) return;
@@ -61,8 +64,14 @@ public class InRoomPanel : MonoBehaviour
             entry.transform.localScale = Vector3.one;
             entry.Initialize(p.ActorNumber, p.NickName);
 
-            // ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_OWNERID, p.ActorNumber } };
-            // p.SetCustomProperties(prop); 
+            if(p.IsMasterClient)
+            {
+                entry.masterIcon.SetActive(true);
+            }
+            if(p.IsLocal)
+            {
+                entry.localIcon.SetActive(true);
+            }
 
             object characterIndex;
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
@@ -73,9 +82,7 @@ public class InRoomPanel : MonoBehaviour
             playerListEntries.Add(p.ActorNumber, entry);
         }
 
-
-
-
+        settingPanel.SetUp();
 
         if (PhotonNetwork.IsMasterClient)
         {

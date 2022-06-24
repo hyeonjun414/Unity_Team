@@ -33,35 +33,41 @@ public class BattleManager : MonoBehaviourPun
     public List<Character> deadPlayer;
 
     [Header("Text")]
+    public Text modeText;
     public Text resultText;
     public GameObject resultTextObj;
 
     [Header("UI")]
     public RegenUI regenUI;
     public HUDUI hUDUI;
+
+    [Header("Mode")]
+    public ModeType mode;
   
     public static BattleManager Instance { get; private set; }
     private void Awake()
     {
         if (Instance == null) Instance = this;
 
+        
     }
 
     public void SetUpMode()
     {
-        object mode;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out mode))
+        object modeData;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out modeData))
         {
-            int modeNum = (int)mode;
-            switch (modeNum)
+            mode = (ModeType)modeData;
+            modeText.text = GameData.GetMode(mode);
+            switch (mode)
             {
-                case 0:
+                case ModeType.LastFighter:
                     SetUpDeathMatch();
                     break;
-                case 1:
-                    SetUpDeathMatch();
+                case ModeType.OneShot:
+                    SetUpOneShotMode();
                     break;
-                case 2:
+                case ModeType.TimeToKill:
                     SetUpTimerMode();
                     break;
             }
@@ -103,20 +109,21 @@ public class BattleManager : MonoBehaviourPun
 
         //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
         alivePlayer = FindObjectsOfType<Character>().ToList();
-        
-        for(int i=0; i<alivePlayer.Count;++i){
 
-       
-        }
+
+        // 등록이 완료되었다면 모드 설정에 따라 설정을 진행한다.
+        SetUpMode();
 
     }
 
 
 
     //플레이어가 죽었을 때 판정 || 플레이어가 disconnect되었을 때 호출
+
     public void PlayerOut(Character deadPL)
     {
-
+        // 시간제 게임일 경우 계산안함.
+        if (mode == ModeType.TimeToKill) return;
         //alivePlayer 리스트에서 죽은 플레이어를 뺀다.
         alivePlayer.Remove(deadPL);
 
@@ -128,8 +135,9 @@ public class BattleManager : MonoBehaviourPun
         if(alivePlayer.Count ==1)
         {
             photonView.RPC("BattleOverMessage", RpcTarget.All);
+            StartCoroutine(GameOver());
         }
-        StartCoroutine(GameOver());
+        
     }
 
     [PunRPC]
@@ -161,7 +169,6 @@ public class BattleManager : MonoBehaviourPun
     }
     private void SetBattleResult()
     {
-        Debug.Log("sssssssssssssssssssssssssssss왜안됨");
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             
@@ -229,7 +236,6 @@ public class BattleManager : MonoBehaviourPun
         battleResultPanel.SetActive(true);
     }
 
-        
     IEnumerator GameOver(){
         yield return new WaitForSeconds(3f);  
         
@@ -258,9 +264,6 @@ public class BattleManager : MonoBehaviourPun
         //SceneManager.LoadScene("NewLobbyScene");
 
     }
-    
-    
-
     //플레이어가 한 명 남았을 때 그라운드를 끝냄.
 
     public void FinalWinner(){
@@ -272,9 +275,4 @@ public class BattleManager : MonoBehaviourPun
 
         //}
     }
-
-
-
-
-    
 }

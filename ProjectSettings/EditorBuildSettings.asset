@@ -5,19 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/1.Scenes/LoginAuthScene.unity
-    guid: 79d286cd1b0af254f98c0d3ab57f89d8
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scenes/NewLobbyScene.unity
     guid: a4e5c9476310cdb45aef1efd2cbd7096
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scenes/mapTest.unity
     guid: 7c4e4fbb745ee2344ad125225463c57c
-  - enabled: 1
-    path: Assets/1.Scenes/LSU/NewLobbyScene.unity
-    guid: cc8814ad92760394d824e13e8845bbb7
-  - enabled: 1
-    path: Assets/1.Scenes/LSU/mapTest.unity
-    guid: 35216e6ca7193f14faefa55be3568f68
   m_configObjects: {}

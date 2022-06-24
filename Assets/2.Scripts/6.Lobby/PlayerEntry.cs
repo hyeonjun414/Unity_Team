@@ -28,6 +28,10 @@ public class PlayerEntry : MonoBehaviour
     [Header("Ready")]
     public GameObject readyImage;
 
+    [Header("Icon")]
+    public GameObject masterIcon;
+    public GameObject localIcon;
+
     private int ownerId;
     private bool isPlayerReady;
 

@@ -1459,7 +1459,7 @@ GameObject:
   - component: {fileID: 5949444177251803552}
   - component: {fileID: 3381960034927957886}
   - component: {fileID: 6249386687341747586}
-  - component: {fileID: -1546382600489704119}
+  - component: {fileID: 4052388058797495273}
   m_Layer: 8
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -1533,8 +1533,6 @@ MonoBehaviour:
   eCurInput: 0
   state: 0
   isRegen: 0
-  defenceCount: 0
-  stunCount: 0
   roteCommand: {fileID: 0}
   inputCommand: {fileID: 0}
   moveCommand: {fileID: 0}
@@ -1543,6 +1541,7 @@ MonoBehaviour:
   attackMissSound: {fileID: 8300000, guid: 468b04977adc5bc46bba4bf14d7ad040, type: 3}
   shieldSound: {fileID: 8300000, guid: e4f83b212697f6240883216b9a7b6b6c, type: 3}
   getItemSound: {fileID: 8300000, guid: 5ff71a501a5e6cb46afb18ecf53a5686, type: 3}
+  audioSource: {fileID: 0}
   camPos: {fileID: 4426714954687848135}
   stunEffect: {fileID: 8979888785911371022}
   shieldEffect: {fileID: 7012852634407452626}
@@ -1618,7 +1617,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!82 &-1546382600489704119
+--- !u!82 &4052388058797495273
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -26483,7 +26482,7 @@ Transform:
   m_GameObject: {fileID: 4122392434325920271}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 470816017258877339}
   m_RootOrder: 2
@@ -29451,13 +29450,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6499236460664562051}
-  m_LocalRotation: {x: 0.17298737, y: -0.085831694, z: 0.015134441, w: 0.98106027}
-  m_LocalPosition: {x: 0.5, y: 1, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 470816017258877339}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 20, y: -10, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6654743689538046227
 GameObject:
   m_ObjectHideFlags: 0

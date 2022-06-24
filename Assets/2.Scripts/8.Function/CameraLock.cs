@@ -23,7 +23,7 @@ public class CameraLock : MonoBehaviour
 
         if (player.photonView.IsMine)
         {
-            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 5f, player.transform.position.z);
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 20f, player.transform.position.z);
             transform.SetParent(player.transform);
         }
 

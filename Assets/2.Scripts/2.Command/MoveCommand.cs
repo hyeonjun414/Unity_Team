@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
- public abstract class MoveCommand : MonoBehaviour
+using Photon.Pun;
+public abstract class MoveCommand : MonoBehaviourPun
 {
     public Character player;
     public abstract void Execute();
