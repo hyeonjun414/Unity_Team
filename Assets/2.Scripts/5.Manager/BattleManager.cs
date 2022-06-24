@@ -20,10 +20,9 @@ public class BattleManager : MonoBehaviourPun
     [HideInInspector]
     public int isReadyCount = 0;
 
-    public List<Character> players;
-    public GameObject battleResultPanel;
-    public GameObject[] playerInfoUIs;
+    public BattleResultPanel battleResultPanel;
 
+    public List<Character> players;
 
     [Header("Player")]
 
@@ -47,6 +46,10 @@ public class BattleManager : MonoBehaviourPun
     {
         if (Instance == null) Instance = this;
 
+    }
+    private void Start()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     // private void Update() {
@@ -153,72 +156,7 @@ public class BattleManager : MonoBehaviourPun
     }
     private void SetBattleResult()
     {
-        Debug.Log("sssssssssssssssssssssssssssss왜안됨");
-        foreach (Player p in PhotonNetwork.PlayerList)
-        {
-            
-            if(alivePlayer[0].photonView.Owner.ActorNumber == p.ActorNumber)
-            {
-                TMP_Text[] texts = playerInfoUIs[0].transform.GetComponentsInChildren<TMP_Text>();
-                for(int i=0; i<texts.Length;++i)
-                {
-                    switch(texts[i].gameObject.name)
-                    {
-                        case "PlayerNick":
-                        {
-                            texts[i].text = alivePlayer[0].nickName;
-                        }break;
-                        case "Kill":
-                        {
-                            texts[i].text = p.GetScore().ToString();
-                        }break;
-                        case "Death":
-                        {
-                            texts[i].text = alivePlayer[0].stat.deathCount.ToString();
-                        }break;
-                        case "Rank":
-                        {
-                            texts[i].text = "승리";
-                        }break;
-                        
-                    }
-
-                }
-            }
-            for(int i=0; i<deadPlayer.Count;++i)
-            {
-                if(deadPlayer[i].photonView.Owner.ActorNumber == p.ActorNumber)
-                {
-                    TMP_Text[] texts = playerInfoUIs[i+1].transform.GetComponentsInChildren<TMP_Text>();
-                    for(int j=0; j<texts.Length;++j)
-                    {
-                        switch(texts[j].gameObject.name)
-                        {
-                            case "PlayerNick":
-                            {
-                                texts[j].text = deadPlayer[i].nickName;
-                            }break;
-                            case "Kill":
-                            {
-                                texts[j].text = p.GetScore().ToString();
-                            }break;
-                            case "Death":
-                            {
-                                texts[j].text = deadPlayer[i].stat.deathCount.ToString();
-                            }break;
-                            case "Rank":
-                            {
-                                texts[j].text = "패배";
-                            }break;
-                            
-                        }
-
-                    }
-                }
-            }
-            
-        }
-        battleResultPanel.SetActive(true);
+        battleResultPanel.SetBattleResult();
     }
 
         
@@ -246,8 +184,9 @@ public class BattleManager : MonoBehaviourPun
         }
         SetBattleResult();
 
-        
-        //SceneManager.LoadScene("NewLobbyScene");
+        yield return new WaitForSeconds(5f);
+
+        PhotonNetwork.LoadLevel("Result");
 
     }
     

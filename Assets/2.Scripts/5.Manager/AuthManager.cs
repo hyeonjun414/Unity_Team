@@ -8,8 +8,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using UnityEngine.SceneManagement;
-//using GooglePlayGames;
-//using GooglePlayGames.BasicApi;
+
 
 public class AuthManager : Singleton<AuthManager>
 {
@@ -39,6 +38,7 @@ public class AuthManager : Singleton<AuthManager>
     }
     private void Start()
     {
+
         signInBtn.interactable=false;
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task=>
         {

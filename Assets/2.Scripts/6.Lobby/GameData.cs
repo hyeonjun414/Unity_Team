@@ -11,11 +11,17 @@ public class GameData : MonoBehaviour
     public const string PLAYER_GEN = "Character";
 
     public const string PLAYER_INDEX = "PlayerIndex";
+<<<<<<< Updated upstream
     public const string PLAYER_OWNERID = "OwnerID";
+=======
+    public const string GAME_MODE = "GameMode";
+>>>>>>> Stashed changes
 
+    [Header("게임결과정보 저장")]
+    public const string PLAYER_NAME = "PlayerName";
     public const string PLAYER_KILL = "PlayerKill";
     public const string PLAYER_DEAD = "PlayerDead";
-    
+    public const string PLAYER_RANK = "PlayerRank";
     public static Color GetColor(int playerNumber)
     {
         switch(playerNumber)
