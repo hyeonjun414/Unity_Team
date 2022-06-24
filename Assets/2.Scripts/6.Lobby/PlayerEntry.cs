@@ -41,7 +41,7 @@ public class PlayerEntry : MonoBehaviour
         }
         else
         {
-            characterIndex = Random.Range(0,characterDataSize);
+            characterIndex = Random.Range(0, characterDataSize);
             SetPlayerCharacter(characterIndex);
             Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
@@ -69,10 +69,9 @@ public class PlayerEntry : MonoBehaviour
     public void OnRightButtonClicked()
     {
         if (isPlayerReady) return;
-        //characterData.players[++characterIndex];
 
         ++characterIndex;
-        if(characterIndex>=characterDataSize)characterIndex = 0;
+        if (characterIndex >= characterDataSize) characterIndex = 0;
         SetPlayerCharacter(characterIndex);
         Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
@@ -83,7 +82,7 @@ public class PlayerEntry : MonoBehaviour
         if (isPlayerReady) return;
 
         --characterIndex;
-        if(characterIndex<=0)characterIndex = characterDataSize-1;
+        if (characterIndex <= 0) characterIndex = characterDataSize - 1;
         SetPlayerCharacter(characterIndex);
         Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
@@ -103,22 +102,21 @@ public class PlayerEntry : MonoBehaviour
 
     public void SetPlayerCharacter(int index)
     {
-        for(int i=0; i<characterDataSize;++i)
+        for (int i = 0; i < characterDataSize; ++i)
         {
             characterSet.transform.GetChild(i).gameObject.SetActive(false);
         }
         GameObject charac = characterSet.transform.GetChild(index).gameObject;
         charac.SetActive(true);
         DummyPlayer dummy = charac.GetComponent<DummyPlayer>();
-        int randomAnim = Random.Range(1,4);
-        switch(randomAnim)
+        int randomAnim = Random.Range(1, 4);
+        switch (randomAnim)
         {
-            case 1:dummy.anim.SetTrigger("Wave Hand"); break;
-            case 2:dummy.anim.SetTrigger("Clapping"); break;
-            case 3:dummy.anim.SetTrigger("Victory"); break;
+            case 1: dummy.anim.SetTrigger("Wave Hand"); break;
+            case 2: dummy.anim.SetTrigger("Clapping"); break;
+            case 3: dummy.anim.SetTrigger("Victory"); break;
         }
 
-        characterIndex = index;
     }
      
 }

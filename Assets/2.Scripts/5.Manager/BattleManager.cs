@@ -31,16 +31,13 @@ public class BattleManager : MonoBehaviourPun
     //사망한 플레이어
     public List<Character> deadPlayer;
 
-
     [Header("Text")]
-
     public Text resultText;
     public GameObject resultTextObj;
-    private void Start() {
-    }
 
-
-
+    [Header("UI")]
+    public RegenUI regenUI;
+  
     public static BattleManager Instance { get; private set; }
     private void Awake()
     {
@@ -52,11 +49,55 @@ public class BattleManager : MonoBehaviourPun
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
-    // private void Update() {
+    public void SetUpMode()
+    {
+        object mode;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out mode))
+        {
+            int modeNum = (int)mode;
+            switch (modeNum)
+            {
+                case 0:
+                    SetUpDeathMatch();
+                    break;
+                case 1:
+                    SetUpDeathMatch();
+                    break;
+                case 2:
+                    SetUpTimerMode();
+                    break;
+            }
+        }
+    }
+    
     //     FinalWinner();
     // }
 
+    private void Update() {
+        //FinalWinner();
+    }
 
+    public void SetUpDeathMatch()
+    {
+
+    }
+    
+    public void SetUpOneShotMode()
+    {
+        // 한대 맞으면 죽는 데스매치
+        foreach(Character p in players)
+        {
+            p.stat.hp = 1;
+        }
+    }
+    public void SetUpTimerMode()
+    {
+        TimeManager.Instance.limitTime = 180f;
+        foreach (Character p in players)
+        {
+            p.isRegen = true;
+        }
+    }
 
     public void RegisterAllPlayer()
     {
@@ -73,40 +114,6 @@ public class BattleManager : MonoBehaviourPun
     }
 
 
-    public void Judge()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-
-        }
-        //CheckPlayersAvailability();
-        //AttackJudge();
-        //ItemJudge();
-
-    }
-    public void CheckPlayersAvailability()
-    {
-        // 플레이어 명령 기반
-        // 입력이 없다면 NULL 
-
-    }
-
-    public void AttackJudge()
-    {
-
-    }
-    public void ItemJudge()
-    {
-    }
-    [PunRPC]
-    public void ResetPlayers()
-    {
-        foreach (Character player in players)
-        {
-            //player.eCurInput = ePlayerInput.NULL;
-        }
-        RhythmManager.Instance.isBeat = true;
-    }
 
     //플레이어가 죽었을 때 판정 || 플레이어가 disconnect되었을 때 호출
     public void PlayerOut(Character deadPL)

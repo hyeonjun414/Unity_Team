@@ -48,7 +48,7 @@ public class CharacterMove : MoveCommand
         }
 
         Vector3 middlePos = (originNode.transform.position + destNode.transform.position) * 0.5f + Vector3.up;
-        Vector3 offset = Vector3.up * 0.5f;
+
         float curTime = 0;
         while (true)
         {
@@ -56,9 +56,9 @@ public class CharacterMove : MoveCommand
                 break;
             curTime += Time.deltaTime;
             transform.position = GetBezierPos(
-                originNode.transform.position + offset,
-                middlePos + offset,
-                destNode.transform.position + offset,
+                originNode.transform.position + Vector3.up,
+                middlePos + Vector3.up,
+                destNode.transform.position + Vector3.up,
                 curTime / 0.2f);
 
             yield return null;
@@ -126,7 +126,6 @@ public class CharacterMove : MoveCommand
 
 
         Vector3 middlePos = (transform.position + destNode.transform.position) * 0.5f;
-        Vector3 offset = Vector3.up * 0.5f;
         float curTime = 0;
         while (true)
         {
@@ -134,9 +133,9 @@ public class CharacterMove : MoveCommand
                 break;
             curTime += Time.deltaTime;
             transform.position = GetBezierPos(
-                transform.position + offset,
-                middlePos + offset,
-                destNode.transform.position + offset,
+                transform.position + Vector3.up,
+                middlePos + Vector3.up,
+                destNode.transform.position + Vector3.up,
                 curTime / 0.2f);
 
             yield return null;

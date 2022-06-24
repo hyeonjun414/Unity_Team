@@ -32,8 +32,9 @@ public class CharacterAction : ActionCommand
     private void Attack()
     {
         player.photonView.RPC("Attack", Photon.Pun.RpcTarget.All);
+
         RaycastHit target;
-        if (Physics.Raycast(player.transform.position + Vector3.up + transform.forward * 0.5f, player.transform.forward, out target, 0.5f))
+        if (Physics.Raycast(player.transform.position + Vector3.up + transform.forward * 0.5f, player.transform.forward, out target, 2f))
         {
             Character enemy = target.collider.gameObject.GetComponent<Character>();
             if (enemy != null)
@@ -45,8 +46,12 @@ public class CharacterAction : ActionCommand
                 }
                 
                 print("Attack Enemy");
+               // player.photonView.RPC("PlaySound", Photon.Pun.RpcTarget.All, (int)player.eCurInput);
                 enemy.photonView.RPC("Damaged", Photon.Pun.RpcTarget.All, player.stat.damage ,PhotonNetwork.LocalPlayer.ActorNumber);//player.playerId);
             }
+        }
+        else{
+            
         }
     }
 
@@ -101,4 +106,11 @@ public class CharacterAction : ActionCommand
         player.eCurInput = ePlayerInput.CHANGE_ITEM_SLOT;
         ItemManager.Instance.SwitchItems();
     }
+
+ 
+
+ 
+
+
+
 }

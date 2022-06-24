@@ -11,11 +11,11 @@ public class GameData : MonoBehaviour
     public const string PLAYER_GEN = "Character";
 
     public const string PLAYER_INDEX = "PlayerIndex";
-<<<<<<< Updated upstream
-    public const string PLAYER_OWNERID = "OwnerID";
-=======
+
     public const string GAME_MODE = "GameMode";
->>>>>>> Stashed changes
+
+    public const string PLAYER_OWNERID = "OwnerID";
+
 
     [Header("게임결과정보 저장")]
     public const string PLAYER_NAME = "PlayerName";
