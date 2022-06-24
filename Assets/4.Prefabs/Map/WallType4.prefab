@@ -215,6 +215,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 791396400859643360, guid: 4862b3b522d476546a2877f0010d971d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 66e77000fa31b4b49acfd5ab2e94366e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4862b3b522d476546a2877f0010d971d, type: 3}
 --- !u!4 &2080547156680073196 stripped
@@ -230,6 +235,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1869527884100078088}
     m_Modifications:
+    - target: {fileID: 4291552903187317678, guid: 72da21279b763674186e720e07476afc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 66e77000fa31b4b49acfd5ab2e94366e, type: 2}
     - target: {fileID: 4308993594973296112, guid: 72da21279b763674186e720e07476afc,
         type: 3}
       propertyPath: m_RootOrder

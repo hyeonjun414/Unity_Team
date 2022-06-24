@@ -121,7 +121,8 @@ public class BattleManager : MonoBehaviourPun
 
     public void PlayerOut(Character deadPL)
     {
-
+        // 시간제 게임일 경우 계산안함.
+        if (mode == ModeType.TimeToKill) return;
         //alivePlayer 리스트에서 죽은 플레이어를 뺀다.
         alivePlayer.Remove(deadPL);
 

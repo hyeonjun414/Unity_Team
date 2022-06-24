@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0.3, y: 0.3, z: 0.3}
+  Damping: {x: 0, y: 0, z: 0}
   ShoulderOffset: {x: 0, y: 0, z: 0}
   VerticalArmLength: 0
   CameraSide: 1
@@ -925,8 +925,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitText: {fileID: 785648673}
-  bpm: 80
-  hitAreaRate: 3
+  bpm: 120
+  hitAreaRate: 5
   isBeat: 0
   prevTime: 0
   rhythmBox: {fileID: 212827366}
@@ -936,7 +936,7 @@ MonoBehaviour:
   rhythmNote: {fileID: 1564230472269872857, guid: 908e3c6fc7ab1d44fba4623937ba3104,
     type: 3}
   notePool: []
-  noteSpeed: 1
+  noteSpeed: 0.8
   audioSource: {fileID: 211671989}
   beatsfx: {fileID: 8300000, guid: 6b8745f1367db6f4da5bb068f1e87848, type: 3}
 --- !u!82 &211671989

@@ -253,7 +253,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             CamManager.Instance.ActiveCam(CamType.Player);
         }
         state = PlayerState.Normal;
-        stat.hp = 5;
+        stat.hp = 1;
         curNode = MapManager.Instance.map.GetTileNode(new Point(y, x));
         stat.curPos = curNode.tilePos;
         anim.Play("Idle");
