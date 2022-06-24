@@ -12,10 +12,9 @@ public enum ModeType
 
 public enum MapType
 {
+    Normal,
     Forest,
     Snow,
-    Normal,
-    Lava,
     End
 }
 
@@ -53,14 +52,12 @@ public class GameData : MonoBehaviour
     {
         switch (type)
         {
+            case MapType.Normal:
+                return "Normal";
             case MapType.Forest:
                 return "Forest";
             case MapType.Snow:
                 return "Snow";
-            case MapType.Normal:
-                return "Normal";
-            case MapType.Lava:
-                return "Lava";
             default: return "";
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-    private MeshRenderer meshRenderer;
+    private MeshRenderer[] meshRenderer;
     public Material opaqueMat;
     public Material transparentMat;
     private TileNode curTile;
@@ -13,7 +13,7 @@ public class Wall : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponentsInChildren<MeshRenderer>();
 
     }
     private void Start()
@@ -25,11 +25,17 @@ public class Wall : MonoBehaviour
     {
         if (isTransparent)
         {
-            meshRenderer.material = transparentMat;
+            foreach(MeshRenderer mr in meshRenderer)
+            {
+                mr.material = transparentMat;
+            }
         }
         else
         {
-            meshRenderer.material = opaqueMat;
+            foreach (MeshRenderer mr in meshRenderer)
+            {
+                mr.material = opaqueMat;
+            }
         }
     }
 

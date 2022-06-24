@@ -63,16 +63,11 @@ public class RoomSettingPanel : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        if (modeNum == 0)
-        {
-            modeNum = (int)ModeType.End;
-        }
+        if (modeNum == 0) modeNum = (int)ModeType.End;
+
         modeNum--;
+
         curRoom.SetCustomProperties(new Hashtable() {{ GameData.GAME_MODE, modeNum }});
-
-        UpdateText();
-        
-
     }
     public void ModeRBtnClick()
     {
@@ -80,50 +75,31 @@ public class RoomSettingPanel : MonoBehaviour
 
         modeNum++;
 
-        if (modeNum == (int)ModeType.End)
-        {
-            modeNum = 0;
-        }
+        if (modeNum == (int)ModeType.End) modeNum = 0;
         
-
         curRoom.SetCustomProperties(new Hashtable() { { GameData.GAME_MODE, modeNum } });
-
-        UpdateText();
     }
     public void MapLBtnClick()
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        if (mapNum == 0)
-        {
-            mapNum = (int)MapType.End;
-        }
-        mapNum--;
-        curRoom.SetCustomProperties(new Hashtable() { { GameData.GAME_MAP, mapNum } });
+        if (mapNum == 0) mapNum = (int)MapType.End;
 
-        UpdateText();
+        mapNum--;
+
+        curRoom.SetCustomProperties(new Hashtable() { { GameData.GAME_MAP, mapNum } });
     }
     public void MapRBtnClick()
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
         mapNum++;
-        if (mapNum == (int)MapType.End)
-        {
-            mapNum = 0;
-        }
+
+        if (mapNum == (int)MapType.End) mapNum = 0;
         
-
         curRoom.SetCustomProperties(new Hashtable() { { GameData.GAME_MAP, mapNum } });
-
-        //UpdateText();
     }
 
-    public void UpdateText()
-    {
-        //modeText.text = GameData.GetMode((ModeType)modeNum);
-        //mapText.text = GameData.GetMap((MapType)mapNum);
-    }
 
     public void OnRoomPropertiesUpdate(Hashtable room)
     {

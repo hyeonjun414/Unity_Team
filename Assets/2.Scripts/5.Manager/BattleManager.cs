@@ -33,34 +33,40 @@ public class BattleManager : MonoBehaviourPun
     public List<Character> deadPlayer;
 
     [Header("Text")]
+    public Text modeText;
     public Text resultText;
     public GameObject resultTextObj;
 
     [Header("UI")]
     public RegenUI regenUI;
+
+    [Header("Mode")]
+    public ModeType mode;
   
     public static BattleManager Instance { get; private set; }
     private void Awake()
     {
         if (Instance == null) Instance = this;
 
+        
     }
 
     public void SetUpMode()
     {
-        object mode;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out mode))
+        object modeData;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out modeData))
         {
-            int modeNum = (int)mode;
-            switch (modeNum)
+            mode = (ModeType)modeData;
+            modeText.text = GameData.GetMode(mode);
+            switch (mode)
             {
-                case 0:
+                case ModeType.LastFighter:
                     SetUpDeathMatch();
                     break;
-                case 1:
-                    SetUpDeathMatch();
+                case ModeType.OneShot:
+                    SetUpOneShotMode();
                     break;
-                case 2:
+                case ModeType.TimeToKill:
                     SetUpTimerMode();
                     break;
             }
@@ -102,11 +108,10 @@ public class BattleManager : MonoBehaviourPun
 
         //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
         alivePlayer = FindObjectsOfType<Character>().ToList();
-        
-        for(int i=0; i<alivePlayer.Count;++i){
 
-       
-        }
+
+        // 등록이 완료되었다면 모드 설정에 따라 설정을 진행한다.
+        SetUpMode();
 
     }
 

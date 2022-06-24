@@ -68,6 +68,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1226008285166198134}
+  - component: {fileID: 8224851834085422295}
   m_Layer: 0
   m_Name: Field_1
   m_TagString: Untagged
@@ -84,13 +85,29 @@ Transform:
   m_GameObject: {fileID: 1226008285166198135}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1226008285768966387}
   - {fileID: 1226008284529324498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8224851834085422295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226008285166198135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d155c28045453d54295efdbb8a6815be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapSize: 13
+  grid: []
+  startPos: []
+  allTilePos: []
 --- !u!1001 &1226008284518128773
 PrefabInstance:
   m_ObjectHideFlags: 0

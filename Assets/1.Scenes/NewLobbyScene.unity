@@ -9270,7 +9270,7 @@ GameObject:
   - component: {fileID: 880897137}
   - component: {fileID: 880897136}
   m_Layer: 5
-  m_Name: Style 2
+  m_Name: Key Guide Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,22 +2,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Cinemachine;
+using Photon.Pun;
+using Photon.Realtime;
 
 
 
 public class MapManager : Singleton<MapManager>
 {
     public Map map;
+    public MapData mapData;
+    public MapType mapType;
+    public Text mapText; 
     private void Awake()
     {
         if (_instance == null)
             _instance = this;
+
+        GenerateMap();
     }
 
     private void Start()
     {
-        map = FindObjectOfType<Map>();
+       // map = FindObjectOfType<Map>();
+    }
+
+    public void GenerateMap()
+    {
+        object value;
+        if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MAP, out value))
+        {
+            mapType = (MapType)value;
+            mapText.text = GameData.GetMap(mapType);
+
+            map = Instantiate(mapData.maps[(int)mapType], Vector3.zero, Quaternion.identity);
+        }
     }
 
     public bool BoundaryCheck(Point curPoint, Point diffPoint)
