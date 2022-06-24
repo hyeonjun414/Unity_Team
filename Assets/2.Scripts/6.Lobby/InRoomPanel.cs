@@ -10,12 +10,12 @@ using System;
 public class InRoomPanel : MonoBehaviour
 {
     [HideInInspector]
-    public bool isEnterKeyEnabled=false;
+    public bool isEnterKeyEnabled = false;
     [Header("RoomPanel")]
     public TMP_Text[] ChatText;
     public TMP_InputField ChatInput;
-    
-    
+
+
     public GameObject playerListContent;
     public Button startGameButton;
     public Button readyGameButton;
@@ -37,9 +37,9 @@ public class InRoomPanel : MonoBehaviour
 
     private void Update()
     {
-        if(!isEnterKeyEnabled)return;
-        
-        if(Input.GetKeyDown(KeyCode.Return))
+        if (!isEnterKeyEnabled) return;
+
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             LobbyManager.instance.Send();
         }
@@ -57,7 +57,7 @@ public class InRoomPanel : MonoBehaviour
         {
             PlayerEntry entry = Instantiate(playerEntryPrefab);
             entry.transform.SetParent(playerListContent.transform);
-            entry.transform.SetPositionAndRotation(playerListContent.transform.position,Quaternion.identity);
+            entry.transform.SetPositionAndRotation(playerListContent.transform.position, Quaternion.identity);
             entry.transform.localScale = Vector3.one;
             entry.Initialize(p.ActorNumber, p.NickName);
 
@@ -72,9 +72,9 @@ public class InRoomPanel : MonoBehaviour
 
             playerListEntries.Add(p.ActorNumber, entry);
         }
-        
-   
-           
+
+
+
 
 
         if (PhotonNetwork.IsMasterClient)
@@ -128,7 +128,8 @@ public class InRoomPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        PhotonNetwork.LoadLevel("mapTest"); 
+        PhotonNetwork.LoadLevel("mapTest");
+        SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
     }
 
     public void OnReadyGameButtonClicked()
@@ -189,51 +190,52 @@ public class InRoomPanel : MonoBehaviour
         //startGameButton.gameObject.SetActive(CheckPlayersReady());
     }
     public void ShowPlayerInfo(string UID)
-    {        
+    {
         // Hashtable props = new Hashtable() { { GameData.PLAYER_READY, localPlayerIsReady } };
         // PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-        DataBaseManager.Instance.ReadPlayerInfo(UID,(str)=>{
+        DataBaseManager.Instance.ReadPlayerInfo(UID, (str) =>
+        {
             String value = str;
 
-            
+
             string[] words = value.Split('$');
             //닉네임 $ 총판수 $ 승리수
             nickName.text = words[0];
             totalPlayTimes.text = words[1];
             winTimes.text = words[2];
 
-            int playTimesInt    = int.Parse(totalPlayTimes.text);
-            int winTimesInt     = int.Parse(winTimes.text);
-            int loseTimesInt    = playTimesInt - winTimesInt;
-            
-            loseTimes.text  = loseTimesInt.ToString();
-            if(winTimesInt!=0)
+            int playTimesInt = int.Parse(totalPlayTimes.text);
+            int winTimesInt = int.Parse(winTimes.text);
+            int loseTimesInt = playTimesInt - winTimesInt;
+
+            loseTimes.text = loseTimesInt.ToString();
+            if (winTimesInt != 0)
             {
-                winRate.text    = (winTimesInt/playTimesInt).ToString("F1") + " %";
+                winRate.text = (winTimesInt / playTimesInt).ToString("F1") + " %";
             }
             else
             {
                 winRate.text = "- %";
             }
-            
+
 
             playerInfoPanel.SetActive(true);
 
         });
 
-        
+
     }
 
     public void OnPlayerEnteredRoom(Player newPlayer)
     {
         PlayerEntry entry = Instantiate(playerEntryPrefab);
-        entry.transform.SetPositionAndRotation(playerListContent.transform.position,Quaternion.identity);
+        entry.transform.SetPositionAndRotation(playerListContent.transform.position, Quaternion.identity);
         entry.transform.SetParent(playerListContent.transform);
         entry.transform.localScale = Vector3.one;
         entry.Initialize(newPlayer.ActorNumber, newPlayer.NickName);
-            
- 
+
+
         playerListEntries.Add(newPlayer.ActorNumber, entry);
 
         if (PhotonNetwork.IsMasterClient)
@@ -251,7 +253,7 @@ public class InRoomPanel : MonoBehaviour
             startGameButton.gameObject.SetActive(false);
         }
     }
-    
+
 
     public void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -290,7 +292,7 @@ public class InRoomPanel : MonoBehaviour
         }
 
         startGameButton.interactable = CheckPlayersReady();
-        
+
 
         if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
         {
@@ -302,6 +304,6 @@ public class InRoomPanel : MonoBehaviour
         }
     }
 
-    
+
 
 }

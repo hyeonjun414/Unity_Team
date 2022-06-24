@@ -147,7 +147,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     public AudioClip shieldSound;
     public AudioClip getItemSound;
     AudioSource audioSource;
-
+    AudioListener audioListener;
 
     [Header("Cam")]
     public Transform camPos;
@@ -179,7 +179,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         coll = GetComponent<BoxCollider>();
         nameOnPlayer = GetComponentInChildren<NickNameOnPlayer>();
         this.audioSource = GetComponent<AudioSource>();
-
+        this.audioListener = GetComponent<AudioListener>();
 
         inputCommand = gameObject.AddComponent<CharacterInput>();
         inputCommand.SetUp(this);
@@ -219,6 +219,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
+            audioListener.enabled = true;
+
             CamManager.Instance.FollowPlayerCam(this);
             CamManager.Instance.ActiveCam(CamType.Player);
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
@@ -316,7 +318,6 @@ public class Character : MonoBehaviourPun, IPunObservable
 
         anim.SetTrigger("Hit");
         audioSource.PlayOneShot(attackSound);
-
         if (stat.hp <= 0)
         {
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    public static LobbyManager instance {get; private set;}
+    public static LobbyManager instance { get; private set; }
 
     [Header("Panel")]
     public LoginPanel loginPanel;
@@ -134,8 +134,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void Send()
     {
-        if(inRoomPanel.ChatInput.text == "") return;
-        
+        if (inRoomPanel.ChatInput.text == "") return;
+
         photonView.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + inRoomPanel.ChatInput.text);
         inRoomPanel.ChatInput.text = "";
         //inRoomPanel.ChatInput.Select();
@@ -159,5 +159,5 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    
+
 }
