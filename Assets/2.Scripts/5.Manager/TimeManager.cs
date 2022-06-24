@@ -25,7 +25,7 @@ public class TimeManager : Singleton<TimeManager>{
         if(Mathf.Round(limitTime) <= 0){
             timer.text = "TIME OVER!";
             Debug.Log("제한 시간이 끝났습니다!");
-         //   StartCoroutine("GoToLobby");
+            StartCoroutine("GoToLobby");
 
         }
     }

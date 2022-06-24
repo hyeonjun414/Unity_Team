@@ -63,14 +63,14 @@ public class RhythmManager : Singleton<RhythmManager>
     {
         if (rhythmBox.isBeat && isBeat)
         {
-            hitText.text = "HIT";
+//            hitText.text = "HIT";
             //print("HIT");
             isBeat = false;
             return true;
         }
         else
         {
-            hitText.text = "MISS";
+       //     hitText.text = "MISS";
             //print("MISS");
             isBeat = false;
             return false;

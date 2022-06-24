@@ -38,6 +38,7 @@ public class BattleManager : MonoBehaviourPun
 
     [Header("UI")]
     public RegenUI regenUI;
+    public HUDUI hUDUI;
   
     public static BattleManager Instance { get; private set; }
     private void Awake()
