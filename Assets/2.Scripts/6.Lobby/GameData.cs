@@ -72,7 +72,7 @@ public class GameData : MonoBehaviour
     public const string PLAYER_NAME = "PlayerName";
     public const string PLAYER_KILL = "PlayerKill";
     public const string PLAYER_DEAD = "PlayerDead";
-    public const string PLAYER_RANK = "PlayerRank";s
+    public const string PLAYER_RANK = "PlayerRank";
     public static string GetMode(ModeType type)
     {
         switch (type)

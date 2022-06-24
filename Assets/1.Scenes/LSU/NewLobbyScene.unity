@@ -4890,8 +4890,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC5F0\uACB0 \uC0C1\uD0DC :"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b1d62a783f0743a4d80b43c0cb6c6811, type: 2}
+  m_sharedMaterial: {fileID: -7768113992397821746, guid: b1d62a783f0743a4d80b43c0cb6c6811,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5048,6 +5049,7 @@ MonoBehaviour:
   winTimes: {fileID: 487046323}
   loseTimes: {fileID: 328428747}
   winRate: {fileID: 1466137704}
+  settingPanel: {fileID: 0}
 --- !u!1 &500344201
 GameObject:
   m_ObjectHideFlags: 0

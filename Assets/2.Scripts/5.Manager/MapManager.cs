@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Cinemachine;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 
 
@@ -14,7 +15,7 @@ public class MapManager : Singleton<MapManager>
     public Map map;
     public MapData mapData;
     public MapType mapType;
-    public Text mapText; 
+    public TMP_Text mapText; 
     private void Awake()
     {
         if (_instance == null)

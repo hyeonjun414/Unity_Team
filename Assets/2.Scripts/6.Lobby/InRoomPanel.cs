@@ -136,7 +136,7 @@ public class InRoomPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
         PhotonNetwork.LoadLevel("mapTest");
-        SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
+       // SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
     }
 
     public void OnReadyGameButtonClicked()

@@ -32,7 +32,6 @@ public class BattleManager : MonoBehaviourPun
     public List<Character> deadPlayer;
 
     [Header("Text")]
-    public Text modeText;
     public Text resultText;
     public GameObject resultTextObj;
 
@@ -61,7 +60,6 @@ public class BattleManager : MonoBehaviourPun
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out modeData))
         {
             mode = (ModeType)modeData;
-            modeText.text = GameData.GetMode(mode);
             switch (mode)
             {
                 case ModeType.LastFighter:

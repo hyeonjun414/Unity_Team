@@ -10,9 +10,6 @@ using Photon.Pun;
 public class RhythmManager : Singleton<RhythmManager>
 {
 
-    [Header("UI")]
-    public Text hitText;
-
     [Header("Beat")]
     public float bpm;
     public float hitAreaRate;
@@ -63,15 +60,11 @@ public class RhythmManager : Singleton<RhythmManager>
     {
         if (rhythmBox.isBeat && isBeat)
         {
-//            hitText.text = "HIT";
-            //print("HIT");
             isBeat = false;
             return true;
         }
         else
         {
-       //     hitText.text = "MISS";
-            //print("MISS");
             isBeat = false;
             return false;
         }

@@ -15,7 +15,6 @@ public class PlayerEntry : MonoBehaviour
     public TMP_Text playerNameText;
     public Image characterPanel;
     [Header("Character")]
-    public CharacterData characterData;
     public GameObject characterSet;
     [HideInInspector]
     public int characterIndex;
@@ -37,7 +36,7 @@ public class PlayerEntry : MonoBehaviour
 
     public void Start()
     {
-        characterDataSize = characterData.players.Length;
+        characterDataSize = 18;
         if (PhotonNetwork.LocalPlayer.ActorNumber != ownerId)
         {
             rightClickButton.gameObject.SetActive(false);

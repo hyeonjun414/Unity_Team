@@ -15,8 +15,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public Text serverText;
     public Text pingText;
     public Text infoText;
-    public CharacterData data;
-    public Transform[] spawnPos;
 
     private void Awake()
     {
