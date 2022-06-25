@@ -45,6 +45,25 @@ public class BattleResultPanel : MonoBehaviour
         
         battleResultPanel.SetActive(true);
     }
+    public void SetFinalResult(List<PlayerResultInfo> resultInfo)
+    {
+        resultPanel = battleResultPanel.transform.GetChild(0).gameObject;
+        
+        for(int i=0; i<resultInfo.Count;++i)
+        {
+            if(resultInfo[i].rank==1)
+            {
+                ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
+                winnerEntry.BattleResult(resultInfo[i].name,resultInfo[i].kill,resultInfo[i].death,resultInfo[i].rank,"NULL");
+            }
+            else
+            {
+                ResultEntry loserEntry = Instantiate(Resources.Load<ResultEntry>("LoserEntry"),resultPanel.transform);
+                loserEntry.BattleResult(resultInfo[i].name,resultInfo[i].kill,resultInfo[i].death,resultInfo[i].rank,"NULL");
+            }   
+        }
+         battleResultPanel.SetActive(true);
+    }
     public void ClearPanel()
     {
         ResultEntry[] resultEntries = resultPanel.transform.GetComponentsInChildren<ResultEntry>();

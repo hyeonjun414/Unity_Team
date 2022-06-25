@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Text;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,22 +11,25 @@ using ExitGames.Client.Photon;
 using TMPro;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System.Linq;
 
 public class PlayerResultInfo
 {
-    public PlayerResultInfo(int actorNumber, string name, int kill, int death, int rank)
+    public PlayerResultInfo(int actorNumber, string name, int kill, int death, int rank, int index)
     {
         this.actorNumber = actorNumber;
         this.name = name;
         this.kill = kill;
         this.death = death;
         this.rank = rank;
+        this.index = index;
     }
     public int actorNumber;
     public string name;
     public int kill;
     public int death;
     public int rank;
+    public int index;
 }
 public class ResultSceneManager : MonoBehaviourPun
 {
@@ -40,25 +44,29 @@ public class ResultSceneManager : MonoBehaviourPun
             Debug.Log(_syncFinished+ "명의 플레이어 정보 동기화 완료");
         }
     }
-    public GameObject resultWindow;
+    public Transform[] WinnersSpawnPoint;
+    public Transform[] LosersSpawnPoint;
+   // public GameObject resultWindow;
+    
+    public BattleResultPanel battleResultPanel;
 
     // 승리한 플레이어 정보
-    string[] winnerNic;
+    //string[] winnerNic;
     // 패배한 플레이어 정보
-    string[] loserNic;
+    //string[] loserNic;
 
-    public CharacterData characterData;
-    public GameObject characterSet;
-    public int characterIndex;
+    //public CharacterData characterData;
+    //public GameObject characterSet;
+    //public int characterIndex;
 
 
-    [Header("WINNER")]
+    //[Header("WINNER")]
     // 승리한 플레이어 닉네임 띄울 텍스트
-    public Text[] winnerNicUIText;
+    //public Text[] winnerNicUIText;
 
-    [Header("LOSER")]
+    //[Header("LOSER")]
     // 패배한 플레이어 닉네임 띄울 텍스트
-    public Text[] loserNicUIText;
+    //public Text[] loserNicUIText;
 
 
     List<PlayerResultInfo> resultInfoList; 
@@ -67,6 +75,9 @@ public class ResultSceneManager : MonoBehaviourPun
         resultInfoList = new List<PlayerResultInfo>();
 
         InitPlayers();
+        SetInformation();
+        SetPlayer();
+        
     }
 
     private void InitPlayers()
@@ -85,13 +96,17 @@ public class ResultSceneManager : MonoBehaviourPun
 
             object rank;
             p.CustomProperties.TryGetValue(GameData.PLAYER_RANK,out rank);
+
+            object index;
+            p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX,out index);
             
             
             string _name = (string)name;
             int _kill = (int)kill;
             int _death = (int)death;
             int _rank = (int)rank;
-            resultInfoList.Add(new PlayerResultInfo(p.ActorNumber,p.NickName,_kill,_death,_rank));
+            int _index = (int)index;
+            resultInfoList.Add(new PlayerResultInfo(p.ActorNumber,p.NickName,_kill,_death,_rank,_index));
         }
     }
     private void Start()
@@ -109,9 +124,94 @@ public class ResultSceneManager : MonoBehaviourPun
                 SyncUpdatedInformation(p.NickName);
             }   
         }
+        Debug.Log( "resultInfoList.Count: " + resultInfoList.Count);
         for(int i=0; i<resultInfoList.Count;++i)
         {
             Debug.Log(resultInfoList[i].name+" : "+resultInfoList[i].kill+" : "+resultInfoList[i].death+" : "+resultInfoList[i].rank );
+        }
+        
+    }
+
+    private void SetInformation()
+    {
+        battleResultPanel.SetFinalResult(resultInfoList);
+    }
+    private void SetPlayer()
+    {
+        List<PlayerResultInfo> infos = resultInfoList;
+
+        //List<PlayerResultInfo> sortedList = new List<PlayerResultInfo>();
+        //sortedList = infos.OrderByDescending(PlayerResultInfo => PlayerResultInfo.rank).ToList();
+
+        for(int i=0; i<resultInfoList.Count;++i)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("CharactersEmpty/Character");
+            int index = resultInfoList[i].index+1;
+            if(resultInfoList[i].index+1 == 19) index = 1;
+            builder.Append((index).ToString("D2"));
+            string dummyPlayer = builder.ToString();
+
+            DummyPlayer player=null;
+            if(resultInfoList[i].rank == 1)
+            {
+                if(WinnersSpawnPoint[0].transform.childCount==0)
+                {
+                     player= Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),WinnersSpawnPoint[0]);
+
+                }
+                else if(WinnersSpawnPoint[0].transform.childCount>=1)
+                {
+                    if(WinnersSpawnPoint[1].transform.childCount==0)
+                    {
+                        player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),WinnersSpawnPoint[1]);
+                    }
+                    else if(WinnersSpawnPoint[1].transform.childCount==1)
+                    {
+                        if(WinnersSpawnPoint[2].transform.childCount==0)
+                        {
+                            player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),WinnersSpawnPoint[2]);
+                        }
+                        else if(WinnersSpawnPoint[2].transform.childCount==1)
+                        {
+                             if(WinnersSpawnPoint[3].transform.childCount==0)
+                             {
+                                player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),WinnersSpawnPoint[3]);
+                             }
+                        }
+                    }
+                }
+
+                    
+                player.gameObject.SetActive(true);
+                PlayerAnimPlay(player , "Victory");
+            }
+            else
+            {
+                if(LosersSpawnPoint[0].transform.childCount==1)
+                {
+                     player= Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[0]);
+
+                }
+                else if(LosersSpawnPoint[0].transform.childCount>=2)
+                {
+                    if(LosersSpawnPoint[1].transform.childCount==1)
+                    {
+                        player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[1]);
+                    }
+                    else if(LosersSpawnPoint[1].transform.childCount==2)
+                    {
+                        if(LosersSpawnPoint[2].transform.childCount==1)
+                        {
+                            player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[2]);
+                        }
+                    }
+                }
+                player.gameObject.SetActive(true);
+                PlayerAnimPlay(player , "Crying"); 
+            }
+            
+            
         }
         
     }
@@ -182,9 +282,10 @@ public class ResultSceneManager : MonoBehaviourPun
     // }
 
     // 플레이어 승리, 패배 애니메이션 재생
-    public void PlayerAnimPlay()
+    IEnumerator PlayerAnimPlay(DummyPlayer player , string whatToPlay)
     {
-
+        yield return new WaitForSeconds(0.5f);
+        player.anim.Play(whatToPlay);
             //BattleManager.Instance.alivePlayer[i].anim.SetTrigger("Crying");
     }
 
