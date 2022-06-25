@@ -31,7 +31,7 @@ public class PlayerResultInfo
     public int rank;
     public int index;
 }
-public class ResultSceneManager : MonoBehaviourPun
+public class ResultSceneManager : MonoBehaviour
 {
     private int _syncFinished=0;
     public int syncFinished
@@ -79,6 +79,7 @@ public class ResultSceneManager : MonoBehaviourPun
         SetPlayer();
         
     }
+    
 
     private void InitPlayers()
     {
@@ -129,7 +130,9 @@ public class ResultSceneManager : MonoBehaviourPun
         {
             Debug.Log(resultInfoList[i].name+" : "+resultInfoList[i].kill+" : "+resultInfoList[i].death+" : "+resultInfoList[i].rank );
         }
-        
+
+        PhotonNetwork.AutomaticallySyncScene = true;
+        StartCoroutine(LeaveAndReturnToRoom());
     }
 
     private void SetInformation()
@@ -184,31 +187,31 @@ public class ResultSceneManager : MonoBehaviourPun
 
                     
                 player.gameObject.SetActive(true);
-                PlayerAnimPlay(player , "Victory");
+                StartCoroutine(PlayerAnimPlay(player , "Victory"));
             }
             else
             {
-                if(LosersSpawnPoint[0].transform.childCount==1)
+                if(LosersSpawnPoint[0].transform.childCount==0)
                 {
                      player= Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[0]);
 
                 }
-                else if(LosersSpawnPoint[0].transform.childCount>=2)
+                else if(LosersSpawnPoint[0].transform.childCount>=1)
                 {
-                    if(LosersSpawnPoint[1].transform.childCount==1)
+                    if(LosersSpawnPoint[1].transform.childCount==0)
                     {
                         player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[1]);
                     }
-                    else if(LosersSpawnPoint[1].transform.childCount==2)
+                    else if(LosersSpawnPoint[1].transform.childCount==1)
                     {
-                        if(LosersSpawnPoint[2].transform.childCount==1)
+                        if(LosersSpawnPoint[2].transform.childCount==0)
                         {
                             player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[2]);
                         }
                     }
                 }
                 player.gameObject.SetActive(true);
-                PlayerAnimPlay(player , "Crying"); 
+                StartCoroutine(PlayerAnimPlay(player , "Crying"));
             }
             
             
@@ -281,12 +284,41 @@ public class ResultSceneManager : MonoBehaviourPun
     //     }
     // }
 
+    private void ResetCustomProperties()
+    {
+        foreach( Player p in PhotonNetwork.PlayerList)
+        {
+
+            ExitGames.Client.Photon.Hashtable prop1 = 
+                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_READY, false } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
+            ExitGames.Client.Photon.Hashtable prop2 = 
+                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_KILL, 0 } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
+            ExitGames.Client.Photon.Hashtable prop3 = 
+                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_DEAD, 0 } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
+            ExitGames.Client.Photon.Hashtable prop4 = 
+                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, 0 } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
+        }
+
+    }
     // 플레이어 승리, 패배 애니메이션 재생
     IEnumerator PlayerAnimPlay(DummyPlayer player , string whatToPlay)
     {
         yield return new WaitForSeconds(0.5f);
         player.anim.Play(whatToPlay);
             //BattleManager.Instance.alivePlayer[i].anim.SetTrigger("Crying");
+    }
+    IEnumerator LeaveAndReturnToRoom()
+    {
+        yield return new WaitForSeconds(10f);
+        ResetCustomProperties();
+        yield return new WaitForSeconds(5f);
+        {
+            PhotonNetwork.LoadLevel("NewLobbyScene");
+        }
     }
 
 
