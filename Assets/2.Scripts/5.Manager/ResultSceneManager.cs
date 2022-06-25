@@ -65,10 +65,15 @@ public class ResultSceneManager : MonoBehaviourPun
     private void Awake()
     {
         resultInfoList = new List<PlayerResultInfo>();
-
+        Invoke("Test", 1f);
         InitPlayers();
     }
 
+    public void Test()
+    {
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("NewLobbyScene");
+    }
     private void InitPlayers()
     {
         foreach( Player p in PhotonNetwork.PlayerList)
@@ -102,13 +107,16 @@ public class ResultSceneManager : MonoBehaviourPun
         //PlayerAnimPlay();
         foreach( Player p in PhotonNetwork.PlayerList)
         {
-            object isMail;
-            p.CustomProperties.TryGetValue(GameData.IS_EMAIL,out isMail);
-            if((bool)isMail)
-            {
-                SyncUpdatedInformation(p.NickName);
-            }
+            object value = null;
             
+            if (p.CustomProperties.TryGetValue(GameData.IS_EMAIL, out value))
+            {
+                bool isMail = (bool)value; 
+                if(isMail)
+                {
+                    SyncUpdatedInformation(p.NickName);
+                }
+            }       
         }
     }
     private void SyncUpdatedInformation(string nickName)

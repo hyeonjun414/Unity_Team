@@ -17,6 +17,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public InRoomPanel inRoomPanel;
     public InfoPanel infoPanel;
 
+
     #region UNITY
 
     private void Awake()
@@ -27,6 +28,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
+
+        // 다시 로비씬으로 돌아왔을때 룸에 들어와있는 상태라면 룸을 켜준다.
+        if(PhotonNetwork.CurrentRoom != null)
+        {
+            SetActivePanel(PANEL.Room);
+        }
     }
 
     public enum PANEL { Login, Connect, Lobby, Room, CreateRoom }
@@ -56,6 +63,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         inLobbyPanel.OnRoomListUpdate(roomList);
+        
     }
 
     public override void OnJoinedLobby()
@@ -82,10 +90,29 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        int roomNum = PhotonNetwork.CountOfRooms;
+        roomNum++;
+
         string roomName = $"{PhotonNetwork.LocalPlayer.NickName}의 방";
-        RoomOptions options = new RoomOptions { MaxPlayers = 15 };
-        options.CustomRoomProperties = new Hashtable { { GameData.GAME_MODE, 0 }, { GameData.GAME_MAP, 0 } };
-        PhotonNetwork.CreateRoom(roomName, options, null);
+        RoomOptions options = new RoomOptions { MaxPlayers = 4 };
+        options.CustomRoomProperties = new Hashtable {
+            {GameData.ROOM_NAME, roomName },
+            { GameData.ROOM_ISACTIVE_PW, false },
+            { GameData.ROOM_PW, "" },
+            { GameData.GAME_MODE, 0 },
+            { GameData.GAME_MAP, 0 }
+        };
+        options.CustomRoomPropertiesForLobby = new string[]
+        {
+            GameData.ROOM_NAME,
+            GameData.ROOM_ISACTIVE_PW,
+            GameData.ROOM_PW,
+            GameData.GAME_MODE,
+            GameData.GAME_MAP,
+        };
+
+
+        PhotonNetwork.CreateRoom(roomNum.ToString(), options, null);
     }
 
     public override void OnJoinedRoom()

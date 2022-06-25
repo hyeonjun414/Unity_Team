@@ -55,6 +55,11 @@ public enum MapType
 
 public class GameData : MonoBehaviour
 {
+    [Header("Room Option")]
+    public const string ROOM_NAME = "RoomName";
+    public const string ROOM_ISACTIVE_PW = "IsActivePw";
+    public const string ROOM_PW = "RoomPw";
+
     public const int COUNTDOWN = 0;
 
     public const string PLAYER_READY = "Ready";

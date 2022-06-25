@@ -74,13 +74,6 @@ public class BattleManager : MonoBehaviourPun
             }
         }
     }
-    
-    //     FinalWinner();
-    // }
-
-    private void Update() {
-        //FinalWinner();
-    }
 
     public void SetUpDeathMatch()
     {
@@ -199,7 +192,8 @@ public class BattleManager : MonoBehaviourPun
 
         yield return new WaitForSeconds(5f);
 
-        PhotonNetwork.LoadLevel("Result");
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("Result");
 
     }
     //플레이어가 한 명 남았을 때 그라운드를 끝냄.

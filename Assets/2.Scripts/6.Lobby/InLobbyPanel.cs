@@ -21,7 +21,7 @@ public class InLobbyPanel : MonoBehaviour
     private void OnDisable()
     {
         cachedRoomList.Clear();
-        roomListEntries.Clear();
+        ClearRoomListView();
     }
 
     public void OnBackButtonClicked()
@@ -32,6 +32,8 @@ public class InLobbyPanel : MonoBehaviour
 
     public void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+
+        // 방리스트가 업데이트될때 방리스트의 초기화한다.
         ClearRoomListView();
 
         UpdateCachedRoomList(roomList);
@@ -50,9 +52,8 @@ public class InLobbyPanel : MonoBehaviour
         {
             GameObject entry = Instantiate(roomEntryPrefab);
             entry.transform.SetParent(roomContent.transform);
-            entry.transform.localScale = Vector3.one;
-            entry.GetComponent<RoomEntry>().Initialize(info.Name, (byte)info.PlayerCount, info.MaxPlayers);
-
+            entry.transform.localScale = Vector3.one; 
+            entry.GetComponent<RoomEntry>().SetUp(info);
             roomListEntries.Add(info.Name, entry);
         }
     }

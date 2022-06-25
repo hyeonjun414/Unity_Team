@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class InConnectPanel : MonoBehaviour
 {
@@ -10,7 +12,9 @@ public class InConnectPanel : MonoBehaviour
 
     public void OnRandomMatchingButtonClicked()
     {
-        PhotonNetwork.JoinRandomRoom();
+        Hashtable props = new Hashtable() { { GameData.ROOM_ISACTIVE_PW, false } };
+        RoomOptions roomOptions = new RoomOptions( ){  MaxPlayers = 0};
+        PhotonNetwork.JoinRandomRoom(props, roomOptions.MaxPlayers );
     }
 
     public void OnLobbyButtonClicked()

@@ -44,7 +44,15 @@ public class PlayerEntry : MonoBehaviour
         }
         else
         {
-            characterIndex = Random.Range(0, characterDataSize);
+            object value;
+            if(PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out value))
+            {
+                characterIndex = (int)value;
+            }
+            else
+            {
+                characterIndex = Random.Range(0, characterDataSize);
+            }
             SetPlayerCharacter(characterIndex);
             Hashtable props = new Hashtable() { { GameData.PLAYER_INDEX, characterIndex } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);

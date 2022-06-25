@@ -19,6 +19,7 @@ public class InRoomPanel : MonoBehaviour
     public GameObject playerListContent;
     public Button startGameButton;
     public Button readyGameButton;
+    public Button roomOptionButton;
     public TMP_Text readyButtonText;
     public PlayerEntry playerEntryPrefab;
 
@@ -37,6 +38,7 @@ public class InRoomPanel : MonoBehaviour
 
     [Header("RoomSetting Panel")]
     public RoomSettingPanel settingPanel;
+    public RoomOptionUI roomOptionUI;
 
     private void Update()
     {
@@ -88,20 +90,22 @@ public class InRoomPanel : MonoBehaviour
         {
             // 마스터 클라이언트만 게임시작을 나타내고 다른 플레이어가 준비상태가 아니라면 버튼을 상호작용 불가상태로 만든다.
             // 로딩 완료의 플레이어가 마스터 클라이언트를 제외하므로 -1을 해야한다.
-            LocalPlayerPropertiesUpdated();
+            
             startGameButton.gameObject.SetActive(true);
             readyGameButton.gameObject.SetActive(false);
+            roomOptionButton.interactable = true;
+            LocalPlayerPropertiesUpdated();
         }
         else
         {
             // 마스터 클라이언트가 아니라며 게임시작 버튼을 비활성화 하고 
             localPlayerIsReady = false;
             readyButtonText.text = "준비";
+            roomOptionButton.interactable = false;
             startGameButton.gameObject.SetActive(false);
             readyGameButton.gameObject.SetActive(true);
         }
 
-        startGameButton.gameObject.SetActive(CheckPlayersReady());
 
         Hashtable props = new Hashtable
         {
@@ -137,6 +141,11 @@ public class InRoomPanel : MonoBehaviour
 
         PhotonNetwork.LoadLevel("mapTest");
        // SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
+    }
+
+    public void OnRoomOptionButtonClicked()
+    {
+        roomOptionUI.gameObject.SetActive(true);
     }
 
     public void OnReadyGameButtonClicked()
@@ -274,6 +283,7 @@ public class InRoomPanel : MonoBehaviour
         if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
         {
             readyGameButton.gameObject.SetActive(false);
+            roomOptionButton.interactable = true;
             startGameButton.gameObject.SetActive(true);
             startGameButton.interactable = CheckPlayersReady();
             FindLocalPlayerEntry().SetPlayerReadyImage(false);
