@@ -218,7 +218,7 @@ public class InRoomPanel : MonoBehaviour
             loseTimes.text = loseTimesInt.ToString();
             if (winTimesInt != 0)
             {
-                winRate.text = (winTimesInt / playTimesInt).ToString("F1") + " %";
+                winRate.text = (((float)winTimesInt / (float)playTimesInt)*100).ToString("F2") + " %";
             }
             else
             {
