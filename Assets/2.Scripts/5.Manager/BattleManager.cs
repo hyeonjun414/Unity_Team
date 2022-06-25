@@ -37,7 +37,7 @@ public class BattleManager : MonoBehaviourPun
 
     [Header("UI")]
     public RegenUI regenUI;
-    public HUDUI hUDUI;
+    public HPBar hpUI;
 
     [Header("Mode")]
     public ModeType mode;
@@ -80,15 +80,19 @@ public class BattleManager : MonoBehaviourPun
 
     private void Update() {
         //FinalWinner();
+
     }
 
     public void SetUpDeathMatch()
     {
+        HUDUIManager.Instance.DeathMatch();
 
     }
     
     public void SetUpOneShotMode()
     {
+            HUDUIManager.Instance.OnShotMatch();
+
         // 한대 맞으면 죽는 데스매치
         foreach(Character p in players)
         {
@@ -97,11 +101,18 @@ public class BattleManager : MonoBehaviourPun
     }
     public void SetUpTimerMode()
     {
-        TimeManager.Instance.limitTime = 180f;
+
+        HUDUIManager.Instance.TimerMatch();
+    //    TimeManager.Instance.limitTime = 180f;
+
         foreach (Character p in players)
         {
             p.isRegen = true;
+
         }
+     //   TimeManager.Instance.TimeOver();
+
+
     }
 
     public void RegisterAllPlayer()

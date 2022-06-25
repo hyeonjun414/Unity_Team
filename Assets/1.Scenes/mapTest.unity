@@ -444,7 +444,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpHeart: {fileID: 2015664077}
-  timer: {fileID: 0}
   player: {fileID: 0}
   HPs:
   - {fileID: 2015664077}
@@ -683,6 +682,7 @@ GameObject:
   - component: {fileID: 211671995}
   - component: {fileID: 211671998}
   - component: {fileID: 211671999}
+  - component: {fileID: 211672000}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -898,8 +898,8 @@ MonoBehaviour:
   resultText: {fileID: 2054798313}
   resultTextObj: {fileID: 2054798311}
   regenUI: {fileID: 1427113435}
-  hUDUI: {fileID: 85070637}
-  mode: 0
+  hpUI: {fileID: 85070637}
+  mode: 2
 --- !u!114 &211671994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,7 +934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4102f409ce5e914c9e09c4f06d6dbfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limitTime: 300
+  limitTime: 10
   timer: {fileID: 2044995185}
 --- !u!114 &211671996
 MonoBehaviour:
@@ -995,6 +995,19 @@ MonoBehaviour:
   - {fileID: 22394800}
   mainCam: {fileID: 1278242895}
   miniMapCam: {fileID: 1100863266}
+--- !u!114 &211672000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211671986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1bbbf872f5d8e43aa0ea1d1371bd40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: {fileID: 2044995184}
 --- !u!1 &212827361
 GameObject:
   m_ObjectHideFlags: 0
@@ -5361,7 +5374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2044995185
 MonoBehaviour:
   m_ObjectHideFlags: 0

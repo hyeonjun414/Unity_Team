@@ -48,7 +48,7 @@ public class Item : MonoBehaviour
 
         if (ItemManager.Instance.AddNum(data))
         {
-            Debug.Log(player.name + "가 " + data.name + "을 아이템 보관함에 넣었습니다!");
+            Debug.Log(player.nickName + "가 " + data.name + "을 아이템 보관함에 넣었습니다!");
         }
         else
         {

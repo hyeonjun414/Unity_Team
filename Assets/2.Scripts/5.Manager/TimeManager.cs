@@ -16,7 +16,16 @@ public class TimeManager : Singleton<TimeManager>{
         limitTime -= Time.deltaTime;
         //소수점을 제외하여 간단하게 표시
         timer.text = "Time: " + Mathf.Round(limitTime);
-        TimeOver();
+
+
+        if(BattleManager.Instance.mode == ModeType.TimeToKill){
+            TimeOver();
+
+        }
+        else{
+
+        }
+
     }
 
 
@@ -25,16 +34,19 @@ public class TimeManager : Singleton<TimeManager>{
         if(Mathf.Round(limitTime) <= 0){
             timer.text = "TIME OVER!";
             Debug.Log("제한 시간이 끝났습니다!");
-            StartCoroutine("GoToLobby");
+        //    StartCoroutine("GoToResult");
 
         }
     }
 
-    IEnumerator GoToLobby(){
+
+/*
+    IEnumerator GoToResult(){
         yield return new WaitForSeconds(3f);
-        Debug.Log("시작화면으로 돌아갑니다.");
-        SceneManager.LoadScene("NewLobbyScene");
+        Debug.Log("엔딩화면으로 돌아갑니다.");
+        SceneManager.LoadScene("Result");
 
     }
    
+   */
 }

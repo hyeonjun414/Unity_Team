@@ -121,13 +121,13 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            audioListener.enabled = true;
+          //  audioListener.enabled = true;
 
             CamManager.Instance.FollowPlayerCam(this);
             CamManager.Instance.ActiveCam(CamType.Player);
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-            BattleManager.Instance.hUDUI.SetUp(this);
+            BattleManager.Instance.hpUI.SetUp(this);
         }
         Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;
