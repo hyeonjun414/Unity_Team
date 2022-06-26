@@ -50,11 +50,16 @@ public class RhythmManager : Singleton<RhythmManager>
             note.ReturnObj();
         }
 
-        StartCoroutine("RhythmRoutine");
         rhythmBox.SetHitArea(hitAreaRate);
 
     }
 
+    [PunRPC]
+    public void RhythmStart()
+    {
+        StartCoroutine("RhythmRoutine");
+        
+    }
 
     public bool BitCheck()
     {

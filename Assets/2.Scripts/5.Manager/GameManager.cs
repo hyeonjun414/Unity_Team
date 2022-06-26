@@ -68,7 +68,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (CheckAllCharacter())
             {
                 StartCoroutine(RegisterPlayer());
-
+                if(PhotonNetwork.IsMasterClient)
+                    photonView.RPC("RhythmStart", RpcTarget.All);
             }
             else
             {
