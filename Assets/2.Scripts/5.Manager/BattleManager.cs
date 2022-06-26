@@ -221,6 +221,7 @@ public class BattleManager : MonoBehaviourPun
         
         if(PhotonNetwork.IsMasterClient)
         {
+            PhotonNetwork.DestroyAll();
             PhotonNetwork.LoadLevel("Result");
         }
         

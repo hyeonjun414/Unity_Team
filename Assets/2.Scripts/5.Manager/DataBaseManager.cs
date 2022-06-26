@@ -16,8 +16,6 @@ public class DataBaseManager : Singleton<DataBaseManager>
     [HideInInspector]
     public static string userID=null;
 
-    string DBURL = "https://unity-team-project-trim-default-rtdb.firebaseio.com/";
-
     string cacheString=null;
 
     
@@ -43,8 +41,6 @@ public class DataBaseManager : Singleton<DataBaseManager>
     private void Start()
     {
         
-        //FirebaseApp.DefaultInstance.Options.DatabaseUrl = new Uri(DBURL);
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     public void WriteNewPlayerDB(string UID,string emailID, string nickName)
