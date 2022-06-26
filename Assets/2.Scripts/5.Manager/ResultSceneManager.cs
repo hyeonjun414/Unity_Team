@@ -314,6 +314,11 @@ public class ResultSceneManager : MonoBehaviour
             ExitGames.Client.Photon.Hashtable prop4 = 
                 new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, 0 } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
+            ExitGames.Client.Photon.Hashtable prop5 = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_LOAD, false } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(prop5);
+
+
+            
         }
 
     }
@@ -335,9 +340,11 @@ public class ResultSceneManager : MonoBehaviour
         yield return new WaitForSeconds(10f);
         ResetCustomProperties();
         yield return new WaitForSeconds(5f);
-        {
+        
+        if(PhotonNetwork.IsMasterClient)
             PhotonNetwork.LoadLevel("NewLobbyScene");
-        }
+
+    
     }
 
 

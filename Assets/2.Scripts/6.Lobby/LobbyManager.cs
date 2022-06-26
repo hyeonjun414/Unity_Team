@@ -32,7 +32,8 @@ private void Start()
         if(PhotonNetwork.CurrentRoom != null)
         {
             SetActivePanel(PANEL.Room);
-
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+            PhotonNetwork.CurrentRoom.IsVisible = true;
         }
     }
 
