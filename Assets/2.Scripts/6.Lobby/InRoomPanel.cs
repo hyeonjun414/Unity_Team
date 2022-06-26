@@ -24,6 +24,7 @@ public class InRoomPanel : MonoBehaviour
     public PlayerEntry playerEntryPrefab;
 
     public GameObject playerInfoPanel;
+    public GameObject leaveRoomBtnUI;
 
     private Dictionary<int, PlayerEntry> playerListEntries;
 
@@ -135,6 +136,18 @@ public class InRoomPanel : MonoBehaviour
         Hashtable props = new Hashtable() { { GameData.PLAYER_READY, false } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         PhotonNetwork.LeaveRoom();
+    }
+    public void OnEnterLeaveRoomBtn()
+    {
+        Animator anim = leaveRoomBtnUI.GetComponent<Animator>();
+
+        anim.SetBool("Entered",true);
+    }
+    public void OnExitLeaveRoomBtn()
+    {
+        Animator anim = leaveRoomBtnUI.GetComponent<Animator>();
+
+        anim.SetBool("Entered",false);
     }
 
     public void OnStartGameButtonClicked()

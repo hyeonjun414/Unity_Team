@@ -813,6 +813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isReadyCount: 0
+  isResultButtonClicked: 0
   battleResultPanel: {fileID: 867893607}
   players: []
   alivePlayer: []
@@ -2653,6 +2654,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7332892557185775907, guid: 45a9202360739474db4373076b44ade9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7332892557425418329, guid: 45a9202360739474db4373076b44ade9,
         type: 3}
       propertyPath: m_Pivot.x

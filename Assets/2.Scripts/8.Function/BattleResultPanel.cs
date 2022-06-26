@@ -13,6 +13,21 @@ public class BattleResultPanel : MonoBehaviour
     public bool isBattleFinished=false;
     public GameObject battleResultPanel;
     private GameObject resultPanel;
+    public Text modeName;
+    public Text mapName;
+
+    private void Start()
+    {
+        object value;
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out value);
+        ModeType modeType = (ModeType)value;
+        modeName.text = GameData.GetMode(modeType);
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MAP, out value);
+        MapType mapType = (MapType)value;
+        mapName.text = GameData.GetMap(mapType);
+
+
+    }
     public void SetBattleResult()
     {
         object mode;
