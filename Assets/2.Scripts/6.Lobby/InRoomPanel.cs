@@ -67,11 +67,11 @@ public class InRoomPanel : MonoBehaviour
             entry.transform.localScale = Vector3.one;
             entry.Initialize(p.ActorNumber, p.NickName);
 
-            if(p.IsMasterClient)
+            if (p.IsMasterClient)
             {
                 entry.masterIcon.SetActive(true);
             }
-            if(p.IsLocal)
+            if (p.IsLocal)
             {
                 entry.localIcon.SetActive(true);
             }
@@ -91,7 +91,7 @@ public class InRoomPanel : MonoBehaviour
         {
             // 마스터 클라이언트만 게임시작을 나타내고 다른 플레이어가 준비상태가 아니라면 버튼을 상호작용 불가상태로 만든다.
             // 로딩 완료의 플레이어가 마스터 클라이언트를 제외하므로 -1을 해야한다.
-            
+
             startGameButton.gameObject.SetActive(true);
             readyGameButton.gameObject.SetActive(false);
             roomOptionButton.interactable = true;
@@ -109,7 +109,7 @@ public class InRoomPanel : MonoBehaviour
 
         ChatInput.text = "";
         for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
-          
+
         Hashtable props = new Hashtable
         {
             {GameData.PLAYER_LOAD, false}
@@ -141,9 +141,10 @@ public class InRoomPanel : MonoBehaviour
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.LoadLevel("mapTest");
-       // SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
+
+        SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
     }
 
     public void OnRoomOptionButtonClicked()
@@ -180,7 +181,7 @@ public class InRoomPanel : MonoBehaviour
 
         foreach (Player p in PhotonNetwork.PlayerList)
         {
-          
+
             object isPlayerReady;
             if (p == PhotonNetwork.MasterClient) continue;
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
@@ -214,7 +215,8 @@ public class InRoomPanel : MonoBehaviour
         // Hashtable props = new Hashtable() { { GameData.PLAYER_READY, localPlayerIsReady } };
         // PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-        DataBaseManager.Instance.ReadPlayerInfo(UID,false,(str)=>{
+        DataBaseManager.Instance.ReadPlayerInfo(UID, false, (str) =>
+        {
             String value = str;
 
 
@@ -231,7 +233,7 @@ public class InRoomPanel : MonoBehaviour
             loseTimes.text = loseTimesInt.ToString();
             if (winTimesInt != 0)
             {
-                winRate.text = (((float)winTimesInt / (float)playTimesInt)*100).ToString("F2") + " %";
+                winRate.text = (((float)winTimesInt / (float)playTimesInt) * 100).ToString("F2") + " %";
             }
             else
             {

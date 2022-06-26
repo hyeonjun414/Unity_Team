@@ -16,6 +16,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioSource bgSound;
     public AudioClip[] bgSoundlist;
 
+    // public GameObject[] effectSound;
+
     private void Awake()
     {
         if (_instance == null) _instance = this;
