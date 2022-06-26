@@ -74,7 +74,6 @@ public class ResultSceneManager : MonoBehaviour
     private void Awake()
     {
         resultInfoList = new List<PlayerResultInfo>();
-        Invoke("Test", 1f);
         InitPlayers();
         SetInformation();
         SetPlayer();
@@ -82,11 +81,6 @@ public class ResultSceneManager : MonoBehaviour
     }
     
 
-    public void Test()
-    {
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel("NewLobbyScene");
-    }
     private void InitPlayers()
     {
         foreach( Player p in PhotonNetwork.PlayerList)

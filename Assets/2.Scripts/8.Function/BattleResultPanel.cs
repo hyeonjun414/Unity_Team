@@ -15,33 +15,32 @@ public class BattleResultPanel : MonoBehaviour
     private GameObject resultPanel;
     public void SetBattleResult()
     {
-        //object mode;
-        //if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out mode))
-        //{
-        //    int modeNum = (int)mode;
+        object mode;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out mode))
+        {
+            int modeNum = (int)mode;
+            string modeName = GameData.GetMode((ModeType)modeNum);
 
             resultPanel = battleResultPanel.transform.GetChild(0).gameObject;
 
             //테스트
-            int modeNum = 1;
             //테스트끝
-            switch (modeNum)
+            switch (modeName)
             {
-                case 0:
-                    //한사람이 남을때까지
-                    
-                    LastManResult("LastMan");
+                case "Last Fighter":
+                    //한사람이 남을때까지      
+                    LastManResult("Last Fighter");
                     break;
-                case 1:
-                    DeathMatchResult("DeathMatch");
+                case "One Shot":
+                    DeathMatchResult("One Shot");
                     //시간매치 => 누가 가장 많이 죽였는가
                     break;
-                case 2:
+                case "Time To Kill":
                     //원펀 => 사실상 lastman이랑 같음
-                    LastManResult("OnePun");
+                    DeathMatchResult("Time To Kill");
                     break;
             }
-        //}
+        }
         
         battleResultPanel.SetActive(true);
     }
@@ -62,10 +61,12 @@ public class BattleResultPanel : MonoBehaviour
                 loserEntry.BattleResult(resultInfo[i].name,resultInfo[i].kill,resultInfo[i].death,resultInfo[i].rank,"NULL");
             }   
         }
-         battleResultPanel.SetActive(true);
+
+        battleResultPanel.SetActive(true);
     }
     public void ClearPanel()
     {
+        if(isBattleFinished)return;
         ResultEntry[] resultEntries = resultPanel.transform.GetComponentsInChildren<ResultEntry>();
         for(int i=0; i<resultEntries.Length;++i)
         {
@@ -122,14 +123,18 @@ public class BattleResultPanel : MonoBehaviour
             List<Character> alives = BattleManager.Instance.alivePlayer;
             List<Character> deads = BattleManager.Instance.deadPlayer;
 
-            if(alives[0].photonView.Owner.ActorNumber == p.ActorNumber)
+            for(int i=0; i<alives.Count; ++i)
             {
-                ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
-                winnerEntry.BattleResult(alives[0].nickName, alives[0].stat.killCount ,alives[0].stat.deathCount , 1,mode);
+                if(alives[i].photonView.Owner.ActorNumber == p.ActorNumber)
+                {
+                    ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
+                    winnerEntry.BattleResult(alives[i].nickName, alives[i].stat.killCount ,alives[i].stat.deathCount , 1,mode);
+                    
+                    SetCustomValue(p,alives[i].nickName, alives[i].stat.killCount ,alives[i].stat.deathCount , 1 );
                 
-                SetCustomValue(p,alives[0].nickName, alives[0].stat.killCount ,alives[0].stat.deathCount , 1 );
-               
+                }
             }
+
             for(int i=0; i<deads.Count;++i)
             {
                 if(deads[i].photonView.Owner.ActorNumber == p.ActorNumber)

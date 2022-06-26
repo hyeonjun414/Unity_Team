@@ -97,7 +97,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         PrintInfo("Start Game!");
 
         PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0);
-        
         yield return new WaitForSeconds(1.0f);
         infoText.gameObject.SetActive(false);
     }

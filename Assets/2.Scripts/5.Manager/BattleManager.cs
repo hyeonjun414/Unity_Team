@@ -46,6 +46,8 @@ public class BattleManager : MonoBehaviourPun
     private void Awake()
     {
         if (Instance == null) Instance = this;
+        
+        battleResultPanel.isBattleFinished=true;
 
         
     }
@@ -96,8 +98,9 @@ public class BattleManager : MonoBehaviourPun
         if(Input.GetKeyUp(KeyCode.Tab))
         {
             //배틀스태터스 패널을 false로
-            battleResultPanel.battleResultPanel.SetActive(false);
+            
             battleResultPanel.ClearPanel();
+            battleResultPanel.battleResultPanel.SetActive(false);
         }
     }
 
@@ -127,7 +130,12 @@ public class BattleManager : MonoBehaviourPun
     {
         players = FindObjectsOfType<Character>().ToList();
 
+        
         //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
+
+        battleResultPanel.isBattleFinished=false;
+        //tab키 활성화
+
         alivePlayer = FindObjectsOfType<Character>().ToList();
 
 

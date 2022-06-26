@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/1.Scenes/LoginAuthScene.unity
     guid: 79d286cd1b0af254f98c0d3ab57f89d8
   - enabled: 1
-    path: Assets/1.Scenes/JSY/mapTest.unity
-    guid: 239184f9cbe40744085551731dcd4607
-  - enabled: 1
     path: Assets/1.Scenes/JSY/Result.unity
     guid: 0d85870615eac32459d721dbe4c33efd
   - enabled: 1
     path: Assets/1.Scenes/NewLobbyScene.unity
     guid: 93d4bcf485659bb46af3947345aca66f
+  - enabled: 1
+    path: Assets/1.Scenes/JSY/mapTest.unity
+    guid: 37adbdcf145aac349af89bafb60d94a9
   m_configObjects: {}

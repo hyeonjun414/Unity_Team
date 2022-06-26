@@ -44,7 +44,17 @@ public class LoginPanel : MonoBehaviour
             return;
         }
 
-        PhotonNetwork.LocalPlayer.NickName = playerName;
-        PhotonNetwork.ConnectUsingSettings();
+        DataBaseManager.Instance.NickNameDuplicateCheck(playerNameInput.text,(str)=>{
+            if(str == "nullString")
+            {
+                PhotonNetwork.LocalPlayer.NickName = playerName;
+                PhotonNetwork.ConnectUsingSettings();
+            }
+            else
+            {
+                LobbyManager.instance.ShowError("만들어진 계정에서 이미 사용중인 닉네임입니다");
+            }
+        });
+
     }
 }
