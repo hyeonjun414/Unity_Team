@@ -19,7 +19,7 @@ public class BattleManager : MonoBehaviourPun
     //=> 플레이어 키 입력 가능하게 초기화
     [HideInInspector]
     public int isReadyCount = 0;
-
+    public bool isResultButtonClicked = false;
     public BattleResultPanel battleResultPanel;
 
     public List<Character> players;
@@ -87,6 +87,7 @@ public class BattleManager : MonoBehaviourPun
         if(battleResultPanel.isBattleFinished)return;
         if(Input.GetKeyDown(KeyCode.Tab))
         {
+            isResultButtonClicked=true;
             //배틀 셋 하고
             //배틀스태터스 패널 활성화
             battleResultPanel.SetBattleResult();
@@ -98,9 +99,13 @@ public class BattleManager : MonoBehaviourPun
         if(Input.GetKeyUp(KeyCode.Tab))
         {
             //배틀스태터스 패널을 false로
-            
-            battleResultPanel.ClearPanel();
-            battleResultPanel.battleResultPanel.SetActive(false);
+            if(isResultButtonClicked)
+            {
+                battleResultPanel.ClearPanel();
+                battleResultPanel.battleResultPanel.SetActive(false);
+            }
+            isResultButtonClicked=false;
+
         }
     }
 
