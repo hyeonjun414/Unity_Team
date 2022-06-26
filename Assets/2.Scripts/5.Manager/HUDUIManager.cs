@@ -8,12 +8,13 @@ using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 
 public class HUDUIManager : Singleton<HUDUIManager>
-{ 
+{
 
     public Character player;
     public GameObject regenNum;
 
     [Header ("Text")]
+
     public TMP_Text nicknameText;
     public TMP_Text killNumText;
     public TMP_Text scoreText;
