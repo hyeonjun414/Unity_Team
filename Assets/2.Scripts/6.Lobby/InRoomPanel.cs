@@ -49,6 +49,7 @@ public class InRoomPanel : MonoBehaviour
     }
     private void OnEnable()
     {
+
         //ChatInput.Select();
         isEnterKeyEnabled = true;
         if (playerListEntries == null)
@@ -101,8 +102,9 @@ public class InRoomPanel : MonoBehaviour
             readyGameButton.gameObject.SetActive(true);
         }
 
-        startGameButton.gameObject.SetActive(CheckPlayersReady());
-
+        ChatInput.text = "";
+        for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
+        
         Hashtable props = new Hashtable
         {
             {GameData.PLAYER_LOAD, false}

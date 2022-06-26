@@ -32,6 +32,7 @@ private void Start()
         if(PhotonNetwork.CurrentRoom != null)
         {
             SetActivePanel(PANEL.Room);
+
         }
     }
 
@@ -99,8 +100,7 @@ private void Start()
     {
         SetActivePanel(PANEL.Room);
 
-        inRoomPanel.ChatInput.text = "";
-        for (int i = 0; i < inRoomPanel.ChatText.Length; i++) inRoomPanel.ChatText[i].text = "";
+
     }
 
     public override void OnLeftRoom()

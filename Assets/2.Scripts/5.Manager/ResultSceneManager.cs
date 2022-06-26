@@ -46,6 +46,7 @@ public class ResultSceneManager : MonoBehaviour
     }
     public Transform[] WinnersSpawnPoint;
     public Transform[] LosersSpawnPoint;
+    public GameObject[] skeletons;
    // public GameObject resultWindow;
     
     public BattleResultPanel battleResultPanel;
@@ -112,27 +113,17 @@ public class ResultSceneManager : MonoBehaviour
     }
     private void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
+        StartCoroutine(LeaveAndReturnToRoom());
+
+        StartCoroutine(WaitForReadyToWrite());
        // WinnerInfomation();
        // LoserInformation();
 
         //PlayerAnimPlay();
-        foreach( Player p in PhotonNetwork.PlayerList)
-        {
-            object isMail;
-            p.CustomProperties.TryGetValue(GameData.IS_EMAIL,out isMail);
-            if((bool)isMail)
-            {
-                SyncUpdatedInformation(p.NickName);
-            }   
-        }
-        Debug.Log( "resultInfoList.Count: " + resultInfoList.Count);
-        for(int i=0; i<resultInfoList.Count;++i)
-        {
-            Debug.Log(resultInfoList[i].name+" : "+resultInfoList[i].kill+" : "+resultInfoList[i].death+" : "+resultInfoList[i].rank );
-        }
 
-        PhotonNetwork.AutomaticallySyncScene = true;
-        StartCoroutine(LeaveAndReturnToRoom());
+
+
     }
 
     private void SetInformation()
@@ -194,19 +185,21 @@ public class ResultSceneManager : MonoBehaviour
                 if(LosersSpawnPoint[0].transform.childCount==0)
                 {
                      player= Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[0]);
-
+                    skeletons[0].SetActive(true);
                 }
                 else if(LosersSpawnPoint[0].transform.childCount>=1)
                 {
                     if(LosersSpawnPoint[1].transform.childCount==0)
                     {
                         player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[1]);
+                        skeletons[1].SetActive(true);
                     }
                     else if(LosersSpawnPoint[1].transform.childCount==1)
                     {
                         if(LosersSpawnPoint[2].transform.childCount==0)
                         {
                             player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer),LosersSpawnPoint[2]);
+                            skeletons[2].SetActive(true);
                         }
                     }
                 }
@@ -261,6 +254,26 @@ public class ResultSceneManager : MonoBehaviour
             });
          });
     }
+    private void WriteDB()
+    {
+        foreach( Player p in PhotonNetwork.PlayerList)
+        {
+            object isMail;
+            p.CustomProperties.TryGetValue(GameData.IS_EMAIL,out isMail);
+            
+            if(p.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)continue;
+            //자기 데이터는 자기가 쓰도록 수정
+            if((bool)isMail)
+            {
+                SyncUpdatedInformation(p.NickName);
+            }   
+        }
+        Debug.Log( "resultInfoList.Count: " + resultInfoList.Count);
+        for(int i=0; i<resultInfoList.Count;++i)
+        {
+            Debug.Log(resultInfoList[i].name+" : "+resultInfoList[i].kill+" : "+resultInfoList[i].death+" : "+resultInfoList[i].rank );
+        }
+    }
 
     // // 승리자 닉네임 결과창 UI에 뜨도록 설정
     // public void WinnerInfomation()
@@ -302,6 +315,12 @@ public class ResultSceneManager : MonoBehaviour
                 new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, 0 } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
         }
+
+    }
+    IEnumerator WaitForReadyToWrite()
+    {
+        yield return new WaitForSeconds(4f);
+        WriteDB();
 
     }
     // 플레이어 승리, 패배 애니메이션 재생
