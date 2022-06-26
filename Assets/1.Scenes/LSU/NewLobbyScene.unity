@@ -2918,6 +2918,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1445102294025056978, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -8965446168280152916, guid: 90fcd31a165153547a50c5dba003a3b8,
+        type: 2}
     - target: {fileID: 1445102294025056979, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
         type: 3}
       propertyPath: bgSoundlist.Array.data[1]
@@ -5040,6 +5046,7 @@ MonoBehaviour:
   playerListContent: {fileID: 1645458248}
   startGameButton: {fileID: 1656178901}
   readyGameButton: {fileID: 1587282386}
+  roomOptionButton: {fileID: 0}
   readyButtonText: {fileID: 144259912}
   playerEntryPrefab: {fileID: 421413027376855651, guid: 1ab1a520382e85b40a83a16e694f7149,
     type: 3}
@@ -5050,6 +5057,7 @@ MonoBehaviour:
   loseTimes: {fileID: 328428747}
   winRate: {fileID: 1466137704}
   settingPanel: {fileID: 0}
+  roomOptionUI: {fileID: 0}
 --- !u!1 &500344201
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,8 +8341,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823b6788348e3c14cb995ac29653fe6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomNameInputField: {fileID: 2113071598}
-  maxPlayersInputField: {fileID: 221862267}
+  pwEntry: {fileID: 0}
+  roomName: {fileID: 0}
+  roomMaxPlayer: {fileID: 0}
+  roomPassword: {fileID: 0}
+  dropdownMode: {fileID: 0}
+  dropdownMap: {fileID: 0}
+  pwToggle: {fileID: 0}
+  dropdownItemIcon: {fileID: 0}
 --- !u!1 &820211089
 GameObject:
   m_ObjectHideFlags: 0

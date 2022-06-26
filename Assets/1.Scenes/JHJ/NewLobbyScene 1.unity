@@ -6832,9 +6832,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC5F0\uACB0 \uC0C1\uD0DC :"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f22cb64bb71536646b0b92b369a7e70d, type: 2}
-  m_sharedMaterial: {fileID: -3589353395319889483, guid: f22cb64bb71536646b0b92b369a7e70d,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15928,9 +15927,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f22cb64bb71536646b0b92b369a7e70d, type: 2}
-  m_sharedMaterial: {fileID: -3589353395319889483, guid: f22cb64bb71536646b0b92b369a7e70d,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -27668,6 +27666,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445102294025056979, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
+        type: 3}
+      propertyPath: effectSound.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1445102294025056979, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
         type: 3}
