@@ -224,4 +224,25 @@ public class BattleManager : MonoBehaviourPun
 
         //}
     }
+
+
+
+    IEnumerator TimeOver(){
+        yield return new WaitForSeconds(3f);
+        PhotonNetwork.LoadLevel("Result");
+
+      
+    }
+
+    public bool CheckPlayersTimeOver(){
+        if(!PhotonNetwork.IsMasterClient){
+            return false;
+        }
+
+        foreach(Player p in PhotonNetwork.PlayerList){
+                //플레이어의 타이머가 0 이하가 되면 종료 및 다른 씬으로 전환
+        }
+
+        return true;
+    }
 }
