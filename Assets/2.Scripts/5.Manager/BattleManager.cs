@@ -37,7 +37,7 @@ public class BattleManager : MonoBehaviourPun
 
     [Header("UI")]
     public RegenUI regenUI;
-    public HUDUI hUDUI;
+    public HPBar hpUI;
 
     [Header("Mode")]
     public ModeType mode;
@@ -79,6 +79,7 @@ public class BattleManager : MonoBehaviourPun
     {
         ShowBattleStatus();
         //FinalWinner();
+
     }
     public void ShowBattleStatus()
     {
@@ -103,11 +104,14 @@ public class BattleManager : MonoBehaviourPun
 
     public void SetUpDeathMatch()
     {
+        HUDUIManager.Instance.DeathMatch();
 
     }
     
     public void SetUpOneShotMode()
     {
+            HUDUIManager.Instance.OnShotMatch();
+
         // 한대 맞으면 죽는 데스매치
         foreach(Character p in players)
         {
@@ -116,11 +120,18 @@ public class BattleManager : MonoBehaviourPun
     }
     public void SetUpTimerMode()
     {
-        TimeManager.Instance.limitTime = 180f;
+
+        HUDUIManager.Instance.TimerMatch();
+    //    TimeManager.Instance.limitTime = 180f;
+
         foreach (Character p in players)
         {
             p.isRegen = true;
+
         }
+     //   TimeManager.Instance.TimeOver();
+
+
     }
 
     public void RegisterAllPlayer()
@@ -237,5 +248,26 @@ public class BattleManager : MonoBehaviourPun
             photonView.RPC("BattleOverMessage", RpcTarget.All);
 
         //}
+    }
+
+
+
+    IEnumerator TimeOver(){
+        yield return new WaitForSeconds(3f);
+        PhotonNetwork.LoadLevel("Result");
+
+      
+    }
+
+    public bool CheckPlayersTimeOver(){
+        if(!PhotonNetwork.IsMasterClient){
+            return false;
+        }
+
+        foreach(Player p in PhotonNetwork.PlayerList){
+                //플레이어의 타이머가 0 이하가 되면 종료 및 다른 씬으로 전환
+        }
+
+        return true;
     }
 }
