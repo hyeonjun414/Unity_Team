@@ -43,10 +43,10 @@ public class InRoomPanel : MonoBehaviour
     private void Update()
     {
         if (!isEnterKeyEnabled) return;
-
         if (Input.GetKeyDown(KeyCode.Return))
         {
             LobbyManager.instance.Send();
+            ChatInput.ActivateInputField();
         }
     }
     private void OnEnable()
