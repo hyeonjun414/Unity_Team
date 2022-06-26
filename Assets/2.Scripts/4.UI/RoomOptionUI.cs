@@ -1,10 +1,11 @@
-﻿
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
-using ExitGames.Client.Photon;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Michsky.UI.ModernUIPack;
 
 public class RoomOptionUI : MonoBehaviour
 {
@@ -13,50 +14,61 @@ public class RoomOptionUI : MonoBehaviour
 
 
     [Header("Input Field")]
-    public TMP_InputField roomName;
-    public TMP_InputField roomMaxPeople;
-    public TMP_InputField roomPassword;
+    public CustomInputField roomName;
+    public CustomInputField roomMaxPlayer;
+    public CustomInputField roomPassword;
 
     [Header("Toggle")]
-    public Toggle pwToggle;
+    public CustomToggle pwToggle;
 
 
     private void OnEnable()
     {
-        UpdateUI();
+        StartCoroutine("UpdateUIRoutine");
     }
 
-    public void UpdateUI()
+    IEnumerator UpdateUIRoutine()
     {
+        yield return null;
         Room curRoom = PhotonNetwork.CurrentRoom;
         object value;
 
-        roomMaxPeople.text = curRoom.MaxPlayers.ToString();
+        roomMaxPlayer.inputText.text = curRoom.MaxPlayers.ToString();
 
         // 방 이름
         if (GetRoomOption(GameData.ROOM_NAME, curRoom, out value))
         {
-            roomName.text = (string)value;
+            roomName.inputText.text = (string)value;
         }
 
         if (GetRoomOption(GameData.ROOM_ISACTIVE_PW, curRoom, out value))
         {
-            pwToggle.isOn = (bool)value;
+            pwToggle.toggleObject.isOn = (bool)value;
         }
 
-        if(pwToggle.isOn == true)
+        if(pwToggle.toggleObject.isOn == true)
         {
             pwEntry.SetActive(true);
 
             if(GetRoomOption(GameData.ROOM_PW, curRoom, out value))
             {
-                roomPassword.text = (string)value;
+                roomPassword.inputText.text = (string)value;
             }
         }
         else
         {
             pwEntry.SetActive(false);
         }
+        UpdateStateUI();
+    }
+
+    private void UpdateStateUI()
+    {
+        roomName.UpdateState();
+        roomMaxPlayer.UpdateState();
+        if(pwToggle.toggleObject.isOn)
+            roomPassword.UpdateState();
+        pwToggle.UpdateState();
     }
 
     public void OnClickApplyButton()
@@ -73,13 +85,13 @@ public class RoomOptionUI : MonoBehaviour
     {
         Room curRoom = PhotonNetwork.CurrentRoom;
 
-        curRoom.MaxPlayers = (byte)int.Parse(roomMaxPeople.text);
+        curRoom.MaxPlayers = byte.Parse(roomMaxPlayer.inputText.text);
    
 
         Hashtable option =  new Hashtable {
-            { GameData.ROOM_NAME, roomName.text },
-            { GameData.ROOM_ISACTIVE_PW, pwToggle.isOn },
-            { GameData.ROOM_PW, roomPassword.text },
+            { GameData.ROOM_NAME, roomName.inputText.text },
+            { GameData.ROOM_ISACTIVE_PW, pwToggle.toggleObject.isOn },
+            { GameData.ROOM_PW, roomPassword.inputText.text },
         };
 
         string[] props = new string[]
@@ -102,13 +114,30 @@ public class RoomOptionUI : MonoBehaviour
 
     public void ChangePwToggle()
     {
-        if (pwToggle.isOn == true)
+        if (pwToggle.toggleObject.isOn == true)
         {
             pwEntry.SetActive(true);
+            SetDefaultPw();
         }
         else
         {
             pwEntry.SetActive(false);
+        }
+    }
+
+    public void MaxPlayerLimit()
+    {
+        int maxPlayer = int.Parse(roomMaxPlayer.inputText.text);
+
+        maxPlayer = Mathf.Clamp(maxPlayer, 1, 4);
+
+        roomMaxPlayer.inputText.text = maxPlayer.ToString();
+    }
+    public void SetDefaultPw()
+    {
+        if(roomPassword.inputText.text.Length == 0)
+        {
+            roomPassword.inputText.text = "0000";
         }
     }
 }

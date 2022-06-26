@@ -820,7 +820,7 @@ GameObject:
   - component: {fileID: 51760372}
   - component: {fileID: 51760371}
   m_Layer: 5
-  m_Name: Input Field - Fading (Left)
+  m_Name: MaxPlayer Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -963,7 +963,18 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1822151754}
+        m_MethodName: MaxPlayerLimit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -3189,7 +3200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &232055283
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3453,7 +3464,7 @@ GameObject:
   - component: {fileID: 249715258}
   - component: {fileID: 249715257}
   m_Layer: 5
-  m_Name: Room Name Text (1)
+  m_Name: GameMode Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3471,7 +3482,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1115195489}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -3871,7 +3882,7 @@ GameObject:
   - component: {fileID: 309399326}
   - component: {fileID: 309399325}
   m_Layer: 5
-  m_Name: Input Field - Fading (Left)
+  m_Name: Password Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4011,10 +4022,21 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1822151754}
+        m_MethodName: SetDefaultPw
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -5268,16 +5290,14 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 750873896}
-  - {fileID: 1363687045}
+  m_Children: []
   m_Father: {fileID: 1969872739}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -365}
+  m_AnchoredPosition: {x: 0, y: -0.000015258789}
+  m_SizeDelta: {x: 0, y: -360}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &391898011
 MonoBehaviour:
@@ -10655,7 +10675,7 @@ GameObject:
   - component: {fileID: 749663539}
   - component: {fileID: 749663538}
   m_Layer: 5
-  m_Name: Dropdown (1)
+  m_Name: GameMap Dropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10675,7 +10695,7 @@ RectTransform:
   - {fileID: 2009657831}
   - {fileID: 1322653889}
   m_Father: {fileID: 1115195489}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10716,7 +10736,7 @@ MonoBehaviour:
   UIManagerAsset: {fileID: 11400000, guid: 2a619a9609984be49b53b928dd94e61b, type: 2}
   webglMode: 0
   overrideColors: 0
-  overrideFonts: 1
+  overrideFonts: 0
   background: {fileID: 2007321763}
   contentBackground: {fileID: 640473065}
   mainIcon: {fileID: 700235138}
@@ -10944,18 +10964,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 750873895}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 391898010}
+  m_Father: {fileID: 1770665538}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 437, y: -35}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -10, y: -14}
   m_SizeDelta: {x: 834, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &750873897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11010,7 +11030,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -14912,7 +14932,7 @@ GameObject:
   - component: {fileID: 1017008712}
   - component: {fileID: 1017008711}
   m_Layer: 5
-  m_Name: Room Name Text (2)
+  m_Name: GameMap Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14930,7 +14950,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1115195489}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -16189,10 +16209,10 @@ RectTransform:
   - {fileID: 1779217051}
   - {fileID: 1567086258}
   - {fileID: 898455911}
-  - {fileID: 1361330247}
-  - {fileID: 749663537}
   - {fileID: 249715256}
+  - {fileID: 1361330247}
   - {fileID: 1017008710}
+  - {fileID: 749663537}
   m_Father: {fileID: 2070137293}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18400,8 +18420,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 10}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 20, y: -90}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1251778802
 MonoBehaviour:
@@ -18977,7 +18997,7 @@ GameObject:
   - component: {fileID: 1306757548}
   - component: {fileID: 1306757547}
   m_Layer: 5
-  m_Name: Input Field - Fading (Left)
+  m_Name: Name Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20230,7 +20250,7 @@ GameObject:
   - component: {fileID: 1356069850}
   - component: {fileID: 1356069849}
   m_Layer: 5
-  m_Name: Input Field - Fading (Left)
+  m_Name: Password Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20370,10 +20390,21 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2070137294}
+        m_MethodName: SetDefaultPw
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -20632,7 +20663,7 @@ GameObject:
   - component: {fileID: 1361330249}
   - component: {fileID: 1361330248}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: GameMode Dropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20652,7 +20683,7 @@ RectTransform:
   - {fileID: 960833459}
   - {fileID: 1754267579}
   m_Father: {fileID: 1115195489}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -20693,7 +20724,7 @@ MonoBehaviour:
   UIManagerAsset: {fileID: 11400000, guid: 2a619a9609984be49b53b928dd94e61b, type: 2}
   webglMode: 0
   overrideColors: 0
-  overrideFonts: 1
+  overrideFonts: 0
   background: {fileID: 693518572}
   contentBackground: {fileID: 1329999711}
   mainIcon: {fileID: 300339667}
@@ -20847,18 +20878,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1363687044}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 391898010}
+  m_Father: {fileID: 1770665538}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 437, y: -90}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -66}
   m_SizeDelta: {x: 834, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1363687046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20878,8 +20909,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "      \uBC29\uBC88\uD638          \uBC29\uC774\uB984            \uBAA8\uB4DC           
-    \uB9F5           \uC778\uC6D0"
+  m_text: " \uBC29\uBC88\uD638                  \uBC29\uC774\uB984                
+    \uBAA8\uB4DC            \uB9F5          \uC778\uC6D0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1d62a783f0743a4d80b43c0cb6c6811, type: 2}
   m_sharedMaterial: {fileID: -7768113992397821746, guid: b1d62a783f0743a4d80b43c0cb6c6811,
@@ -20918,7 +20949,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_wordSpacing: 25
+  m_wordSpacing: 20
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -23247,6 +23278,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1770665538}
   - {fileID: 1614849187}
   - {fileID: 1499408249}
   m_Father: {fileID: 98911063}
@@ -23306,7 +23338,7 @@ RectTransform:
   - {fileID: 2032480836}
   - {fileID: 1249239832}
   m_Father: {fileID: 1490811439}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -24693,7 +24725,7 @@ RectTransform:
   - {fileID: 1969872739}
   - {fileID: 1251778801}
   m_Father: {fileID: 1490811439}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -24848,7 +24880,7 @@ GameObject:
   - component: {fileID: 1620029725}
   - component: {fileID: 1620029724}
   m_Layer: 5
-  m_Name: Input Field - Fading (Left)
+  m_Name: MaxPlayer Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24978,20 +25010,31 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2070137294}
+        m_MethodName: MaxPlayerLimit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -26821,6 +26864,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764506346}
   m_CullTransparentMesh: 0
+--- !u!1 &1770665537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1770665538}
+  - component: {fileID: 1770665540}
+  - component: {fileID: 1770665539}
+  m_Layer: 5
+  m_Name: Panel Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1770665538
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770665537}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 750873896}
+  - {fileID: 1363687045}
+  m_Father: {fileID: 1490811439}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -51}
+  m_SizeDelta: {x: 900, y: 120}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &1770665539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770665537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.21176471, g: 0.30980393, b: 0.40392157, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5e16c7aea118d68498053518146c9cf9, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 5
+--- !u!222 &1770665540
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770665537}
+  m_CullTransparentMesh: 0
 --- !u!1 &1774345441
 GameObject:
   m_ObjectHideFlags: 0
@@ -27613,10 +27732,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pwEntry: {fileID: 232055282}
-  roomName: {fileID: 1306757550}
-  roomMaxPeople: {fileID: 51760374}
-  roomPassword: {fileID: 309399328}
-  pwToggle: {fileID: 1205617984}
+  roomName: {fileID: 1306757548}
+  roomMaxPlayer: {fileID: 51760372}
+  roomPassword: {fileID: 309399326}
+  pwToggle: {fileID: 1205617981}
 --- !u!1 &1836327958
 GameObject:
   m_ObjectHideFlags: 0
@@ -27629,7 +27748,7 @@ GameObject:
   - component: {fileID: 1836327961}
   - component: {fileID: 1836327960}
   m_Layer: 5
-  m_Name: Room MaxPeople Text
+  m_Name: Room MaxPlayer Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28313,7 +28432,7 @@ GameObject:
   - component: {fileID: 1899957516}
   - component: {fileID: 1899957515}
   m_Layer: 5
-  m_Name: Input Field - Fading (Left)
+  m_Name: Name Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29214,7 +29333,7 @@ GameObject:
   - component: {fileID: 1947358757}
   - component: {fileID: 1947358756}
   m_Layer: 5
-  m_Name: Room MaxPeople Text
+  m_Name: Room MaxPlayer Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29374,8 +29493,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -13, y: 0}
-  m_SizeDelta: {x: -26, y: 0}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 0, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1969872740
 MonoBehaviour:
@@ -30067,7 +30186,7 @@ GameObject:
   - component: {fileID: 2016000379}
   - component: {fileID: 2016000378}
   m_Layer: 5
-  m_Name: Input Field - Fading (Left)
+  m_Name: Message Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30687,12 +30806,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pwEntry: {fileID: 1779217050}
   roomName: {fileID: 1899957516}
-  roomMaxPeople: {fileID: 1620029725}
+  roomMaxPlayer: {fileID: 1620029725}
   roomPassword: {fileID: 1356069850}
   dropdownMode: {fileID: 1361330251}
   dropdownMap: {fileID: 749663541}
+  pwToggle: {fileID: 1437667931}
   dropdownItemIcon: {fileID: 21300000, guid: 2f2ed1a167dc67349a42cb44a3d9b115, type: 3}
-  pwToggle: {fileID: 1437667934}
 --- !u!1 &2095172945
 GameObject:
   m_ObjectHideFlags: 0
