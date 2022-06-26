@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/1.Scenes/LoginAuthScene.unity
     guid: 79d286cd1b0af254f98c0d3ab57f89d8
   - enabled: 1
-    path: Assets/1.Scenes/NewLobbyScene.unity
-    guid: 93d4bcf485659bb46af3947345aca66f
+    path: Assets/1.Scenes/JSY/mapTest.unity
+    guid: 239184f9cbe40744085551731dcd4607
   - enabled: 1
-    path: Assets/1.Scenes/LSU/Result.unity
-    guid: a8f2dccfbab054143883b10aba604015
+    path: Assets/1.Scenes/JSY/Result.unity
+    guid: 0d85870615eac32459d721dbe4c33efd
   - enabled: 1
-    path: Assets/1.Scenes/mapTest.unity
-    guid: 7c4e4fbb745ee2344ad125225463c57c
+    path: Assets/1.Scenes/JSY/NewLobbyScene.unity
+    guid: dfe67e21086a06d47916edce6b84280b
   m_configObjects: {}

@@ -34,7 +34,7 @@ public class PlayerEntry : MonoBehaviour
     private int ownerId;
     private bool isPlayerReady;
 
-    public void Start()
+    private void Start()
     {
         characterDataSize = 18;
         if (PhotonNetwork.LocalPlayer.ActorNumber != ownerId)
@@ -59,6 +59,7 @@ public class PlayerEntry : MonoBehaviour
         }
 
     }
+
     public void OnInfoButtonClicked()
     {
         

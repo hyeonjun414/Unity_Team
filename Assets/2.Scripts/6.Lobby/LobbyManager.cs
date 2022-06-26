@@ -25,7 +25,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         instance = this;
     }
 
-    private void Start()
+private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
 
@@ -33,8 +33,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if(PhotonNetwork.CurrentRoom != null)
         {
             SetActivePanel(PANEL.Room);
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+            PhotonNetwork.CurrentRoom.IsVisible = true;
         }
     }
+
 
     public enum PANEL { Login, Connect, Lobby, Room, CreateRoom }
     public void SetActivePanel(PANEL panel)
@@ -119,8 +122,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         SetActivePanel(PANEL.Room);
 
-        inRoomPanel.ChatInput.text = "";
-        for (int i = 0; i < inRoomPanel.ChatText.Length; i++) inRoomPanel.ChatText[i].text = "";
+
     }
 
     public override void OnLeftRoom()

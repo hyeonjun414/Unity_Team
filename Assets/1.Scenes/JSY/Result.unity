@@ -9635,7 +9635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &443232952
 Transform:
   m_ObjectHideFlags: 0
@@ -11990,7 +11990,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2fffb1b834d83481789ee171f211303d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2fffb1b834d83481789ee171f211303d,
         type: 3}
@@ -19360,6 +19360,10 @@ MonoBehaviour:
   - {fileID: 1553075548}
   - {fileID: 1651109882}
   - {fileID: 1064497178}
+  skeletons:
+  - {fileID: 443232951}
+  - {fileID: 1369290777}
+  - {fileID: 958250076}
   battleResultPanel: {fileID: 1160926595}
 --- !u!114 &891133236
 MonoBehaviour:
@@ -21478,7 +21482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &958250077
 Transform:
   m_ObjectHideFlags: 0
@@ -23674,7 +23678,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2fffb1b834d83481789ee171f211303d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2fffb1b834d83481789ee171f211303d,
         type: 3}
@@ -30674,7 +30678,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1369290778
 Transform:
   m_ObjectHideFlags: 0
@@ -37421,7 +37425,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2fffb1b834d83481789ee171f211303d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2fffb1b834d83481789ee171f211303d,
         type: 3}

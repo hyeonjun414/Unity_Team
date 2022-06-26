@@ -51,6 +51,7 @@ public class InRoomPanel : MonoBehaviour
     }
     private void OnEnable()
     {
+
         //ChatInput.Select();
         isEnterKeyEnabled = true;
         if (playerListEntries == null)
@@ -106,7 +107,9 @@ public class InRoomPanel : MonoBehaviour
             readyGameButton.gameObject.SetActive(true);
         }
 
-
+        ChatInput.text = "";
+        for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
+          
         Hashtable props = new Hashtable
         {
             {GameData.PLAYER_LOAD, false}
@@ -138,8 +141,8 @@ public class InRoomPanel : MonoBehaviour
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-
-        PhotonNetwork.LoadLevel("mapTest");
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("mapTest");
        // SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
     }
 
@@ -177,6 +180,7 @@ public class InRoomPanel : MonoBehaviour
 
         foreach (Player p in PhotonNetwork.PlayerList)
         {
+          
             object isPlayerReady;
             if (p == PhotonNetwork.MasterClient) continue;
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))
@@ -227,7 +231,7 @@ public class InRoomPanel : MonoBehaviour
             loseTimes.text = loseTimesInt.ToString();
             if (winTimesInt != 0)
             {
-                winRate.text = (winTimesInt / playTimesInt).ToString("F1") + " %";
+                winRate.text = (((float)winTimesInt / (float)playTimesInt)*100).ToString("F2") + " %";
             }
             else
             {

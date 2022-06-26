@@ -74,6 +74,32 @@ public class BattleManager : MonoBehaviourPun
             }
         }
     }
+    
+    private void Update() 
+    {
+        ShowBattleStatus();
+        //FinalWinner();
+    }
+    public void ShowBattleStatus()
+    {
+        if(battleResultPanel.isBattleFinished)return;
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            //배틀 셋 하고
+            //배틀스태터스 패널 활성화
+            battleResultPanel.SetBattleResult();
+        }
+        // if(Input.GetKey(KeyCode.Tab))
+        // {
+        //     //배틀스태터스패널을 계속 true로 놓기
+        // }
+        if(Input.GetKeyUp(KeyCode.Tab))
+        {
+            //배틀스태터스 패널을 false로
+            battleResultPanel.battleResultPanel.SetActive(false);
+            battleResultPanel.ClearPanel();
+        }
+    }
 
     public void SetUpDeathMatch()
     {
@@ -163,6 +189,7 @@ public class BattleManager : MonoBehaviourPun
     }
     private void SetBattleResult()
     {
+        battleResultPanel.isBattleFinished=true;
         battleResultPanel.SetBattleResult();
     }
 
@@ -191,9 +218,12 @@ public class BattleManager : MonoBehaviourPun
         SetBattleResult();
 
         yield return new WaitForSeconds(5f);
-
+        
         if(PhotonNetwork.IsMasterClient)
+        {
             PhotonNetwork.LoadLevel("Result");
+        }
+        
 
     }
     //플레이어가 한 명 남았을 때 그라운드를 끝냄.
