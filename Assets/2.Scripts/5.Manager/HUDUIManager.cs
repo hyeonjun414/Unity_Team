@@ -10,7 +10,7 @@ using Photon.Pun.UtilityScripts;
 public class HUDUIManager : Singleton<HUDUIManager>
 {
 
-    public Character player;
+   // public Character player;
     public GameObject regenNum;
 
     [Header ("Text")]
@@ -30,10 +30,11 @@ public class HUDUIManager : Singleton<HUDUIManager>
 
     private void Start() {
 
-        nicknameText.text = photonView.Owner.NickName;
+        //nicknameText.text = photonView.Owner.NickName;
+        nicknameText.text = PhotonNetwork.LocalPlayer.NickName;
         killNumText.text = "0";
         scoreText.text = "0";
-     //   leftPLText.text = (시작화면에서 설정한 플레이어의 수)
+        leftPLText.text = PhotonNetwork.PlayerList.Length.ToString();
         regenNumText.text = "0";
     }
 
@@ -46,10 +47,10 @@ public class HUDUIManager : Singleton<HUDUIManager>
     }
 
     private void Update() {
-       // ShowRegenCount();
-       // ShowKillCount();
-       // ShowScore();
-       // ShowLeftPlayers();
+        ShowRegenCount();
+        ShowKillCount();
+        ShowScore();
+        ShowLeftPlayers();
     }
     public void DeathMatch(){
         playreInfo.SetActive(true);
@@ -73,6 +74,11 @@ public class HUDUIManager : Singleton<HUDUIManager>
        
     }
 
+    public void SetNickName(){
+
+    }
+
+
     //플레이어의 부활 횟수를 세는 함수
     public void ShowRegenCount(){
 
@@ -80,12 +86,11 @@ public class HUDUIManager : Singleton<HUDUIManager>
         
            for(int i=0; i<BattleManager.Instance.players.Count;++i)
             {
-                if(photonView.Owner.ActorNumber == p.ActorNumber)
+                if(PhotonNetwork.LocalPlayer.ActorNumber == p.ActorNumber)
                 {
                     regenNumText.text = BattleManager.Instance.players[i].stat.deathCount.ToString();
                 }       
             }     
-            
        }
     }
 
@@ -95,7 +100,7 @@ public class HUDUIManager : Singleton<HUDUIManager>
             for(int i=0; i<BattleManager.Instance.players.Count;++i)
                 {
                    
-                    if(photonView.Owner.ActorNumber == p.ActorNumber && player.photonView.IsMine)
+                    if(PhotonNetwork.LocalPlayer.ActorNumber == p.ActorNumber)
                     {
                         killNumText.text = BattleManager.Instance.players[i].stat.killCount.ToString();
 
@@ -112,7 +117,7 @@ public class HUDUIManager : Singleton<HUDUIManager>
             {
                 if(BattleManager.Instance.players[i].photonView.Owner.ActorNumber == p.ActorNumber)
                 {
-                    scoreText.text = p.GetScore().ToString();
+                  //  scoreText.text = p.GetScore().ToString();
                 }       
             }     
             
@@ -121,6 +126,7 @@ public class HUDUIManager : Singleton<HUDUIManager>
 
 
     public void ShowLeftPlayers(){
+        leftPLText.text = BattleManager.Instance.alivePlayer.Count.ToString();
 
     }
 

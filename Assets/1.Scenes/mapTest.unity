@@ -1277,7 +1277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc1bbbf872f5d8e43aa0ea1d1371bd40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   regenNum: {fileID: 1873302249}
   nicknameText: {fileID: 253899981}
   killNumText: {fileID: 2012708715}
@@ -5348,7 +5347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1542737021
 MonoBehaviour:
   m_ObjectHideFlags: 0
