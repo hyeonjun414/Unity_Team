@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class Option : MonoBehaviour
 {
+    [Header("Lobby Option")]
+
     public GameObject optionButton;
-    public GameObject optionWindow;
+    public GameObject lobbyOptionWindow;
     public Button apply;
     public Button cancel;
     public Toggle musicSoundButton;
@@ -14,22 +20,77 @@ public class Option : MonoBehaviour
     public Slider musicSoundSlider;
     public Slider effectSoundSlider;
 
-    float firstMusicValue;
-    float firstEffectValue;
-    float changeMusicValue = 0;
-    float changeEffectValue = 0;
+    [Header("Game Option")]
+    public GameObject goToLobby;
+    public GameObject warningWindow;
+    public Button warningApply;
+    public Button warningCancel;
 
-    bool firstMusicOn = true;
-    bool firstEffectOn = true;
+    [Header("Data")]
+    public float firstMusicValue;
+    public float firstEffectValue;
+    public float changeMusicValue = 0;
+    public float changeEffectValue = 0;
 
-    private void Start()
+    public bool firstMusicOn = true;
+    public bool firstEffectOn = true;
+
+    private void Awake()
     {
-        optionWindow.SetActive(false);
+        var obj = FindObjectsOfType<Option>();
+        if (obj.Length == 1)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GotoLobbyActive();
+
+            if (lobbyOptionWindow.activeInHierarchy == false)
+            {
+                lobbyOptionWindow.SetActive(true);
+                firstMusicValue = musicSoundSlider.value;
+                firstEffectValue = effectSoundSlider.value;
+                changeMusicValue = firstMusicValue;
+                changeEffectValue = firstEffectValue;
+
+                musicSoundButton.isOn = firstMusicOn;
+                effectSoundButton.isOn = firstEffectOn;
+            }
+            else
+            {
+                OnClickCancel();
+            }
+        }
+    }
+
+    public void GotoLobbyActive()
+    {
+        if (SceneManager.GetActiveScene().name == "mapTest")
+        {
+            optionButton.SetActive(false);
+            goToLobby.SetActive(true);
+        }
+        else
+        {
+            optionButton.SetActive(true);
+            goToLobby.SetActive(false);
+        }
     }
 
     public void OnClickOptionButton()
     {
-        optionWindow.SetActive(true);
+        GotoLobbyActive();
+
+        lobbyOptionWindow.SetActive(true);
         firstMusicValue = musicSoundSlider.value;
         firstEffectValue = effectSoundSlider.value;
         changeMusicValue = firstMusicValue;
@@ -45,7 +106,7 @@ public class Option : MonoBehaviour
         firstEffectValue = changeEffectValue;
         firstMusicOn = musicSoundButton.isOn;
         firstEffectOn = effectSoundButton.isOn;
-        optionWindow.SetActive(false);
+        lobbyOptionWindow.SetActive(false);
     }
 
     public void OnClickMusicSoundButton()
@@ -98,7 +159,28 @@ public class Option : MonoBehaviour
         effectSoundSlider.value = firstEffectValue;
         musicSoundButton.isOn = firstMusicOn;
         effectSoundButton.isOn = firstEffectOn;
-        optionWindow.SetActive(false);
+        lobbyOptionWindow.SetActive(false);
     }
 
+    public void OnClickLobby()
+    {
+        warningWindow.SetActive(true);
+    }
+
+    public void OnClickWarningApply()
+    {
+        PhotonNetwork.LeaveRoom();
+
+        warningWindow.SetActive(false);
+        lobbyOptionWindow.SetActive(false);
+    }
+
+    public void OnClickWarningCancel()
+    {
+        warningWindow.SetActive(false);
+        musicSoundSlider.value = firstMusicValue;
+        effectSoundSlider.value = firstEffectValue;
+        musicSoundButton.isOn = firstMusicOn;
+        effectSoundButton.isOn = firstEffectOn;
+    }
 }
