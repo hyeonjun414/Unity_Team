@@ -8,13 +8,32 @@ using Photon.Pun.UtilityScripts;
 [System.Serializable]
 public class CharacterStatus
 {
-    public int playerMoveDistance = 1;
+ public int playerMoveDistance = 1;
     public int damage;
     public int hp;
     public Point curPos;
     public int currentCombo;
-    public int killCount;
-    public int deathCount;
+    public int score;
+    public int kill;
+    public int killCount
+    {
+        get { return kill; }
+        set
+        {
+            kill = value;
+            score += 100;
+        }
+    }
+    public int death;
+    public int deathCount
+    {
+        get { return death; }
+        set { 
+            death = value;
+            score -= 50;
+        }
+    }
+
 }
 
 public class Character : MonoBehaviourPun, IPunObservable
@@ -128,6 +147,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
             BattleManager.Instance.hpUI.SetUp(this);
+            HUDUIManager.Instance.infoUI.SetUp(this);
         }
         Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;

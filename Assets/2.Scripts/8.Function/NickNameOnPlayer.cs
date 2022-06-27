@@ -10,20 +10,23 @@ public class NickNameOnPlayer : MonoBehaviour
 {
     TMP_Text nameText;
     private Camera cam;
+    PhotonView photonView;
+    
     public void SetNickName(string nickName)
     {
         nameText = GetComponent<TMP_Text>();
         nameText.text = nickName;
         cam = CamManager.Instance.mainCam;
-        nameText.transform.rotation = Quaternion.LookRotation(cam.transform.forward);
-        
-
-        //플레이어 본인에게는 자신의 닉네임이 보이지 않도록 한다
-       // if(PhotonView.)
-        
+        nameText.transform.rotation = Quaternion.LookRotation(cam.transform.forward);        
     }
     private void Update()
     {
         nameText.transform.rotation = Quaternion.LookRotation(cam.transform.forward);
     }
+
+    
+
+
+
+    
 }

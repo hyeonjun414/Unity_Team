@@ -9,126 +9,54 @@ using Photon.Pun.UtilityScripts;
 
 public class HUDUIManager : Singleton<HUDUIManager>
 {
+    public PLInfoUI infoUI;
 
    // public Character player;
-    public GameObject regenNum;
-
-    [Header ("Text")]
-
-    public TMP_Text nicknameText;
-    public TMP_Text killNumText;
-    public TMP_Text scoreText;
     public TMP_Text leftPLText;
-    public TMP_Text regenNumText;
 
     [Header ("InfoUI")]
-    public GameObject playreInfo;
-  //  public GameObject playerInfoTimer;
     public GameObject timer;
+    public GameObject leftPlayer;
+    public GameObject playerInfo;
 
-
+   
 
     private void Start() {
-
-        //nicknameText.text = photonView.Owner.NickName;
-        nicknameText.text = PhotonNetwork.LocalPlayer.NickName;
-        killNumText.text = "0";
-        scoreText.text = "0";
         leftPLText.text = PhotonNetwork.PlayerList.Length.ToString();
-        regenNumText.text = "0";
+
     }
-
     private void Awake() {
-
         if (_instance == null){
             _instance = this;
         }
-  
     }
 
     private void Update() {
-        ShowRegenCount();
-        ShowKillCount();
-        ShowScore();
-        ShowLeftPlayers();
+        infoUI.ShowDeathCount();
+        infoUI.ShowKillCount();
+        infoUI.ShowScore();
+        LeftPlayers();
     }
     public void DeathMatch(){
-        playreInfo.SetActive(true);
+        playerInfo.SetActive(true);
         timer.SetActive(false);
-        regenNum.SetActive(false);
        
     }
 
     public void OnShotMatch(){
-        playreInfo.SetActive(true);
+        playerInfo.SetActive(true);
         timer.SetActive(false);
-        regenNum.SetActive(false);
-        
     }
 
     public void TimerMatch(){
         //시간 제한 모드에서는 시간이 모두 흐른 뒤 엔딩 씬으로 넘어간다
-        playreInfo.SetActive(true);
+        playerInfo.SetActive(true);
         timer.SetActive(true);
-        regenNum.SetActive(true);
-       
     }
 
-    public void SetNickName(){
-
-    }
-
-
-    //플레이어의 부활 횟수를 세는 함수
-    public void ShowRegenCount(){
-
-       foreach(Player p in PhotonNetwork.PlayerList){
-        
-           for(int i=0; i<BattleManager.Instance.players.Count;++i)
-            {
-                if(PhotonNetwork.LocalPlayer.ActorNumber == p.ActorNumber)
-                {
-                    regenNumText.text = BattleManager.Instance.players[i].stat.deathCount.ToString();
-                }       
-            }     
-       }
-    }
-
-    public void ShowKillCount(){
-         foreach(Player p in PhotonNetwork.PlayerList){
-        
-            for(int i=0; i<BattleManager.Instance.players.Count;++i)
-                {
-                   
-                    if(PhotonNetwork.LocalPlayer.ActorNumber == p.ActorNumber)
-                    {
-                        killNumText.text = BattleManager.Instance.players[i].stat.killCount.ToString();
-
-                    }       
-                }     
-            
-       }
-    }
-
-    public void ShowScore(){
-       foreach(Player p in PhotonNetwork.PlayerList){
-        
-           for(int i=0; i<BattleManager.Instance.players.Count;++i)
-            {
-                if(BattleManager.Instance.players[i].photonView.Owner.ActorNumber == p.ActorNumber)
-                {
-                  //  scoreText.text = p.GetScore().ToString();
-                }       
-            }     
-            
-       }
-    }
-
-
-    public void ShowLeftPlayers(){
+    public void LeftPlayers(){
         leftPLText.text = BattleManager.Instance.alivePlayer.Count.ToString();
 
     }
-
 
 }
