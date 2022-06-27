@@ -129,7 +129,7 @@ public class ResultSceneManager : MonoBehaviour
 
     private void SetInformation()
     {
-        battleResultPanel.SetFinalResult(resultInfoList);
+        //battleResultPanel.SetFinalResult(resultInfoList);
     }
     private void SetPlayer()
     {

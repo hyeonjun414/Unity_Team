@@ -12,11 +12,6 @@ using TMPro;
 
 public class BattleManager : MonoBehaviourPun
 {
-    //input 종류 - null(입력실패) , 움직임, 회전, 공격, 방어, 아이템사용, 슬롯체인지
-    //null , 슬롯체인지는 영향없음
-    //의식의 흐름()=> 매 노트카운트 끝부분 콜라이더에 닿으면 
-    //InputCheckManager.Judge() 호출 => MoveJudge => ActualMovement => Judge 
-    //=> 플레이어 키 입력 가능하게 초기화
     [HideInInspector]
     public int isReadyCount = 0;
     public bool isResultButtonClicked = false;
@@ -37,7 +32,6 @@ public class BattleManager : MonoBehaviourPun
 
     [Header("UI")]
     public RegenUI regenUI;
-    public HPBar hpUI;
 
     [Header("Mode")]
     public ModeType mode;
@@ -47,13 +41,12 @@ public class BattleManager : MonoBehaviourPun
     {
         if (Instance == null) Instance = this;
         
-        battleResultPanel.isBattleFinished=true;
 
         
     }
     private void Start()
     {
-        PhotonNetwork.AutomaticallySyncScene = true;
+        battleResultPanel = UIManager.Instance.battleResultPanel;
     }
 
     public void SetUpMode()
@@ -80,32 +73,13 @@ public class BattleManager : MonoBehaviourPun
     private void Update() 
     {
         ShowBattleStatus();
-        //FinalWinner();
 
     }
     public void ShowBattleStatus()
     {
-        if(battleResultPanel.isBattleFinished)return;
-        if(Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            isResultButtonClicked=true;
-            //배틀 셋 하고
-            //배틀스태터스 패널 활성화
-            battleResultPanel.EnableStatusPanel();
-        }
-        // if(Input.GetKey(KeyCode.Tab))
-        // {
-        //     //배틀스태터스패널을 계속 true로 놓기
-        // }
-        if(Input.GetKeyUp(KeyCode.Tab))
-        {
-            //배틀스태터스 패널을 false로
-            if(isResultButtonClicked)
-            {
-                battleResultPanel.DisableStatusPanel();
-            }
-            isResultButtonClicked=false;
-
+            battleResultPanel.gameObject.SetActive(!battleResultPanel.gameObject.activeSelf);
         }
     }
 
@@ -146,9 +120,6 @@ public class BattleManager : MonoBehaviourPun
         players = FindObjectsOfType<Character>().ToList();
 
         
-        //게임이 시작했을 때 들어온 모든 플레이어를 살아있는 플레이어 그룹에 넣는다.
-        battleResultPanel.isBattleFinished=false;
-        //tab키 활성화
         
 
         alivePlayer = FindObjectsOfType<Character>().ToList();
@@ -212,8 +183,6 @@ public class BattleManager : MonoBehaviourPun
     }
     private void SetBattleResult()
     {
-        battleResultPanel.isBattleFinished=true;
-        battleResultPanel.SetBattleResult();
     }
 
     IEnumerator GameOver(){

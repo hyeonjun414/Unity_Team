@@ -10,16 +10,27 @@ using TMPro;
 
 public class BattleResultPanel : MonoBehaviour
 {
-    public bool isBattleFinished=false;
-    public GameObject battleResultPanel;
-    private GameObject resultPanel;
-    public Text modeName;
-    public Text mapName;
-    public ResultEntry[] cachedEntries=null;
+    public ResultEntry entryPrefab;
+    public Transform contents;
+    public TMP_Text modeName;
+    public TMP_Text mapName;
+    public ResultEntry[] cachedEntries = null;
 
+    private void Awake()
+    {
+        // 처음에 엔트리 4개를 생성
+        cachedEntries = new ResultEntry[4];
+        for (int i = 0; i < cachedEntries.Length; i++)
+        {
+            cachedEntries[i] = Instantiate(entryPrefab, contents);
+            cachedEntries[i].gameObject.SetActive(false);
+        }
+    }
     private void Start()
     {
-        cachedEntries = new ResultEntry[4];
+
+
+        // 모드와 맵 텍스트 지정
         object value;
         PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out value);
         ModeType modeType = (ModeType)value;
@@ -27,222 +38,39 @@ public class BattleResultPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MAP, out value);
         MapType mapType = (MapType)value;
         mapName.text = GameData.GetMap(mapType);
-
-        SetBattleResult();
-
-
     }
-    public void SetBattleResult()
+    private void OnEnable()
     {
-        
-        
-
-        object mode;
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out mode))
-        {
-            int modeNum = (int)mode;
-            string modeName = GameData.GetMode((ModeType)modeNum);
-
-            resultPanel = battleResultPanel.transform.GetChild(0).gameObject;
-
-            //테스트
-            //테스트끝
-            switch (modeName)
-            {
-                case "Last Fighter":
-                    //한사람이 남을때까지      
-                    DeathMatchResult("Last Fighter");
-                    break;
-                case "One Shot":
-                    DeathMatchResult("One Shot");
-                    //시간매치 => 누가 가장 많이 죽였는가
-                    break;
-                case "Time To Kill":
-                    //원펀 => 사실상 lastman이랑 같음
-                    DeathMatchResult("Time To Kill");
-                    break;
-            }
-        }
-        
-        battleResultPanel.SetActive(true);
+        UpdateUI();
     }
-    public void SetFinalResult(List<PlayerResultInfo> resultInfo)
+    public void UpdateUI()
     {
- 
-        resultPanel = battleResultPanel.transform.GetChild(0).gameObject;
-        
-        for(int i=0; i<resultInfo.Count;++i)
+        // 킬카운트를 기준으로 정렬한 플레이어의 목록을 가져옴.
+        List<Character> sortedList =
+            BattleManager.Instance.players.OrderByDescending(
+                Character => Character.stat.killCount).ToList();
+
+        for (int i = 0; i < cachedEntries.Length; i++)
         {
-            if(resultInfo[i].rank==1)
+            if (i < sortedList.Count)
             {
-                ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
-                
-                winnerEntry.BattleResult(resultInfo[i].name,resultInfo[i].kill,resultInfo[i].death,resultInfo[i].rank,"NULL");
+                cachedEntries[i].UpdateEntry(sortedList[i], i);
             }
             else
             {
-                ResultEntry loserEntry = Instantiate(Resources.Load<ResultEntry>("LoserEntry"),resultPanel.transform);
-                
-                loserEntry.BattleResult(resultInfo[i].name,resultInfo[i].kill,resultInfo[i].death,resultInfo[i].rank,"NULL");
-            }   
-        }
-        
-        battleResultPanel.SetActive(true);
-    }
-    // public void ClearPanel()
-    // {
-    //     if(isBattleFinished)return;
-    //     ResultEntry[] resultEntries = resultPanel.transform.GetComponentsInChildren<ResultEntry>();
-    //     for(int i=0; i<resultEntries.Length;++i)
-    //     {
-    //         Destroy(resultEntries[i].gameObject);
-    //     }
-    // }
-
-    public void EnableStatusPanel()
-    {
-
-        List<Character> players = BattleManager.Instance.players;
-
-        List<Character> sortedList = new List<Character>();
-        sortedList = players.OrderByDescending(Character => Character.stat.killCount).ToList();
-
-        for(int i=0; i<sortedList.Count;++i)
-        {
-            for(int j=0; j<cachedEntries.Length;++j)
-            {
-                if(sortedList[i].photonView.Owner.ActorNumber == cachedEntries[j].owner.ActorNumber)
-                {
-                    cachedEntries[j].BattleResult(sortedList[i].nickName,
-                                                    sortedList[i].stat.killCount,
-                                                    sortedList[i].stat.deathCount,
-                                                    i,"NULL");
-                }
-            }
-        }
-
-        
-        
-        battleResultPanel.SetActive(true);
-    }
-    public void DisableStatusPanel()
-    {
-        battleResultPanel.SetActive(false);
-    }
-    
-    public void DeathMatchResult(string mode)
-    {
-        List<Character> players = BattleManager.Instance.players;
-
-        List<Character> sortedList = new List<Character>();
-        sortedList = players.OrderByDescending(Character => Character.stat.killCount).ToList();
-
-        foreach (Player p in PhotonNetwork.PlayerList)
-        {
-            if(sortedList[0].photonView.Owner.ActorNumber == p.ActorNumber)
-            {
-                ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("ResultEntry"),resultPanel.transform);
-                cachedEntries[0] = winnerEntry;
-                winnerEntry.BattleResult(sortedList[0].nickName, sortedList[0].stat.killCount ,sortedList[0].stat.deathCount , 1 ,mode);                   
-            
-                SetCustomValue(p,sortedList[0].nickName, sortedList[0].stat.killCount ,sortedList[0].stat.deathCount , 1 );
-            }
-            for(int i=1; i<sortedList.Count;++i)
-            {
-                if(sortedList[i].photonView.Owner.ActorNumber == p.ActorNumber)
-                {
-                    if(sortedList[i].stat.killCount == sortedList[0].stat.killCount)
-                    {
-                        ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("ResultEntry"),resultPanel.transform);
-                        winnerEntry.owner = p;
-                        cachedEntries[i] = winnerEntry;
-                        
-                        winnerEntry.BattleResult(sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , 1,mode);
-                    
-
-                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , 1 );
-
-                    }
-                    else
-                    {
-                        ResultEntry loserEntry = Instantiate(Resources.Load<ResultEntry>("ResultEntry"),resultPanel.transform);
-                        loserEntry.owner = p;
-                        cachedEntries[i] = loserEntry;
-                        loserEntry.BattleResult(sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , i+1,mode);
-
-                        cachedEntries[i].BattleResult(sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , i+1,mode);
-
-                        SetCustomValue(p,sortedList[i].nickName, sortedList[i].stat.killCount ,sortedList[i].stat.deathCount , i+1 );
-
-                    }
-
-                }
+                cachedEntries[i].ResetEntry();
             }
         }
     }
-    // public void LastManResult(string mode)
-    // {
-        
-    //     foreach (Player p in PhotonNetwork.PlayerList)
-    //     {
-    //         List<Character> alives = BattleManager.Instance.alivePlayer;
-    //         List<Character> deads = BattleManager.Instance.deadPlayer;
-
-    //         for(int i=0; i<alives.Count; ++i)
-    //         {
-    //             if(alives[i].photonView.Owner.ActorNumber == p.ActorNumber)
-    //             {
-    //                 if(cachedEntries.Count==0)
-    //                 {
-    //                     ResultEntry winnerEntry = Instantiate(Resources.Load<ResultEntry>("WinnerEntry"),resultPanel.transform);
-    //                     winnerEntry.owner = p;
-    //                     cachedEntries.Add(winnerEntry);
-    //                     winnerEntry.BattleResult(alives[i].nickName, alives[i].stat.killCount ,alives[i].stat.deathCount , 1,mode);
-    //                 }
-    //                 else
-    //                 {
-    //                     cachedEntries[i].BattleResult(alives[i].nickName, alives[i].stat.killCount ,alives[i].stat.deathCount , 1,mode);
-    //                 }
-
-    //                 if(isBattleFinished)    
-    //                     SetCustomValue(p,alives[i].nickName, alives[i].stat.killCount ,alives[i].stat.deathCount , 1 );
-                
-    //             }
-    //         }
-
-    //         for(int i=0; i<deads.Count;++i)
-    //         {
-    //             if(deads[i].photonView.Owner.ActorNumber == p.ActorNumber)
-    //             {
-    //                 if(cachedEntries.Count==0)
-    //                 {
-    //                     ResultEntry loserEntry = Instantiate(Resources.Load<ResultEntry>("LoserEntry"),resultPanel.transform);
-    //                     loserEntry.owner = p;
-    //                     cachedEntries.Add(loserEntry);
-    //                     loserEntry.BattleResult(deads[i].nickName, deads[i].stat.killCount ,deads[i].stat.deathCount , 2,mode);
-    //                 }
-    //                 else
-    //                 {
-    //                     cachedEntries[i+alives.Count].BattleResult(deads[i+alives.Count].nickName, deads[i+alives.Count].stat.killCount ,deads[i+alives.Count].stat.deathCount , 2,mode);
-    //                 }    
-    //                 if(isBattleFinished)
-    //                     SetCustomValue(p,deads[i].nickName, deads[i].stat.killCount ,deads[i].stat.deathCount , 2 );
-
-    //             }
-    //         }
-            
-    //     }
-    // }
-
     private void SetCustomValue(Player p, string nickName, int _kill, int _death, int _rank)
     {
-            ExitGames.Client.Photon.Hashtable name = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_NAME, nickName } };
-            p.SetCustomProperties(name);
-            ExitGames.Client.Photon.Hashtable kill = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_KILL, _kill } };
-            p.SetCustomProperties(kill);
-            ExitGames.Client.Photon.Hashtable death = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_DEAD, _death } };
-            p.SetCustomProperties(death);
-            ExitGames.Client.Photon.Hashtable rank = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, _rank } };
-            p.SetCustomProperties(rank);
+        ExitGames.Client.Photon.Hashtable name = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_NAME, nickName } };
+        p.SetCustomProperties(name);
+        ExitGames.Client.Photon.Hashtable kill = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_KILL, _kill } };
+        p.SetCustomProperties(kill);
+        ExitGames.Client.Photon.Hashtable death = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_DEAD, _death } };
+        p.SetCustomProperties(death);
+        ExitGames.Client.Photon.Hashtable rank = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, _rank } };
+        p.SetCustomProperties(rank);
     }
 }

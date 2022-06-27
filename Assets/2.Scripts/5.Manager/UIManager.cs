@@ -9,6 +9,11 @@ public class UIManager : Singleton<UIManager>
     public PlayerStatusUI statusUI;
     public ItemSlotUI itemSlotUI;
 
+    [Header("Battle Result")]
+    public BattleResultPanel battleResultPanel;
+
+    [Header("Revive UI")]
+    public RegenUI regenUI;
 
     private void Awake()
     {

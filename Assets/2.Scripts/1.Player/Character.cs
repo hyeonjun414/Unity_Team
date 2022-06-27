@@ -219,7 +219,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     }
     public bool RhythmHit()
     {
-        if (Input.anyKeyDown && state == PlayerState.Normal)
+        if (GameData.InputGetCheck() && state == PlayerState.Normal)
         {
             if(RhythmManager.Instance.BitCheck())
             {

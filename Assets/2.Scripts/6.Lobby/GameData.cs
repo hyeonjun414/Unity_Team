@@ -105,6 +105,26 @@ public class GameData : MonoBehaviour
             default: return "";
         }
     }
+    public static bool InputGetCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.A) ||
+            Input.GetKeyDown(KeyCode.D) ||
+            Input.GetKeyDown(KeyCode.W) ||
+            Input.GetKeyDown(KeyCode.S) ||
+            Input.GetKeyDown(KeyCode.Q) ||
+            Input.GetKeyDown(KeyCode.E) ||
+            Input.GetKeyDown(KeyCode.H) ||
+            Input.GetKeyDown(KeyCode.J) ||
+            Input.GetKeyDown(KeyCode.N) ||
+            Input.GetKeyDown(KeyCode.M))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     
     public static Color GetColor(int playerNumber)

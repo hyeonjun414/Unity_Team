@@ -12,34 +12,23 @@ using TMPro;
 public class ResultEntry : MonoBehaviour
 {
     public Player owner;
-    public void BattleResult(string nickName, int kill, int death, int rank ,string mode)
-    {
-        
-        Text[] texts = (transform.GetChild(0)).GetComponentsInChildren<Text>();
-        for(int i=0; i<texts.Length;++i)
-        {
-            switch(texts[i].gameObject.name)
-            {
-                case "Name":
-                {
-                    texts[i].text = nickName;
-                }break;
-                case "Kill":
-                {
-                    texts[i].text = kill.ToString();
-                }break;
-                case "Death":
-                {
-                    texts[i].text = death.ToString();
-                }break;
-                case "Rank":
-                {
-                    texts[i].text = rank.ToString();
-                }break;   
-            }
-        }
+    public TMP_Text nickNameText;
+    public TMP_Text killText;
+    public TMP_Text deathText;
+    public TMP_Text rankText;
 
-        //모드에따라 다르게 넘어가게 
+    public void UpdateEntry(Character player, int rank)
+    {
+        nickNameText.text = player.nickName;
+        killText.text = player.stat.killCount.ToString();
+        deathText.text = player.stat.deathCount.ToString();
+        rankText.text = rank.ToString();
+        gameObject.SetActive(true);
+    }
+
+    public void ResetEntry()
+    {
+        gameObject.SetActive(false);
     }
 
     
