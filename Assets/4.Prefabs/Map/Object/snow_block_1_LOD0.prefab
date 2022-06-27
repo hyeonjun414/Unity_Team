@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2783223017380095274}
   - component: {fileID: 2790616953508678224}
   - component: {fileID: -5328863322664154866}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: snow_block_1_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
