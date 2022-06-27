@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f45cb51cb80c644ac9a407ebe1dbef, type: 3}
   m_Name: PowerUpPotion
   m_EditorClassIdentifier: 
-  name: PowerUpPotion
+  name: "\uACF5\uACA9\uB825 \uC5C5"
   Description: Double offense power
   itemType: 1
   icon: {fileID: 21300000, guid: add7e27d18ace074eb4c5acb36ada1c6, type: 3}

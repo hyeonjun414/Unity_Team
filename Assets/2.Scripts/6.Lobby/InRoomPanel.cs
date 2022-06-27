@@ -293,6 +293,7 @@ public class InRoomPanel : MonoBehaviour
             startGameButton.gameObject.SetActive(true);
             startGameButton.interactable = CheckPlayersReady();
             FindLocalPlayerEntry().SetPlayerReadyImage(false);
+            FindLocalPlayerEntry().masterIcon.SetActive(true);
         }
     }
 
