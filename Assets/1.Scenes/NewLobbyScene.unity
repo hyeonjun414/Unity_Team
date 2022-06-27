@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140028, g: 0.5008927, b: 0.57231224, a: 1}
+  m_IndirectSpecularColor: {r: 0.451401, g: 0.5008942, b: 0.5723129, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6988,6 +6988,7 @@ MonoBehaviour:
   playerEntryPrefab: {fileID: 421413027376855651, guid: 1ab1a520382e85b40a83a16e694f7149,
     type: 3}
   playerInfoPanel: {fileID: 458372612}
+  leaveRoomBtnUI: {fileID: 0}
   nickName: {fileID: 928621449}
   totalPlayTimes: {fileID: 938515959}
   winTimes: {fileID: 487046323}
@@ -25828,7 +25829,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 272.5, y: 0}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1712463271

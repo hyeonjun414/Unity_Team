@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class TimeManager : Singleton<TimeManager>{
 
+    private void Awake()
+    {
+        if (_instance == null) _instance = this;
+        
+    }
 
     //제한시간 타이머
     public float limitTime;
