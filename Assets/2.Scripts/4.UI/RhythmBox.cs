@@ -8,6 +8,7 @@ public class RhythmBox : MonoBehaviour
     public BoxCollider2D coll;
     public bool isBeat = false;
     private RhythmNote curNote;
+    public GameObject hitArea;
 
     public void RhythmHit()
     {
@@ -18,6 +19,7 @@ public class RhythmBox : MonoBehaviour
     public void SetHitArea(float value)
     {
         coll.size *= new Vector2(value, 1f);
+        hitArea.transform.localScale = new Vector3(value, 1f, 1f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -18,7 +18,7 @@ public class ItemManager : Singleton<ItemManager>
 {
     eBlendMode blendMode;
     public List<ItemData> itemList = new List<ItemData>();
-    public ItemSlotUI itemSlotUI;
+    private ItemSlotUI itemSlotUI;
     public int maxCount = 2;
 
     public ParticleSystem particleEffect;
@@ -28,16 +28,13 @@ public class ItemManager : Singleton<ItemManager>
 
     private void Start()
     {
-        itemSlotUI.GetComponentInChildren<ParticleSystem>().Stop();
+        itemSlotUI = UIManager.Instance.itemSlotUI;
 
     }
     private void Awake() {
         if (_instance == null){
             _instance = this;
         }
-    }
-    private void Update() {
-        itemSlotUI.UpdateUI();
     }
 
     public void UseItem(Character player, ItemData data)
@@ -65,22 +62,23 @@ public class ItemManager : Singleton<ItemManager>
 
     public void HealPotion(Character player)
     {
-
         //생명이 2개 늘어남
-            player.stat.hp = 2 + player.stat.hp;
+        player.stat.hp = 2 + player.stat.hp;
+
+        //테스트용 디버그 로그
+        Debug.Log(player.nickName + "의 체력이 2 증가합니다.");
+
+        //늘어난 라이프가 5개 이상일 경우 5개로 고정해줌
+        if (player.stat.hp > 5)
+        {
+            player.stat.hp = 5;
 
             //테스트용 디버그 로그
-            Debug.Log(player.nickName + "의 체력이 2 증가합니다.");
+            Debug.Log(player.nickName + "의 체력이 이미 최대입니다!");
+        }
+        Debug.Log(player.stat.hp);
 
-            //늘어난 라이프가 5개 이상일 경우 5개로 고정해줌
-            if (player.stat.hp > 5)
-            {
-                player.stat.hp = 5;
-
-                //테스트용 디버그 로그
-                Debug.Log(player.nickName + "의 체력이 이미 최대입니다!");
-            }
-            Debug.Log(player.stat.hp);
+        player.statusUI?.UpdateStatusUI();
     }
 
 
@@ -218,12 +216,14 @@ public class ItemManager : Singleton<ItemManager>
         }
         else{
             itemList.Add(item);
+            itemSlotUI.UpdateUI();
             return true;
         }
+        
     }
     public void RemoveNum(ItemData item){
 
-        itemSlotUI.GetComponentInChildren<ParticleSystem>().Play();
+        //itemSlotUI.GetComponentInChildren<ParticleSystem>().Play();
         itemList.Remove(item);
         itemSlotUI.UpdateUI();
     }

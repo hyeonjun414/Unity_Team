@@ -33,7 +33,6 @@ public class CharacterStatus
             score -= 50;
         }
     }
-
 }
 
 public class Character : MonoBehaviourPun, IPunObservable
@@ -57,7 +56,6 @@ public class Character : MonoBehaviourPun, IPunObservable
     [Header("Option")]
     public bool isRegen = false;
     
-
     [Header("Command")]
     public CharacterRote roteCommand;
     public CharacterInput inputCommand;
@@ -70,7 +68,6 @@ public class Character : MonoBehaviourPun, IPunObservable
     public AudioClip shieldSound;
     public AudioClip getItemSound;
     public AudioSource audioSource;
-    AudioListener audioListener;
 
     [Header("Cam")]
     public Transform camPos;
@@ -78,6 +75,9 @@ public class Character : MonoBehaviourPun, IPunObservable
     [Header("Effect")]
     public GameObject stunEffect;
     public GameObject shieldEffect;
+
+    [Header("UI")]
+    public PlayerStatusUI statusUI;
 
     [HideInInspector]
     public Animator anim;
@@ -101,7 +101,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         coll = GetComponent<BoxCollider>();
         nameOnPlayer = GetComponentInChildren<NickNameOnPlayer>();
         audioSource = GetComponent<AudioSource>();
-        audioListener = GetComponent<AudioListener>();
 
         inputCommand = gameObject.AddComponent<CharacterInput>();
         inputCommand.SetUp(this);
@@ -138,23 +137,24 @@ public class Character : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SetUp()
     {
+        nickName = photonView.Owner.NickName;
+        playerId = photonView.Owner.ActorNumber;
+        nameOnPlayer.SetNickName(nickName);
+
         if (photonView.IsMine)
         {
-          //  audioListener.enabled = true;
-
             CamManager.Instance.FollowPlayerCam(this);
             CamManager.Instance.ActiveCam(CamType.Player);
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-            BattleManager.Instance.hpUI.SetUp(this);
-            HUDUIManager.Instance.infoUI.SetUp(this);
+            UIManager.Instance.statusUI.SetUp(this);
+            nameOnPlayer.gameObject.SetActive(false);
         }
         Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;
-        nickName = photonView.Owner.NickName;
-        playerId = photonView.Owner.ActorNumber;
+        
 
-        nameOnPlayer.SetNickName(nickName);
+        
 
         // 노드 위치 지정
         Point vec = map.startPos[ownerPlayer.GetPlayerNumber()];
@@ -165,6 +165,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         stat.playerMoveDistance = 1;
         stat.damage = 1;
         stat.hp = 5;
+        stat.score = 0;
 
         // 플레이어 외형 지정
         object characterIndex;
@@ -195,6 +196,8 @@ public class Character : MonoBehaviourPun, IPunObservable
 
         isRegen = true;
 
+        statusUI?.UpdateStatusUI();
+
     }
 
     private void Update()
@@ -216,14 +219,23 @@ public class Character : MonoBehaviourPun, IPunObservable
     }
     public bool RhythmHit()
     {
-        if (Input.anyKeyDown && RhythmManager.Instance.BitCheck() &&
-            state == PlayerState.Normal)
+        if (Input.anyKeyDown && state == PlayerState.Normal)
         {
-            RhythmManager.Instance.rhythmBox.NoteHit();
+            if(RhythmManager.Instance.BitCheck())
+            {
+                RhythmManager.Instance.rhythmBox.NoteHit();
+            }
+            else
+            {
+                photonView.RPC("Stunned", RpcTarget.All);
+                return false;
+            }
+            
             return true;
         }
         else
         {
+
             return false;
         }
     }
@@ -231,8 +243,9 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     public void Damaged(int damageInt)
     {
+        
         stat.hp -= damageInt;
-
+        statusUI?.UpdateStatusUI();
         anim.SetTrigger("Hit");
         audioSource.PlayOneShot(attackSound);
 
@@ -302,6 +315,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         anim.Play("Idle");
         curNode.eOnTileObject = eTileOccupation.PLAYER;
         transform.position = curNode.transform.position + Vector3.up;
+        statusUI?.UpdateStatusUI();
 
     }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f45cb51cb80c644ac9a407ebe1dbef, type: 3}
   m_Name: SeeingThrough
   m_EditorClassIdentifier: 
-  name: SeeingThrough
+  name: "\uBCBD \uD22C\uC2DC"
   Description: See through the walls
   itemType: 3
   icon: {fileID: 21300000, guid: 4bfdcbe1d7daf9246bae680f13e02c8f, type: 3}

@@ -104,13 +104,13 @@ public class BattleManager : MonoBehaviourPun
 
     public void SetUpDeathMatch()
     {
-        HUDUIManager.Instance.DeathMatch();
+        //HUDUIManager.Instance.DeathMatch();
 
     }
     
     public void SetUpOneShotMode()
     {
-            HUDUIManager.Instance.OnShotMatch();
+            //HUDUIManager.Instance.OnShotMatch();
 
         // 한대 맞으면 죽는 데스매치
         foreach(Character p in players)
@@ -121,7 +121,7 @@ public class BattleManager : MonoBehaviourPun
     public void SetUpTimerMode()
     {
 
-        HUDUIManager.Instance.TimerMatch();
+        //HUDUIManager.Instance.TimerMatch();
     //    TimeManager.Instance.limitTime = 180f;
 
         foreach (Character p in players)

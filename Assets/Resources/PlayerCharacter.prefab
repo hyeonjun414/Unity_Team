@@ -1529,8 +1529,9 @@ MonoBehaviour:
       x: 0
       y: 0
     currentCombo: 0
-    killCount: 0
-    deathCount: 0
+    score: 0
+    kill: 0
+    death: 0
   eCurInput: 0
   state: 0
   isRegen: 0
@@ -1546,6 +1547,7 @@ MonoBehaviour:
   camPos: {fileID: 4426714954687848135}
   stunEffect: {fileID: 8979888785911371022}
   shieldEffect: {fileID: 7012852634407452626}
+  statusUI: {fileID: 0}
   anim: {fileID: 0}
   coll: {fileID: 0}
   dir: 0

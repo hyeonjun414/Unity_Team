@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f45cb51cb80c644ac9a407ebe1dbef, type: 3}
   m_Name: DashItem
   m_EditorClassIdentifier: 
-  name: DashItem
+  name: "\uB300\uC2DC"
   Description: Move 2 blocks
   itemType: 2
   icon: {fileID: 21300000, guid: 8e33d81e09c9ac8428790b8883c693d0, type: 3}

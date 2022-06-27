@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f45cb51cb80c644ac9a407ebe1dbef, type: 3}
   m_Name: HealPotion
   m_EditorClassIdentifier: 
-  name: HealPotion
+  name: "\uCCB4\uB825 \uD68C\uBCF5"
   Description: Add 2 Lives
   itemType: 0
   icon: {fileID: 21300000, guid: 9d8a24a3f49e69e4bba0d63ba9074231, type: 3}

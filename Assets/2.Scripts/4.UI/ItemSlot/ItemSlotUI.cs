@@ -7,14 +7,18 @@ public class ItemSlotUI : MonoBehaviour
 {
     ItemSlotUnit[] itemSlots;
 
-    
-    public void UpdateUI(){
+    private void Start()
+    {
         itemSlots = GetComponentsInChildren<ItemSlotUnit>();
+    }
 
-        for(int i = 0; i< itemSlots.Length;i++){
-            int count = ItemManager.Instance.itemList.Count;
+    public void UpdateUI(){
+        List<ItemData> list = ItemManager.Instance.itemList;
+
+        for (int i = 0; i< itemSlots.Length;i++){
+            int count = list.Count;
             if(i < count){
-                itemSlots[i].AddItem(ItemManager.Instance.itemList[i]);
+                itemSlots[i].AddItem(list[i]);
             }
             else{
                 itemSlots[i].ResetItem();
