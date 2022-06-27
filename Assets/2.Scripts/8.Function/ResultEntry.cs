@@ -11,9 +11,10 @@ using TMPro;
 
 public class ResultEntry : MonoBehaviour
 {
-    
+    public Player owner;
     public void BattleResult(string nickName, int kill, int death, int rank ,string mode)
     {
+        
         Text[] texts = (transform.GetChild(0)).GetComponentsInChildren<Text>();
         for(int i=0; i<texts.Length;++i)
         {
