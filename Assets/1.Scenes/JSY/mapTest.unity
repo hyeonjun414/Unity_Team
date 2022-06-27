@@ -871,7 +871,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea53a510d114a54b9530e6a901c64ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemList: []
+  itemList:
+  - {fileID: 11400000, guid: 98528b3232192d04c9e97aa78337ebbc, type: 2}
+  - {fileID: 11400000, guid: 98528b3232192d04c9e97aa78337ebbc, type: 2}
   itemSlotUI: {fileID: 505012186}
   maxCount: 2
   particleEffect: {fileID: 0}

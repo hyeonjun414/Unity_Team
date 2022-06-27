@@ -11,8 +11,8 @@ public enum eBlendMode
 {
     Opaque,
     Cutout,
-    Transparent,
     Fade,
+    Transparent,
 }
 public class ItemManager : Singleton<ItemManager>
 {
@@ -113,7 +113,8 @@ public class ItemManager : Singleton<ItemManager>
         switch (blendMode)
         {
             case eBlendMode.Opaque:
-                wallMaterial.SetOverrideTag("RenderType", "");
+                //wallMaterial.SetOverrideTag("RenderType", "");
+                wallMaterial.SetFloat("_Mode", (float)eBlendMode.Opaque);
                 wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                 wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                 wallMaterial.SetInt("_ZWrite", 1);
@@ -128,6 +129,7 @@ public class ItemManager : Singleton<ItemManager>
                 break;
             case eBlendMode.Cutout:
                 wallMaterial.SetOverrideTag("RenderType", "TransparentCutout");
+                //wallMaterial.SetFloat("_Mode", (float)eBlendMode.Cutout);
                 wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                 wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                 wallMaterial.SetInt("_ZWrite", 1);
@@ -137,9 +139,12 @@ public class ItemManager : Singleton<ItemManager>
                 minRenderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
                 maxRenderQueue = (int)UnityEngine.Rendering.RenderQueue.GeometryLast;
                 defaultRenderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
+
+                wallMaterial.color = new Color(wallMaterial.color.r,wallMaterial.color.g,wallMaterial.color.b,0.4f);
                 break;
             case eBlendMode.Fade:
                 wallMaterial.SetOverrideTag("RenderType", "Transparent");
+                //wallMaterial.SetFloat("_Mode", (float)eBlendMode.Fade);
                 wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                 wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                 wallMaterial.SetInt("_ZWrite", 0);
@@ -149,9 +154,12 @@ public class ItemManager : Singleton<ItemManager>
                 minRenderQueue = (int)UnityEngine.Rendering.RenderQueue.GeometryLast + 1;
                 maxRenderQueue = (int)UnityEngine.Rendering.RenderQueue.Overlay - 1;
                 defaultRenderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+                wallMaterial.color = new Color(wallMaterial.color.r,wallMaterial.color.g,wallMaterial.color.b,0.4f);
                 break;
             case eBlendMode.Transparent:
                 wallMaterial.SetOverrideTag("RenderType", "Transparent");
+                wallMaterial.SetFloat("_Mode", (float)eBlendMode.Transparent);
                 wallMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                 wallMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                 wallMaterial.SetInt("_ZWrite", 0);
