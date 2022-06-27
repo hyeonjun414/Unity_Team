@@ -1528,8 +1528,9 @@ MonoBehaviour:
       x: 0
       y: 0
     currentCombo: 0
-    killCount: 0
-    deathCount: 0
+    score: 0
+    kill: 0
+    death: 0
   eCurInput: 0
   state: 0
   isRegen: 0

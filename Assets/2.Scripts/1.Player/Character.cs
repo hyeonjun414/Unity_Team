@@ -13,8 +13,26 @@ public class CharacterStatus
     public int hp;
     public Point curPos;
     public int currentCombo;
-    public int killCount;
-    public int deathCount;
+    public int score;
+    public int kill;
+    public int killCount
+    {
+        get { return kill; }
+        set
+        {
+            kill = value;
+            score += 100;
+        }
+    }
+    public int death;
+    public int deathCount
+    {
+        get { return death; }
+        set { 
+            death = value;
+            score -= 50;
+        }
+    }
 }
 
 public class Character : MonoBehaviourPun, IPunObservable
@@ -130,6 +148,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
             UIManager.Instance.statusUI.SetUp(this);
+            nameOnPlayer.gameObject.SetActive(false);
         }
         Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;
@@ -146,6 +165,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         stat.playerMoveDistance = 1;
         stat.damage = 1;
         stat.hp = 5;
+        stat.score = 0;
 
         // 플레이어 외형 지정
         object characterIndex;
@@ -199,14 +219,23 @@ public class Character : MonoBehaviourPun, IPunObservable
     }
     public bool RhythmHit()
     {
-        if (Input.anyKeyDown && RhythmManager.Instance.BitCheck() &&
-            state == PlayerState.Normal)
+        if (Input.anyKeyDown && state == PlayerState.Normal)
         {
-            RhythmManager.Instance.rhythmBox.NoteHit();
+            if(RhythmManager.Instance.BitCheck())
+            {
+                RhythmManager.Instance.rhythmBox.NoteHit();
+            }
+            else
+            {
+                photonView.RPC("Stunned", RpcTarget.All);
+                return false;
+            }
+            
             return true;
         }
         else
         {
+
             return false;
         }
     }

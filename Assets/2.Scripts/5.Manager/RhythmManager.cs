@@ -63,7 +63,7 @@ public class RhythmManager : Singleton<RhythmManager>
 
     public bool BitCheck()
     {
-        if (rhythmBox.isBeat && isBeat)
+        if (rhythmBox.isBeat )//&& isBeat)
         {
             isBeat = false;
             return true;
@@ -102,7 +102,7 @@ public class RhythmManager : Singleton<RhythmManager>
         note.SetUp(notePos[0], rhythmBox.gameObject, 1f / noteSpeed);
         rhythmBox.RhythmHit();
         OnRhythmHit?.Invoke();
-        isBeat = true;
+        //isBeat = true;
     }
 
 

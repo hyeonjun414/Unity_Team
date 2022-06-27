@@ -60,9 +60,10 @@ public class CharacterAction : ActionCommand
             }
         }
     }
+    [PunRPC]
     public void Stunned()
     {
-        StartCoroutine("StunRoutine", 3f);
+        StartCoroutine("StunRoutine", 2f);
     }
     IEnumerator StunRoutine(float time)
     {
@@ -110,7 +111,7 @@ public class CharacterAction : ActionCommand
         player.shieldEffect.gameObject.SetActive(true);
         player.audioSource.PlayOneShot(player.shieldSound);
 
-        StartCoroutine("BlockRoutine", 2f);
+        StartCoroutine("BlockRoutine", 1f);
     }
     IEnumerator BlockRoutine(float time)
     {

@@ -10,11 +10,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    
+    private bool isGameStart;
     public static GameManager Instance { get; private set; }
-    public Text serverText;
-    public Text pingText;
-    public Text infoText;
 
     private void Awake()
     {
@@ -23,15 +20,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void Start()
     {
+        isGameStart = false;
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_LOAD, true } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
 
-    private void FixedUpdate()
-    {
-        pingText.text = PhotonNetwork.GetPing().ToString();
-        serverText.text = PhotonNetwork.Time.ToString();
-    }
     #region PHOTON CALLBACK
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -49,31 +42,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (changedProps.ContainsKey(GameData.PLAYER_LOAD))
         {
-
             if (CheckAllPlayerLoadLevel())
             {
-                
-                object characterIndex=0;
-                PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(GameData.PLAYER_INDEX,out characterIndex);
-                StartCoroutine(StartCountDown((int)characterIndex));
-
-            }
-            else
-            {
-                PrintInfo("wait players " + PlayersLoadLevel() + " / " + PhotonNetwork.PlayerList.Length);
+                StartCoroutine(StartCountDown());
             }
         }
-        if (changedProps.ContainsKey(GameData.PLAYER_GEN))
+        else if (changedProps.ContainsKey(GameData.PLAYER_GEN))
         {
-            if (CheckAllCharacter())
+            if (CheckAllCharacter() && !isGameStart)
             {
-                StartCoroutine(RegisterPlayer());
-                if(PhotonNetwork.IsMasterClient)
-                    photonView.RPC("RhythmStart", RpcTarget.All);
-            }
-            else
-            {
-                PrintInfo("wait players " + PlayersCharacter() + " / " + PhotonNetwork.PlayerList.Length);
+                isGameStart = true;
+                print(targetPlayer.NickName);
+                BattleManager.Instance.RegisterAllPlayer();
+                RhythmManager.Instance.RhythmStart();
             }
         }
     }
@@ -81,26 +62,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #endregion PHOTON CALLBACK
 
-    private IEnumerator StartCountDown(int index)
+    private IEnumerator StartCountDown()
     {
-
+        yield return null;
         // TODO : 선택된 맵을 생성해야함.
 
-        PrintInfo("All Player Loaded, Start Count Down");
-        yield return new WaitForSeconds(1.0f);
-
-        for (int i = GameData.COUNTDOWN; i > 0; i--)
-        {
-            PrintInfo("Count Down " + i);
-            yield return new WaitForSeconds(1.0f);
-        }
-
-        PrintInfo("Start Game!");
-
         PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0);
-        
-        yield return new WaitForSeconds(1.0f);
-        infoText.gameObject.SetActive(false);
     }
 
     private bool CheckAllPlayerLoadLevel()
@@ -139,7 +106,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             object playerLoadedLevel;
 
-            if (p.CustomProperties.TryGetValue(GameData.PLAYER_LOAD, out playerLoadedLevel))
+            if (p.CustomProperties.TryGetValue(GameData.PLAYER_GEN, out playerLoadedLevel))
             {
                 if ((bool)playerLoadedLevel)
                 {
@@ -151,39 +118,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         return count;
     }
 
-    private void PrintInfo(string info)
-    {
-        Debug.Log(info);
-        infoText.text = info;
-    }
-
-
-    IEnumerator RegisterPlayer(){
-        yield return new WaitForSeconds(1f);
-        BattleManager.Instance.RegisterAllPlayer();
-    }
-
-
-    IEnumerator GoToEndingScene(){
-        yield return new WaitForSeconds(3f);
-        //PhotonNetwork
-    }
-
-    public void GotoEnding(){
-        if(!PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogError("PhotonNetwork : Trying to load a level but we are not the master Client");
-        }
-        //PhotonNetwork.LoadLevel("");
-    }
-
-
     public void LeaveRoom(){
         PhotonNetwork.LeaveRoom();
-    }
-
-    private void OnPlayerConnected(Player player) {
-        
     }
 
 }

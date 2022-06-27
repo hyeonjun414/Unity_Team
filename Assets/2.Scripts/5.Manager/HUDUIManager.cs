@@ -85,7 +85,6 @@ public class HUDUIManager : Singleton<HUDUIManager>
                     regenNumText.text = BattleManager.Instance.players[i].stat.deathCount.ToString();
                 }       
             }     
-            
        }
     }
 
