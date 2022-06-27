@@ -144,7 +144,6 @@ public class InRoomPanel : MonoBehaviour
         if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.LoadLevel("mapTest");
 
-        SoundManager.Instance.BGSoundPlay(SoundManager.Instance.bgSoundlist[1], 3);
     }
 
     public void OnRoomOptionButtonClicked()

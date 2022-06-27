@@ -4710,9 +4710,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC5F0\uACB0 \uC0C1\uD0DC :"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f22cb64bb71536646b0b92b369a7e70d, type: 2}
-  m_sharedMaterial: {fileID: -3589353395319889483, guid: f22cb64bb71536646b0b92b369a7e70d,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4860,6 +4859,7 @@ MonoBehaviour:
   playerListContent: {fileID: 1645458248}
   startGameButton: {fileID: 1656178901}
   readyGameButton: {fileID: 1587282386}
+  roomOptionButton: {fileID: 0}
   readyButtonText: {fileID: 144259912}
   playerEntryPrefab: {fileID: 421413027376855651, guid: 1ab1a520382e85b40a83a16e694f7149,
     type: 3}
@@ -4870,6 +4870,7 @@ MonoBehaviour:
   loseTimes: {fileID: 328428747}
   winRate: {fileID: 1466137704}
   settingPanel: {fileID: 594217121}
+  roomOptionUI: {fileID: 0}
 --- !u!1 &500344201
 GameObject:
   m_ObjectHideFlags: 0
@@ -8668,8 +8669,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823b6788348e3c14cb995ac29653fe6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomNameInputField: {fileID: 2113071598}
-  maxPlayersInputField: {fileID: 221862267}
+  pwEntry: {fileID: 0}
+  roomName: {fileID: 0}
+  roomMaxPlayer: {fileID: 0}
+  roomPassword: {fileID: 0}
+  dropdownMode: {fileID: 0}
+  dropdownMap: {fileID: 0}
+  pwToggle: {fileID: 0}
+  dropdownItemIcon: {fileID: 0}
 --- !u!1 &838154330
 GameObject:
   m_ObjectHideFlags: 0
@@ -12374,9 +12381,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f22cb64bb71536646b0b92b369a7e70d, type: 2}
-  m_sharedMaterial: {fileID: -3589353395319889483, guid: f22cb64bb71536646b0b92b369a7e70d,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

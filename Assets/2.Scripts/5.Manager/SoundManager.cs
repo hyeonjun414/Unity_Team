@@ -16,12 +16,33 @@ public class SoundManager : Singleton<SoundManager>
     public AudioSource bgSound;
     public AudioClip[] bgSoundlist;
 
+
     // public GameObject[] effectSound;
 
     private void Awake()
     {
         if (_instance == null) _instance = this;
-        DontDestroyOnLoad(gameObject);
+
+        var obj = FindObjectsOfType<SoundManager>();
+        if (obj.Length == 1)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        for (int i = 0; i < bgSoundlist.Length; i++)
+        {
+            if (arg0.name == bgSoundlist[i].name)
+                BGSoundPlay(bgSoundlist[i], 1);
+        }
     }
 
     private void Start()
@@ -44,7 +65,7 @@ public class SoundManager : Singleton<SoundManager>
         bgSound.outputAudioMixerGroup = mixer.FindMatchingGroups("BGSound")[0];
         bgSound.clip = clip;
         bgSound.loop = true;
-        bgSound.volume = 0.2f;
+        bgSound.volume = 0.1f;
         Invoke("Play", delay);
     }
 
@@ -52,4 +73,6 @@ public class SoundManager : Singleton<SoundManager>
     {
         bgSound.Play();
     }
+
+
 }
