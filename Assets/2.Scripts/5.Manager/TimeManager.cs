@@ -12,6 +12,7 @@ public class TimeManager : Singleton<TimeManager>{
     public Text timer;
 
 
+
     private void Update() {
         limitTime -= Time.deltaTime;
         //소수점을 제외하여 간단하게 표시

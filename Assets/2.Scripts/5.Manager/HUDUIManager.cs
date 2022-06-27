@@ -46,10 +46,10 @@ public class HUDUIManager : Singleton<HUDUIManager>
     }
 
     private void Update() {
-       // ShowRegenCount();
-       // ShowKillCount();
-       // ShowScore();
-       // ShowLeftPlayers();
+        ShowRegenCount();
+        ShowKillCount();
+        ShowScore();
+        ShowLeftPlayers();
     }
     public void DeathMatch(){
         playreInfo.SetActive(true);
@@ -95,7 +95,7 @@ public class HUDUIManager : Singleton<HUDUIManager>
             for(int i=0; i<BattleManager.Instance.players.Count;++i)
                 {
                    
-                    if(photonView.Owner.ActorNumber == p.ActorNumber && player.photonView.IsMine)
+                    if(photonView.Owner.ActorNumber == p.ActorNumber)
                     {
                         killNumText.text = BattleManager.Instance.players[i].stat.killCount.ToString();
 
