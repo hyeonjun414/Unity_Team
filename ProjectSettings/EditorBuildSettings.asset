@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/1.Scenes/LoginAuthScene.unity
     guid: 79d286cd1b0af254f98c0d3ab57f89d8
   - enabled: 1
-    path: Assets/1.Scenes/JSY/Result.unity
+    path: Assets/1.Scenes/Result.unity
     guid: 0d85870615eac32459d721dbe4c33efd
   - enabled: 1
-    path: Assets/1.Scenes/JHJ/mapTest.unity
+    path: Assets/1.Scenes/mapTest.unity
     guid: 81dc39678c8ea8d40a2a7abf88709cbf
   - enabled: 1
     path: Assets/1.Scenes/NewLobbyScene.unity

@@ -17,12 +17,12 @@ public class ResultEntry : MonoBehaviour
     public TMP_Text deathText;
     public TMP_Text rankText;
 
-    public void UpdateEntry(Character player, int rank)
+    public void UpdateEntry(Character player)
     {
         nickNameText.text = player.nickName;
         killText.text = player.stat.killCount.ToString();
         deathText.text = player.stat.deathCount.ToString();
-        rankText.text = rank.ToString();
+        rankText.text = player.stat.score.ToString();
         gameObject.SetActive(true);
     }
 

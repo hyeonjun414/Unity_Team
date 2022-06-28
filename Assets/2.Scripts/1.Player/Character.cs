@@ -196,7 +196,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
         isRegen = true;
 
-        statusUI?.UpdateStatusUI();
+        UpdateStatus();
 
     }
 
@@ -227,7 +227,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             }
             else
             {
-                photonView.RPC("Stunned", RpcTarget.All);
+                photonView.RPC("Stunned", RpcTarget.All, 0.5f);
                 return false;
             }
             
@@ -256,6 +256,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         anim.SetTrigger("Die");
         ++stat.deathCount;
+        UpdateStatus();
+
         state = PlayerState.Dead;
         coll.enabled = false;
         StartCoroutine("DieRoutine");
@@ -272,7 +274,10 @@ public class Character : MonoBehaviourPun, IPunObservable
             BattleManager.Instance.regenUI.RegenStart(this);
         }
     }
-
+    public void UpdateStatus()
+    {
+        statusUI?.UpdateStatusUI();
+    }
     IEnumerator DieRoutine()
     {
         float curTime = 0;

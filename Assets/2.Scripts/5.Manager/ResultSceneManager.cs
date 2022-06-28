@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
-using ExitGames.Client.Photon;
 using TMPro;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -15,20 +14,20 @@ using System.Linq;
 
 public class PlayerResultInfo
 {
-    public PlayerResultInfo(int actorNumber, string name, int kill, int death, int rank, int index)
+    public PlayerResultInfo(int actorNumber, string name, int kill, int death, int score, int index)
     {
         this.actorNumber = actorNumber;
         this.name = name;
         this.kill = kill;
         this.death = death;
-        this.rank = rank;
+        this.score = score;
         this.index = index;
     }
     public int actorNumber;
     public string name;
     public int kill;
     public int death;
-    public int rank;
+    public int score;
     public int index;
 }
 public class ResultSceneManager : MonoBehaviour
@@ -49,27 +48,8 @@ public class ResultSceneManager : MonoBehaviour
     public Transform[] WinnersSpawnPoint;
     public Transform[] LosersSpawnPoint;
     public GameObject[] skeletons;
-    // public GameObject resultWindow;
 
     public BattleResultPanel battleResultPanel;
-
-    // 승리한 플레이어 정보
-    //string[] winnerNic;
-    // 패배한 플레이어 정보
-    //string[] loserNic;
-
-    //public CharacterData characterData;
-    //public GameObject characterSet;
-    //public int characterIndex;
-
-
-    //[Header("WINNER")]
-    // 승리한 플레이어 닉네임 띄울 텍스트
-    //public Text[] winnerNicUIText;
-
-    //[Header("LOSER")]
-    // 패배한 플레이어 닉네임 띄울 텍스트
-    //public Text[] loserNicUIText;
 
 
     List<PlayerResultInfo> resultInfoList;
@@ -83,33 +63,28 @@ public class ResultSceneManager : MonoBehaviour
     }
 
 
+    // 이전 플레이어 정보 갱신
     private void InitPlayers()
     {
         foreach (Player p in PhotonNetwork.PlayerList)
         {
-            // object name;
-
-            // p.CustomProperties.TryGetValue(GameData.PLAYER_NAME,out name);
-
             object kill;
             p.CustomProperties.TryGetValue(GameData.PLAYER_KILL, out kill);
 
             object death;
             p.CustomProperties.TryGetValue(GameData.PLAYER_DEAD, out death);
 
-            object rank;
-            p.CustomProperties.TryGetValue(GameData.PLAYER_RANK, out rank);
+            object score;
+            p.CustomProperties.TryGetValue(GameData.PLAYER_SCORE, out score);
 
             object index;
             p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out index);
 
-
-            string _name = (string)name;
             int _kill = (int)kill;
             int _death = (int)death;
-            int _rank = (int)rank;
+            int _score = (int)score;
             int _index = (int)index;
-            resultInfoList.Add(new PlayerResultInfo(p.ActorNumber, p.NickName, _kill, _death, _rank, _index));
+            resultInfoList.Add(new PlayerResultInfo(p.ActorNumber, p.NickName, _kill, _death, _score, _index));
         }
     }
     private void Start()
@@ -118,12 +93,6 @@ public class ResultSceneManager : MonoBehaviour
         StartCoroutine(LeaveAndReturnToRoom());
 
         StartCoroutine(WaitForReadyToWrite());
-        // WinnerInfomation();
-        // LoserInformation();
-
-        //PlayerAnimPlay();
-
-
 
     }
 
@@ -148,7 +117,7 @@ public class ResultSceneManager : MonoBehaviour
             string dummyPlayer = builder.ToString();
 
             DummyPlayer player = null;
-            if (resultInfoList[i].rank == 1)
+            if (resultInfoList[i].score == 1)
             {
                 if (WinnersSpawnPoint[0].transform.childCount == 0)
                 {
@@ -233,8 +202,8 @@ public class ResultSceneManager : MonoBehaviour
                     Debug.Log(resultInfoList[i].name + " :: " + words[1]);
                     if (resultInfoList[i].name == words[1])
                     {
-                        Debug.Log("resultInfoList[i].rank: " + resultInfoList[i].rank);
-                        if (resultInfoList[i].rank == 1)
+                        Debug.Log("resultInfoList[i].rank: " + resultInfoList[i].score);
+                        if (resultInfoList[i].score == 1)
                         {
                             Debug.Log("2.5번성공; 승리카운트 올라가야함");
                             int wins = int.Parse(words[3]);
@@ -262,43 +231,23 @@ public class ResultSceneManager : MonoBehaviour
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             object isMail;
-            p.CustomProperties.TryGetValue(GameData.IS_EMAIL, out isMail);
-
-            if (p.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) continue;
-            //자기 데이터는 자기가 쓰도록 수정
-            if ((bool)isMail)
+            if(p.CustomProperties.TryGetValue(GameData.IS_EMAIL, out isMail))
             {
-                SyncUpdatedInformation(p.NickName);
+                if (p.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) continue;
+                //자기 데이터는 자기가 쓰도록 수정
+                if ((bool)isMail)
+                {
+                    SyncUpdatedInformation(p.NickName);
+                }
             }
         }
         Debug.Log("resultInfoList.Count: " + resultInfoList.Count);
         for (int i = 0; i < resultInfoList.Count; ++i)
         {
-            Debug.Log(resultInfoList[i].name + " : " + resultInfoList[i].kill + " : " + resultInfoList[i].death + " : " + resultInfoList[i].rank);
+            Debug.Log(resultInfoList[i].name + " : " + resultInfoList[i].kill + " : " + resultInfoList[i].death + " : " + resultInfoList[i].score);
         }
     }
 
-    // // 승리자 닉네임 결과창 UI에 뜨도록 설정
-    // public void WinnerInfomation()
-    // {
-    //     for (int i = 0; i < BattleManager.Instance.alivePlayer.Count; i++)
-    //     {
-    //         winnerNic[i] = BattleManager.Instance.alivePlayer[i].nickName;
-    //         winnerNicUIText[i].text = winnerNic[i];
-    //         // PhotonNetwork.Instantiate(BattleManager.Instance.alivePlayer[i].);
-    //     }
-    // }
-
-    // // 패배자 닉네임 결과창 UI에 뜨도록 설정
-    // public void LoserInformation()
-    // {
-    //     for (int i = 0; i < BattleManager.Instance.deadPlayer.Count; i++)
-    //     {
-    //         loserNic[i] = BattleManager.Instance.deadPlayer[i].nickName;
-    //         loserNicUIText[i].text = loserNic[i];
-    //         // PhotonNetwork.Instantiate(BattleManager.Instance.deadPlayer[i].);
-    //     }
-    // }
 
     private void ResetCustomProperties()
     {
@@ -315,7 +264,7 @@ public class ResultSceneManager : MonoBehaviour
                 new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_DEAD, 0 } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
             ExitGames.Client.Photon.Hashtable prop4 =
-                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, 0 } };
+                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_SCORE, 0 } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
             ExitGames.Client.Photon.Hashtable prop5 = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_LOAD, false } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop5);
@@ -336,7 +285,6 @@ public class ResultSceneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         player.anim.Play(whatToPlay);
-        //BattleManager.Instance.alivePlayer[i].anim.SetTrigger("Crying");
     }
     IEnumerator LeaveAndReturnToRoom()
     {

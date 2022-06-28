@@ -44,17 +44,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (CheckAllPlayerLoadLevel())
             {
-                StartCoroutine(StartCountDown());
-            }
-        }
-        else if (changedProps.ContainsKey(GameData.PLAYER_GEN))
-        {
-            if (CheckAllCharacter() && !isGameStart)
-            {
-                isGameStart = true;
                 print(targetPlayer.NickName);
-                BattleManager.Instance.RegisterAllPlayer();
-                RhythmManager.Instance.RhythmStart();
+                StartCoroutine(StartCountDown());
             }
         }
     }
@@ -68,6 +59,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         // TODO : 선택된 맵을 생성해야함.
 
         PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0);
+
+        yield return new WaitForSeconds(1f);
+        BattleManager.Instance.RegisterAllPlayer();
+        RhythmManager.Instance.RhythmStart();
     }
 
     private bool CheckAllPlayerLoadLevel()
@@ -83,30 +78,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             object playerLoadedLevel;
 
             if (p.CustomProperties.TryGetValue(GameData.PLAYER_LOAD, out playerLoadedLevel))
-            {
-                if ((bool)playerLoadedLevel)
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    private bool CheckAllCharacter()
-    {
-        return PlayersCharacter() == PhotonNetwork.PlayerList.Length;
-    }
-
-    private int PlayersCharacter()
-    {
-        int count = 0;
-        foreach (Player p in PhotonNetwork.PlayerList)
-        {
-            object playerLoadedLevel;
-
-            if (p.CustomProperties.TryGetValue(GameData.PLAYER_GEN, out playerLoadedLevel))
             {
                 if ((bool)playerLoadedLevel)
                 {

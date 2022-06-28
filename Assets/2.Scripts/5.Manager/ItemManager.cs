@@ -178,22 +178,6 @@ public class ItemManager : Singleton<ItemManager>
     }
     public void SeeingThrough(Character player)
     {
-        //벽 투시
-        // GameObject wall = Resources.Load<GameObject>("Wall");
-        // MeshRenderer renderer = (wall.transform.GetChild(0)).GetComponent<MeshRenderer>();
-        // Material[] wallMaterial = renderer.sharedMaterials;
-        
-        // RaycastHit target;
-        // if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
-        // {
-        //     Wall wall= target.collider.gameObject.GetComponent<Wall>();
-        //     if (wall != null)
-        //     {
-        //         StartCoroutine(TransparentTroughWall(wall, 5f));
-        //     }
-        // }      
-
-
 
         StartCoroutine(TransparentTroughWall(5f));
 
@@ -238,6 +222,7 @@ public class ItemManager : Singleton<ItemManager>
 
     public void SwitchItems(){
         itemList.Reverse();
+        itemSlotUI.UpdateUI();
         Debug.Log("아이템 순서를 바꿉니다.");
       
     }

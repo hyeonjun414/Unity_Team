@@ -7,6 +7,7 @@ using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using UnityEngine.UI;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class BattleResultPanel : MonoBehaviour
 {
@@ -29,7 +30,6 @@ public class BattleResultPanel : MonoBehaviour
     private void Start()
     {
 
-
         // 모드와 맵 텍스트 지정
         object value;
         PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GameData.GAME_MODE, out value);
@@ -48,13 +48,13 @@ public class BattleResultPanel : MonoBehaviour
         // 킬카운트를 기준으로 정렬한 플레이어의 목록을 가져옴.
         List<Character> sortedList =
             BattleManager.Instance.players.OrderByDescending(
-                Character => Character.stat.killCount).ToList();
+                Character => Character.stat.score).ToList();
 
         for (int i = 0; i < cachedEntries.Length; i++)
         {
             if (i < sortedList.Count)
             {
-                cachedEntries[i].UpdateEntry(sortedList[i], i);
+                cachedEntries[i].UpdateEntry(sortedList[i]);
             }
             else
             {
@@ -62,15 +62,5 @@ public class BattleResultPanel : MonoBehaviour
             }
         }
     }
-    private void SetCustomValue(Player p, string nickName, int _kill, int _death, int _rank)
-    {
-        ExitGames.Client.Photon.Hashtable name = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_NAME, nickName } };
-        p.SetCustomProperties(name);
-        ExitGames.Client.Photon.Hashtable kill = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_KILL, _kill } };
-        p.SetCustomProperties(kill);
-        ExitGames.Client.Photon.Hashtable death = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_DEAD, _death } };
-        p.SetCustomProperties(death);
-        ExitGames.Client.Photon.Hashtable rank = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_RANK, _rank } };
-        p.SetCustomProperties(rank);
-    }
+
 }

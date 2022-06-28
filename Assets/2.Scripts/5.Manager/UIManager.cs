@@ -8,6 +8,7 @@ public class UIManager : Singleton<UIManager>
     [Header("HUD")]
     public PlayerStatusUI statusUI;
     public ItemSlotUI itemSlotUI;
+    public TopTextUI topTextUI;
 
     [Header("Battle Result")]
     public BattleResultPanel battleResultPanel;
