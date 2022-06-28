@@ -48,19 +48,13 @@ public class CharacterAction : ActionCommand
                 if (EnemyDefenseCheck(enemy))
                 {
                     // 방어가 유효하면 공격한 플레이어 스턴
-                    Stunned(2f);
+                    if(photonView.IsMine)
+                        photonView.RPC("Stunned", RpcTarget.All, 2f);
                 }
                 else
                 {
                     // 방어가 유효하지 않다면 대상은 공격을 받는다.
-                    enemy.Damaged(player.stat.damage);
-                    player.stat.score += 5;
-                    if (enemy.state == PlayerState.Dead)
-                    {
-                        player.stat.killCount++;
-                        
-                    }
-                    player.UpdateStatus();
+                    enemy.Damaged(player.stat.damage, player.playerId);
                 }
             }
         }
@@ -69,6 +63,7 @@ public class CharacterAction : ActionCommand
     {
         StopAllCoroutines();
     }
+
 
     [PunRPC]
     public void Stunned(float time)

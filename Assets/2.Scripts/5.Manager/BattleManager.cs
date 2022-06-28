@@ -124,6 +124,19 @@ public class BattleManager : MonoBehaviourPun
 
     }
 
+    public void PlayerAddScore(int playerId)
+    {
+        Character player = players.Find((x) => x.playerId == playerId);
+        player.stat.score += 5;
+        player.SendUpdateUI();
+    }
+    public void PlayerAddKill(int playerId)
+    {
+        Character player = players.Find((x) => x.playerId == playerId);
+        player.stat.killCount++;
+        player.SendUpdateUI();
+    }
+
     //플레이어가 죽었을 때 판정 || 플레이어가 disconnect되었을 때 호출
     public void PlayerOut(Character deadPL)
     {
@@ -169,6 +182,15 @@ public class BattleManager : MonoBehaviourPun
     }
     private void SetBattleResult()
     {
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            Character player = players.Find((x) => x.nickName == p.NickName);
+            if (player != null)
+            {
+                SetCustomValue(p, player.stat.kill, player.stat.death, player.stat.score);
+            }
+        }
+
     }
 
     public void GameOver()
@@ -182,15 +204,6 @@ public class BattleManager : MonoBehaviourPun
         
         SetBattleResult();
 
-        foreach(Player p in PhotonNetwork.PlayerList)
-        {
-            Character player = players.Find((x) => x.nickName == p.NickName);
-            if(player != null)
-            {
-                SetCustomValue(p, player.stat.kill, player.stat.death, player.stat.score);
-            }
-        }
-
         yield return new WaitForSeconds(5f);
         
         if(PhotonNetwork.IsMasterClient)
@@ -201,7 +214,6 @@ public class BattleManager : MonoBehaviourPun
         
 
     }
-
     private void SetCustomValue(Player p, int _kill, int _death, int _score)
     {
         Hashtable kill = new Hashtable() { { GameData.PLAYER_KILL, _kill } };

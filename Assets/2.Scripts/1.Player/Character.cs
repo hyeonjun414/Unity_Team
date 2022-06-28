@@ -33,6 +33,7 @@ public class CharacterStatus
             score -= 50;
         }
     }
+
 }
 
 public class Character : MonoBehaviourPun, IPunObservable
@@ -241,44 +242,69 @@ public class Character : MonoBehaviourPun, IPunObservable
     }
 
 
-    public void Damaged(int damageInt)
+    public void Damaged(int damage, int playerId)
     {
+        if (!photonView.IsMine) return;
 
-        stat.hp -= damageInt;
+        photonView.RPC("SendDamaged", RpcTarget.All, damage, playerId);
+    }
+    [PunRPC]
+    public void SendDamaged(int damage, int playerId)
+    {
+        stat.hp -= damage;
         statusUI?.UpdateStatusUI();
         anim.SetTrigger("Hit");
+        BattleManager.Instance.PlayerAddScore(playerId);
         audioSource.PlayOneShot(attackSound);
-
-        if (stat.hp <= 0) Die();
-    }
-
-    private void Die()
-    {
-        actionCommand.ActionStop();
-        anim.SetTrigger("Die");
-        ++stat.deathCount;
         UpdateStatus();
 
-        state = PlayerState.Dead;
-        coll.enabled = false;
-        StartCoroutine("DieRoutine");
+        if (stat.hp <= 0) Die(playerId);
+    }
+
+    private void Die(int playerId)
+    {
         // 죽은 대상이 해당 클라이언트 플레이어가 아니라면 로그를 보내지 않는다.
         if (!photonView.IsMine) return;
 
         GameLogManager.Instance.SendDeadLog(nickName);
-        photonView.RPC("RequestDeleteMe", RpcTarget.All);
-
-        if (isRegen && photonView.IsMine)
+        
+        
+        
+        if (isRegen)
         {
             // 부활이 가능하고 해당 클라이언트의 플레이어라면
             // 해당 클라이언트에 부활 UI를 표기한다.
             BattleManager.Instance.regenUI.RegenStart(this);
         }
-        else if (photonView.IsMine)
+        else
         {
             CamManager.Instance.ActiveCam(CamType.Dead);
         }
+
+        photonView.RPC("SendDie", RpcTarget.All, playerId);
+
+
+
     }
+    [PunRPC]
+    public void SendDie(int playerId)
+    {
+        actionCommand.ActionStop();
+        anim.SetTrigger("Die");
+        ++stat.deathCount;
+        BattleManager.Instance.PlayerAddKill(playerId);
+        state = PlayerState.Dead;
+        coll.enabled = false;
+        StartCoroutine("DieRoutine");
+        BattleManager.Instance.PlayerOut(this);
+        UpdateStatus();
+    }
+    public void SendUpdateUI()
+    {
+        photonView.RPC("UpdateStatus", RpcTarget.All);
+    }
+
+    [PunRPC]
     public void UpdateStatus()
     {
         statusUI?.UpdateStatusUI();
