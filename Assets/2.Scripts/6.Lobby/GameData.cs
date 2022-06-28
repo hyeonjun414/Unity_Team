@@ -39,9 +39,9 @@ public enum PlayerState
 
 public enum ModeType
 {
-    LastFighter,
+    BattleRoyale,
     OneShot,
-    TimeToKill,
+    DeathMatch,
     End,
 }
 
@@ -82,12 +82,12 @@ public class GameData : MonoBehaviour
     {
         switch (type)
         {
-            case ModeType.LastFighter:
-                return "Last Fighter";
+            case ModeType.BattleRoyale:
+                return "Battle Royale";
             case ModeType.OneShot:
                 return "One Shot";
-            case ModeType.TimeToKill:
-                return "Time To Kill";
+            case ModeType.DeathMatch:
+                return "Death Match";
             default: return "";
         }
 

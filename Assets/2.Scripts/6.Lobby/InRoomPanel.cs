@@ -155,7 +155,7 @@ public class InRoomPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
         if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel("mapTest");
+            PhotonNetwork.LoadLevel("InGameScene");
 
     }
 

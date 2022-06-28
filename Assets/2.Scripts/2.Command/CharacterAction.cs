@@ -65,6 +65,11 @@ public class CharacterAction : ActionCommand
             }
         }
     }
+    public void ActionStop()
+    {
+        StopAllCoroutines();
+    }
+
     [PunRPC]
     public void Stunned(float time)
     {

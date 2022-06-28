@@ -55,14 +55,14 @@ public class BattleManager : MonoBehaviourPun
             mode = (ModeType)modeData;
             switch (mode)
             {
-                case ModeType.LastFighter:
-                    SetUpDeathMatch();
+                case ModeType.BattleRoyale:
+                    SetUpBattleRoyale();
                     break;
                 case ModeType.OneShot:
                     SetUpOneShotMode();
                     break;
-                case ModeType.TimeToKill:
-                    SetUpTimerMode();
+                case ModeType.DeathMatch:
+                    SetUpDeathMatch();
                     break;
             }
         }
@@ -82,9 +82,14 @@ public class BattleManager : MonoBehaviourPun
         }
     }
 
-    public void SetUpDeathMatch()
+    public void SetUpBattleRoyale()
     {
-
+        foreach (Character p in players)
+        {
+            p.isRegen = false;
+            p.stat.hp = 5;
+            p.statusUI?.UpdateStatusUI();
+        }
     }
     
     public void SetUpOneShotMode()
@@ -93,12 +98,12 @@ public class BattleManager : MonoBehaviourPun
         // 한대 맞으면 죽는 데스매치
         foreach(Character p in players)
         {
-            print("피1");
+            p.isRegen = false;
             p.stat.hp = 1;
             p.statusUI?.UpdateStatusUI();
         }
     }
-    public void SetUpTimerMode()
+    public void SetUpDeathMatch()
     {
         TimeManager.Instance.limitTime = 60f;
 
@@ -123,7 +128,7 @@ public class BattleManager : MonoBehaviourPun
     public void PlayerOut(Character deadPL)
     {
         // 시간제 게임일 경우 계산안함.
-        if (mode == ModeType.TimeToKill) return;
+        if (mode == ModeType.DeathMatch) return;
         //alivePlayer 리스트에서 죽은 플레이어를 뺀다.
         alivePlayer.Remove(deadPL);
 

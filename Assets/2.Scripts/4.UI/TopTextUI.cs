@@ -16,13 +16,13 @@ public class TopTextUI : MonoBehaviour
     {
         switch(type)
         {
-            case ModeType.LastFighter:
+            case ModeType.BattleRoyale:
             case ModeType.OneShot:
                 mode = 0;
                 topText.text = "남은 플레이어";
                 bottomText.text = BattleManager.Instance.alivePlayer.Count.ToString();
                 break;
-            case ModeType.TimeToKill:
+            case ModeType.DeathMatch:
                 mode = 1;
                 topText.text = "남은 시간";
                 bottomText.text = TimeManager.Instance.limitTime.ToString();

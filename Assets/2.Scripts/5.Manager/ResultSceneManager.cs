@@ -136,6 +136,7 @@ public class ResultSceneManager : MonoBehaviour
             {
                 player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), LosersSpawnPoint[i - 1]);
                 player.gameObject.SetActive(true);
+                skeletons[i - 1].gameObject.SetActive(true);
                 StartCoroutine(PlayerAnimPlay(player, "Crying"));
             }
         }

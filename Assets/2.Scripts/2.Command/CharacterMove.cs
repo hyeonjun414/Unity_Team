@@ -61,14 +61,14 @@ public class CharacterMove : MoveCommand
         float curTime = 0;
         while (true)
         {
-            if (curTime > 0.2f)
+            if (curTime > 0.1f)
                 break;
             curTime += Time.deltaTime;
             transform.position = GetBezierPos(
                 originNode.transform.position + Vector3.up,
                 middlePos + Vector3.up,
                 destNode.transform.position + Vector3.up,
-                curTime / 0.2f);
+                curTime / 0.1f);
 
             yield return null;
         }

@@ -24,10 +24,6 @@ public class MapManager : Singleton<MapManager>
         GenerateMap();
     }
 
-    private void Start()
-    {
-       // map = FindObjectOfType<Map>();
-    }
 
     public void GenerateMap()
     {

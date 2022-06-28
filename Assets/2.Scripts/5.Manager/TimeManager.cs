@@ -23,7 +23,7 @@ public class TimeManager : Singleton<TimeManager>{
 
         limitTime -= Time.deltaTime;
         
-        if(BattleManager.Instance.mode == ModeType.TimeToKill){
+        if(BattleManager.Instance.mode == ModeType.DeathMatch){
             // 시간 갱신
             UIManager.Instance.topTextUI.UpdateUI();
             TimeOver();

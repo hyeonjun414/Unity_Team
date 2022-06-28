@@ -243,7 +243,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     public void Damaged(int damageInt)
     {
-        
+
         stat.hp -= damageInt;
         statusUI?.UpdateStatusUI();
         anim.SetTrigger("Hit");
@@ -254,6 +254,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Die()
     {
+        actionCommand.ActionStop();
         anim.SetTrigger("Die");
         ++stat.deathCount;
         UpdateStatus();
@@ -272,6 +273,10 @@ public class Character : MonoBehaviourPun, IPunObservable
             // 부활이 가능하고 해당 클라이언트의 플레이어라면
             // 해당 클라이언트에 부활 UI를 표기한다.
             BattleManager.Instance.regenUI.RegenStart(this);
+        }
+        else if (photonView.IsMine)
+        {
+            CamManager.Instance.ActiveCam(CamType.Dead);
         }
     }
     public void UpdateStatus()
@@ -314,7 +319,7 @@ public class Character : MonoBehaviourPun, IPunObservable
             CamManager.Instance.ActiveCam(CamType.Player);
         }
         state = PlayerState.Normal;
-        stat.hp = 1; // 임시로 피 1로 처리함.
+        stat.hp = 5;
         curNode = MapManager.Instance.map.GetTileNode(new Point(y, x));
         stat.curPos = curNode.tilePos;
         anim.Play("Idle");
@@ -329,11 +334,27 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
+            //stream.SendNext(transform.position);
+            //stream.SendNext(transform.rotation);
             stream.SendNext(Dir);
+            if (stat != null)
+            {
+                stream.SendNext(stat.hp);
+                stream.SendNext(stat.damage);
+                
+            }
+
         }
         else
         {
+            //transform.position = (Vector3)stream.ReceiveNext();
+            //transform.rotation = (Quaternion)stream.ReceiveNext();
             Dir = (PlayerDir)stream.ReceiveNext();
+            if (stat != null)
+            {
+                stat.hp = (int)stream.ReceiveNext();
+                stat.damage = (int)stream.ReceiveNext();
+            }
         }
     }
 
