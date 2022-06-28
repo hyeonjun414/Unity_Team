@@ -182,7 +182,7 @@ public class BattleManager : MonoBehaviourPun
             Character player = players.Find((x) => x.nickName == p.NickName);
             if(player != null)
             {
-                SetCustomValue(p, player.stat.damage, player.stat.death, player.stat.score);
+                SetCustomValue(p, player.stat.kill, player.stat.death, player.stat.score);
             }
         }
 

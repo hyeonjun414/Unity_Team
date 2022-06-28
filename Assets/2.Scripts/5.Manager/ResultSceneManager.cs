@@ -50,12 +50,18 @@ public class ResultSceneManager : MonoBehaviour
     public GameObject[] skeletons;
 
     public BattleResultPanel battleResultPanel;
-
+    public ResultUnit resultUnitPrefab;
+    public Transform resultContentPos;
+    public List<ResultUnit> resultUnits;
 
     List<PlayerResultInfo> resultInfoList;
     private void Awake()
     {
         resultInfoList = new List<PlayerResultInfo>();
+        for(int i=0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            resultUnits.Add(Instantiate(resultUnitPrefab, resultContentPos));
+        }
         InitPlayers();
         SetInformation();
         SetPlayer();
@@ -86,6 +92,9 @@ public class ResultSceneManager : MonoBehaviour
             int _index = (int)index;
             resultInfoList.Add(new PlayerResultInfo(p.ActorNumber, p.NickName, _kill, _death, _score, _index));
         }
+
+        // 전부 갱신하고 리스트를 정렬함.
+        resultInfoList = resultInfoList.OrderByDescending(x => x.score).ToList();
     }
     private void Start()
     {
@@ -98,14 +107,15 @@ public class ResultSceneManager : MonoBehaviour
 
     private void SetInformation()
     {
-        //battleResultPanel.SetFinalResult(resultInfoList);
+        for(int i = 0; i< resultUnits.Count; i++)
+        {
+            resultUnits[i].SetUp(resultInfoList[i], i+1);
+        }
     }
     private void SetPlayer()
     {
         List<PlayerResultInfo> infos = resultInfoList;
 
-        //List<PlayerResultInfo> sortedList = new List<PlayerResultInfo>();
-        //sortedList = infos.OrderByDescending(PlayerResultInfo => PlayerResultInfo.rank).ToList();
 
         for (int i = 0; i < resultInfoList.Count; ++i)
         {
@@ -115,69 +125,19 @@ public class ResultSceneManager : MonoBehaviour
             if (resultInfoList[i].index + 1 == 19) index = 1;
             builder.Append((index).ToString("D2"));
             string dummyPlayer = builder.ToString();
-
             DummyPlayer player = null;
-            if (resultInfoList[i].score == 1)
+            if (i == 0)
             {
-                if (WinnersSpawnPoint[0].transform.childCount == 0)
-                {
-                    player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), WinnersSpawnPoint[0]);
-
-                }
-                else if (WinnersSpawnPoint[0].transform.childCount >= 1)
-                {
-                    if (WinnersSpawnPoint[1].transform.childCount == 0)
-                    {
-                        player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), WinnersSpawnPoint[1]);
-                    }
-                    else if (WinnersSpawnPoint[1].transform.childCount == 1)
-                    {
-                        if (WinnersSpawnPoint[2].transform.childCount == 0)
-                        {
-                            player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), WinnersSpawnPoint[2]);
-                        }
-                        else if (WinnersSpawnPoint[2].transform.childCount == 1)
-                        {
-                            if (WinnersSpawnPoint[3].transform.childCount == 0)
-                            {
-                                player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), WinnersSpawnPoint[3]);
-                            }
-                        }
-                    }
-                }
-
-
+                player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), WinnersSpawnPoint[0]);
                 player.gameObject.SetActive(true);
                 StartCoroutine(PlayerAnimPlay(player, "Victory"));
             }
             else
             {
-                if (LosersSpawnPoint[0].transform.childCount == 0)
-                {
-                    player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), LosersSpawnPoint[0]);
-                    skeletons[0].SetActive(true);
-                }
-                else if (LosersSpawnPoint[0].transform.childCount >= 1)
-                {
-                    if (LosersSpawnPoint[1].transform.childCount == 0)
-                    {
-                        player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), LosersSpawnPoint[1]);
-                        skeletons[1].SetActive(true);
-                    }
-                    else if (LosersSpawnPoint[1].transform.childCount == 1)
-                    {
-                        if (LosersSpawnPoint[2].transform.childCount == 0)
-                        {
-                            player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), LosersSpawnPoint[2]);
-                            skeletons[2].SetActive(true);
-                        }
-                    }
-                }
+                player = Instantiate(Resources.Load<DummyPlayer>(dummyPlayer), LosersSpawnPoint[i - 1]);
                 player.gameObject.SetActive(true);
                 StartCoroutine(PlayerAnimPlay(player, "Crying"));
             }
-
-
         }
 
     }
@@ -254,19 +214,15 @@ public class ResultSceneManager : MonoBehaviour
         foreach (Player p in PhotonNetwork.PlayerList)
         {
 
-            ExitGames.Client.Photon.Hashtable prop1 =
-                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_READY, false } };
+            Hashtable prop1 = new Hashtable() { { GameData.PLAYER_READY, false } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
-            ExitGames.Client.Photon.Hashtable prop2 =
-                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_KILL, 0 } };
+            Hashtable prop2 = new Hashtable() { { GameData.PLAYER_KILL, 0 } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
-            ExitGames.Client.Photon.Hashtable prop3 =
-                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_DEAD, 0 } };
+            Hashtable prop3 = new Hashtable() { { GameData.PLAYER_DEAD, 0 } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
-            ExitGames.Client.Photon.Hashtable prop4 =
-                new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_SCORE, 0 } };
+            Hashtable prop4 = new Hashtable() { { GameData.PLAYER_SCORE, 0 } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop1);
-            ExitGames.Client.Photon.Hashtable prop5 = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_LOAD, false } };
+            Hashtable prop5 = new Hashtable() { { GameData.PLAYER_LOAD, false } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(prop5);
 
 
