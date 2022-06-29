@@ -21,8 +21,6 @@ public class ItemManager : Singleton<ItemManager>
     private ItemSlotUI itemSlotUI;
     public int maxCount = 2;
 
-    public ParticleSystem particleEffect;
-
     public Material wallMaterial;
 
 
@@ -53,9 +51,6 @@ public class ItemManager : Singleton<ItemManager>
                 break;
             case ItemType.SEEINGTHORUGH:
                 SeeingThrough(player);
-                break;
-            case ItemType.BREAKWALL:
-                BreakWall(player);
                 break;
         }
     }
@@ -172,10 +167,6 @@ public class ItemManager : Singleton<ItemManager>
                 break;
         }
     }
-    public void test()
-    {
-        StartCoroutine(TransparentTroughWall(5f));
-    }
     public void SeeingThrough(Character player)
     {
 
@@ -184,21 +175,6 @@ public class ItemManager : Singleton<ItemManager>
 
         //오브젝트 알파값
         Debug.Log(player.nickName + "이(가) 벽을 투시합니다.");
-    }
-
-    public void BreakWall(Character player)
-    {
-        RaycastHit target;
-        if(Physics.Raycast(player.transform.position + (Vector3.up*0.5f) , player.transform.forward, out target, 1f,LayerMask.GetMask("Wall")))
-        {
-            Wall wall= target.collider.gameObject.GetComponent<Wall>();
-            if (wall != null)
-            {
-                //후에 애니메이션이나 폭발or 부서지는 이펙트 추가
-                Destroy(wall.gameObject);
-            }
-        }
-        Debug.Log(player.name + "가 벽을 부숩니다");
     }
 
 
@@ -215,7 +191,6 @@ public class ItemManager : Singleton<ItemManager>
     }
     public void RemoveNum(ItemData item){
 
-        //itemSlotUI.GetComponentInChildren<ParticleSystem>().Play();
         itemList.Remove(item);
         itemSlotUI.UpdateUI();
     }

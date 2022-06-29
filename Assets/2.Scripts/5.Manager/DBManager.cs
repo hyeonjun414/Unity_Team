@@ -8,7 +8,7 @@ using Firebase.Extensions;
 using Firebase.Database;
 using System;
 
-public class DataBaseManager : Singleton<DataBaseManager>
+public class DBManager : Singleton<DBManager>
 {
     [Header("정적변수")]
     [HideInInspector]
@@ -38,11 +38,6 @@ public class DataBaseManager : Singleton<DataBaseManager>
         if (_instance == null) _instance = this;
         
     }
-    private void Start()
-    {
-        
-    }
-
     public void WriteNewPlayerDB(string UID,string emailID, string nickName)
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;

@@ -97,11 +97,11 @@ public class GameData : MonoBehaviour
         switch (type)
         {
             case MapType.Normal:
-                return "Normal";
+                return "The Ground";
             case MapType.Forest:
-                return "Forest";
+                return "The Forest";
             case MapType.Snow:
-                return "Snow";
+                return "The Snow";
             default: return "";
         }
     }

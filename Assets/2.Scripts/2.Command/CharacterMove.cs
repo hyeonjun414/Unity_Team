@@ -116,25 +116,26 @@ public class CharacterMove : MoveCommand
         Point destPoint = player.stat.curPos + result;
         return MapManager.Instance.map.GetTileNode(destPoint); 
     }
-
-    public void CollidedPlayer()
+    [PunRPC]
+    public void CollidedPlayer(int y, int x)
     {
         if (!isMoving)
             return;
 
         StopCoroutine("MoveRoutine");
-        StartCoroutine("ReturnPosRoutine");
+        StartCoroutine(ReturnPosRoutine(y, x));
     }
 
-    IEnumerator ReturnPosRoutine()
+    IEnumerator ReturnPosRoutine(int y, int x)
     {
         yield return null;
 
 
-        TileNode destNode = player.curNode;
+        TileNode destNode = MapManager.Instance.map.GetTileNode(new Point(x, y));
 
 
         Vector3 middlePos = (transform.position + destNode.transform.position) * 0.5f;
+
         float curTime = 0;
         while (true)
         {

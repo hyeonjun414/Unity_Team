@@ -13,8 +13,7 @@ public class RhythmManager : Singleton<RhythmManager>
     [Header("Beat")]
     public float bpm;
     public float hitAreaRate;
-    public bool isBeat;
-    public double prevTime;
+    private double prevTime;
 
     [Header("Rhythm")]
     public RhythmBox    rhythmBox;
@@ -31,8 +30,6 @@ public class RhythmManager : Singleton<RhythmManager>
     public AudioSource audioSource;
     public AudioClip beatsfx;
 
-    public UnityAction OnRhythmHit;
-
     private void Awake()
     {
         if (_instance == null)
@@ -42,16 +39,18 @@ public class RhythmManager : Singleton<RhythmManager>
 
     private void Start()
     {
+        CreateNotePool();
+    }
+    private void CreateNotePool()
+    {
         notePool = new List<RhythmNote>();
-        for(int i = 0; i < 50; i++)
+        for (int i = 0; i < 50; i++)
         {
             RhythmNote note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
             notePool.Add(note);
             note.ReturnObj();
         }
-
         rhythmBox.SetHitArea(hitAreaRate);
-
     }
 
     [PunRPC]
@@ -61,16 +60,14 @@ public class RhythmManager : Singleton<RhythmManager>
         
     }
 
-    public bool BitCheck()
+    public bool BeatCheck()
     {
-        if (rhythmBox.isBeat )//&& isBeat)
+        if (rhythmBox.isBeat)
         {
-            isBeat = false;
             return true;
         }
         else
         {
-            isBeat = false;
             return false;
         }
     }
@@ -101,8 +98,6 @@ public class RhythmManager : Singleton<RhythmManager>
         }
         note.SetUp(notePos[0], rhythmBox.gameObject, 1f / noteSpeed);
         rhythmBox.RhythmHit();
-        OnRhythmHit?.Invoke();
-        //isBeat = true;
     }
 
 

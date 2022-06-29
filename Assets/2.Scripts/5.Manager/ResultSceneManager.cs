@@ -49,7 +49,6 @@ public class ResultSceneManager : MonoBehaviour
     public Transform[] LosersSpawnPoint;
     public GameObject[] skeletons;
 
-    public BattleResultPanel battleResultPanel;
     public ResultUnit resultUnitPrefab;
     public Transform resultContentPos;
     public List<ResultUnit> resultUnits;
@@ -57,17 +56,20 @@ public class ResultSceneManager : MonoBehaviour
     List<PlayerResultInfo> resultInfoList;
     private void Awake()
     {
-        resultInfoList = new List<PlayerResultInfo>();
-        for(int i=0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            resultUnits.Add(Instantiate(resultUnitPrefab, resultContentPos));
-        }
+        CreateResultUnit();
         InitPlayers();
         SetInformation();
         SetPlayer();
 
     }
-
+    private void CreateResultUnit()
+    {
+        resultInfoList = new List<PlayerResultInfo>();
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            resultUnits.Add(Instantiate(resultUnitPrefab, resultContentPos));
+        }
+    }
 
     // 이전 플레이어 정보 갱신
     private void InitPlayers()
@@ -146,10 +148,10 @@ public class ResultSceneManager : MonoBehaviour
     {
 
         Debug.Log("0번성공");
-        DataBaseManager.Instance.GetUserIDbyNickName(nickName, (str) =>
+        DBManager.Instance.GetUserIDbyNickName(nickName, (str) =>
         {
             Debug.Log("1번성공");
-            DataBaseManager.Instance.ReadPlayerInfo(str, true, (str2) =>
+            DBManager.Instance.ReadPlayerInfo(str, true, (str2) =>
             {
                 Debug.Log("2번성공 : " + str + " str2: " + str2);
 
@@ -176,7 +178,7 @@ public class ResultSceneManager : MonoBehaviour
                         ++totals;
                         words[2] = totals.ToString();
                         Debug.Log("3번성공");
-                        DataBaseManager.Instance.WriteExistingPlayerDB(str, words[0], words[1], words[2], words[3]);
+                        DBManager.Instance.WriteExistingPlayerDB(str, words[0], words[1], words[2], words[3]);
                         Debug.Log("4번성공");
                     }
                 }

@@ -10,7 +10,7 @@ public class LoginPanel : MonoBehaviour
     public Button loginButton;
     void Start()
     {
-        if(DataBaseManager.isLoginEmail)
+        if(DBManager.isLoginEmail)
         {
             loginButton.gameObject.SetActive(false);
             playerNameInput.gameObject.SetActive(false);
@@ -24,9 +24,9 @@ public class LoginPanel : MonoBehaviour
     }
     public void NickNameSet()
     {
-        if(DataBaseManager.isLoginEmail)
+        if(DBManager.isLoginEmail)
         {
-            DataBaseManager.Instance.ReadDB(DataBaseManager.userID,"nickName",(str)=>{
+            DBManager.Instance.ReadDB(DBManager.userID,"nickName",(str)=>{
                 PhotonNetwork.LocalPlayer.NickName = str;
 
                 PhotonNetwork.ConnectUsingSettings();
@@ -44,7 +44,7 @@ public class LoginPanel : MonoBehaviour
             return;
         }
 
-        DataBaseManager.Instance.NickNameDuplicateCheck(playerNameInput.text,(str)=>{
+        DBManager.Instance.NickNameDuplicateCheck(playerNameInput.text,(str)=>{
             if(str == "nullString")
             {
                 PhotonNetwork.LocalPlayer.NickName = playerName;

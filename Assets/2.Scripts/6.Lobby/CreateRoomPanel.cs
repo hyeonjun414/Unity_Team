@@ -79,8 +79,7 @@ public class CreateRoomPanel : MonoBehaviour
 
     public void OnCreateRoomConfirmButtonClicked()
     {
-        int roomNum = PhotonNetwork.CountOfRooms;
-        roomNum++;
+        int roomNum = Random.Range(1000, 10000);
 
         byte maxPlayer = byte.Parse(roomMaxPlayer.inputText.text);
 

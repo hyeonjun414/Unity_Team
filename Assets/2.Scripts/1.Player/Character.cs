@@ -222,7 +222,7 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (GameData.InputGetCheck() && state == PlayerState.Normal)
         {
-            if(RhythmManager.Instance.BitCheck())
+            if(RhythmManager.Instance.BeatCheck())
             {
                 RhythmManager.Instance.rhythmBox.NoteHit();
             }
@@ -360,8 +360,6 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            //stream.SendNext(transform.position);
-            //stream.SendNext(transform.rotation);
             stream.SendNext(Dir);
             if (stat != null)
             {
@@ -373,8 +371,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            //transform.position = (Vector3)stream.ReceiveNext();
-            //transform.rotation = (Quaternion)stream.ReceiveNext();
             Dir = (PlayerDir)stream.ReceiveNext();
             if (stat != null)
             {
@@ -388,7 +384,8 @@ public class Character : MonoBehaviourPun, IPunObservable
     {
         if (other.collider.CompareTag("Player"))
         {
-            moveCommand.CollidedPlayer();
+            if (photonView.IsMine)
+                photonView.RPC("CollidedPlayer", RpcTarget.All, stat.curPos.y, stat.curPos.x);
         }
     }
 

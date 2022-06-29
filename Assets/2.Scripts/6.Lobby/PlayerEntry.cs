@@ -63,7 +63,7 @@ public class PlayerEntry : MonoBehaviour
     public void OnInfoButtonClicked()
     {
         
-        DataBaseManager.Instance.GetUserIDbyNickName(playerNameText.text,(str)=>{
+        DBManager.Instance.GetUserIDbyNickName(playerNameText.text,(str)=>{
             
             if(str == "nullString")
             {

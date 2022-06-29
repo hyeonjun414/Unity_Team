@@ -13,12 +13,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class BattleManager : MonoBehaviourPun
 {
-    [HideInInspector]
-    public int isReadyCount = 0;
-    public bool isResultButtonClicked = false;
     public BattleResultPanel battleResultPanel;
-
-    
 
     [Header("Player")]
     public List<Character> players;
@@ -36,7 +31,7 @@ public class BattleManager : MonoBehaviourPun
 
     [Header("Mode")]
     public ModeType mode;
-  
+ 
     public static BattleManager Instance { get; private set; }
     private void Awake()
     {
@@ -223,5 +218,4 @@ public class BattleManager : MonoBehaviourPun
         Hashtable score = new Hashtable() { { GameData.PLAYER_SCORE, _score } };
         p.SetCustomProperties(score);
     }
-
 }

@@ -31,20 +31,23 @@ public class AuthManager : Singleton<AuthManager>
     public TMP_InputField idCreateField;
     public TMP_InputField passwordCreateField;
     public TMP_InputField passwordCreateFieldConfirm;
-    public Button CreateIDBtn;
-    public Button CancelSignInPanelBtn;
+    public Button createIDBtn;
+    public Button cancelSignInPanelBtn;
     private void Awake()
     {
         if (_instance == null) _instance = this;
     }
     private void Start()
     {
-
-        signInBtn.interactable=false;
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task=>
+        CheckAvailableFirebase();
+    }
+    public void CheckAvailableFirebase()
+    {
+        signInBtn.interactable = false;
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
             var result = task.Result;
-            if(result != DependencyStatus.Available)
+            if (result != DependencyStatus.Available)
             {
                 Debug.LogError(message: result.ToString());
                 isFireBaseReady = false;
@@ -55,7 +58,7 @@ public class AuthManager : Singleton<AuthManager>
                 firebaseApp = FirebaseApp.DefaultInstance;
                 firebaseAuth = FirebaseAuth.DefaultInstance;
             }
-            signInBtn.interactable=isFireBaseReady;
+            signInBtn.interactable = isFireBaseReady;
         });
     }
     public void LogInWithEmail()
@@ -87,9 +90,9 @@ public class AuthManager : Singleton<AuthManager>
                 else
                 {
                     user = task.Result;
-                    DataBaseManager.isLoginEmail=true;
-                    DataBaseManager.Instance.GetUserID(idField.text,(str)=>{
-                        DataBaseManager.userID = str;
+                    DBManager.isLoginEmail=true;
+                    DBManager.Instance.GetUserID(idField.text,(str)=>{
+                        DBManager.userID = str;
                         LobbyManager.instance.loginPanel.NickNameSet();
                         
                     });
@@ -105,25 +108,6 @@ public class AuthManager : Singleton<AuthManager>
             }));
     }
 
-    public void LogInGoogle()
-    {
-        // Firebase.Auth.Credential credential =
-        //     Firebase.Auth.GoogleAuthProvider.GetCredential(googleIdToken, googleAccessToken);
-        // firebaseAuth.SignInWithCredentialAsync(credential).ContinueWith(task => {
-        // if (task.IsCanceled) {
-        //     Debug.LogError("SignInWithCredentialAsync was canceled.");
-        //     return;
-        // }
-        // if (task.IsFaulted) {
-        //     Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
-        //     return;
-    //   }
-
-    //   Firebase.Auth.FirebaseUser newUser = task.Result;
-    //   Debug.LogFormat("User signed in successfully: {0} ({1})",
-    //       newUser.DisplayName, newUser.UserId);
-    // });
-    }
     public void LogInAnonymously()
     {
         if(!isFireBaseReady ||  isSignInOnProgress || user !=null)
@@ -169,7 +153,7 @@ public class AuthManager : Singleton<AuthManager>
              return;
         }
 
-            DataBaseManager.Instance.NickNameDuplicateCheck(nickNameField.text,(str)=>{
+            DBManager.Instance.NickNameDuplicateCheck(nickNameField.text,(str)=>{
                 if(str == "nullString")
                 {
                     CreateUserId();
@@ -207,7 +191,7 @@ public class AuthManager : Singleton<AuthManager>
                     Debug.LogFormat("Firebase user created successfully: {0}({1})",
                         newUser.DisplayName,newUser.UserId);
                     
-                    DataBaseManager.Instance.WriteNewPlayerDB(newUser.UserId,idCreateField.text,nickNameField.text);
+                    DBManager.Instance.WriteNewPlayerDB(newUser.UserId,idCreateField.text,nickNameField.text);
                     
                     signInPanel.SetActive(false);
 
@@ -238,15 +222,15 @@ public class AuthManager : Singleton<AuthManager>
         TMP_Text error = errorTextPanel.transform.GetChild(0).GetComponent<TMP_Text>();
         errorTextPanel.SetActive(true);
         loginPanel.SetActive(false);
-        CreateIDBtn.interactable=false;
-        CancelSignInPanelBtn.interactable=false;
+        createIDBtn.interactable=false;
+        cancelSignInPanelBtn.interactable=false;
 
         error.text = errorMessage;//errorMessage;
         yield return new WaitForSeconds(2.5f);
         errorTextPanel.SetActive(false);
         loginPanel.SetActive(true);
-        CreateIDBtn.interactable=true;
-        CancelSignInPanelBtn.interactable=true;
+        createIDBtn.interactable=true;
+        cancelSignInPanelBtn.interactable=true;
         error.text = "";
     }
 }

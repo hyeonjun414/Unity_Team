@@ -227,7 +227,7 @@ public class InRoomPanel : MonoBehaviour
         // Hashtable props = new Hashtable() { { GameData.PLAYER_READY, localPlayerIsReady } };
         // PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-        DataBaseManager.Instance.ReadPlayerInfo(UID, false, (str) =>
+        DBManager.Instance.ReadPlayerInfo(UID, false, (str) =>
         {
             String value = str;
 

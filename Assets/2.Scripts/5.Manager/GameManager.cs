@@ -10,7 +10,6 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    private bool isGameStart;
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -20,7 +19,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void Start()
     {
-        isGameStart = false;
+        PlayerLoadCompleted();
+    }
+
+    public void PlayerLoadCompleted()
+    {
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_LOAD, true } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
@@ -45,7 +48,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (CheckAllPlayerLoadLevel())
             {
                 print(targetPlayer.NickName);
-                StartCoroutine(StartCountDown());
+                StartCoroutine(GameStartRoutine());
             }
         }
     }
@@ -53,7 +56,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #endregion PHOTON CALLBACK
 
-    private IEnumerator StartCountDown()
+    private IEnumerator GameStartRoutine()
     {
         yield return null;
         // TODO : 선택된 맵을 생성해야함.
@@ -88,7 +91,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         return count;
     }
-
     public void LeaveRoom(){
         PhotonNetwork.LeaveRoom();
     }
