@@ -26234,7 +26234,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 272.5, y: 0}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1712463271
@@ -28080,6 +28080,12 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: -8965446168280152916, guid: 90fcd31a165153547a50c5dba003a3b8,
+        type: 2}
+    - target: {fileID: 1445102294025056979, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
+        type: 3}
+      propertyPath: inGameBgms
+      value: 
+      objectReference: {fileID: 11400000, guid: f02f2bdaa51e1204ba755a3fac20bc66,
         type: 2}
     - target: {fileID: 1445102294025056979, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
         type: 3}

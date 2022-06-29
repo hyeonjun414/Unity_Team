@@ -12,7 +12,7 @@ public class NickNameOnPlayer : MonoBehaviour
         nameText = GetComponent<TMP_Text>();
         nameText.text = nickName;
         cam = CamManager.Instance.mainCam;
-        nameText.transform.rotation = Quaternion.LookRotation(cam.transform.forward);        io
+        nameText.transform.rotation = Quaternion.LookRotation(cam.transform.forward);
     }
     private void Update()
     {

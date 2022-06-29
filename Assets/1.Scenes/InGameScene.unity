@@ -865,8 +865,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bpm: 120
   hitAreaRate: 2
-  isBeat: 0
-  prevTime: 0
   rhythmBox: {fileID: 212827366}
   notePos:
   - {fileID: 1981924218}
@@ -1034,8 +1032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42a4d2d657ea074d9135620ced9e2c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isReadyCount: 0
-  isResultButtonClicked: 0
   battleResultPanel: {fileID: 0}
   players: []
   alivePlayer: []
@@ -1093,7 +1089,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemList: []
   maxCount: 2
-  particleEffect: {fileID: 0}
   wallMaterial: {fileID: 2100000, guid: 66e77000fa31b4b49acfd5ab2e94366e, type: 2}
 --- !u!114 &211671997
 MonoBehaviour:

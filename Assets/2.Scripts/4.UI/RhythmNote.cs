@@ -43,8 +43,6 @@ public class RhythmNote : MonoBehaviourPun
 
     public void DestroySelf()
     {
-        //RhythmManager.Instance.isBeat = true;
-        //BattleManager.Instance.Judge();
         ReturnObj();
     }
 

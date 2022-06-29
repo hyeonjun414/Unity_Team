@@ -47,6 +47,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (CheckAllPlayerLoadLevel())
             {
+                if(PhotonNetwork.IsMasterClient)
+                {
+                    int index = RandomBGMIndex();
+
+                    photonView.RPC("SetRandomBGM", RpcTarget.All, index);
+                }
                 print(targetPlayer.NickName);
                 StartCoroutine(GameStartRoutine());
             }
@@ -55,6 +61,18 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     #endregion PHOTON CALLBACK
+
+    public int RandomBGMIndex()
+    {
+        return SoundManager.Instance.RandomBGMIndex();
+    }
+    [PunRPC]
+    public void SetRandomBGM(int index)
+    {
+        SoundManager.Instance.Stop();
+        RhythmManager.Instance.bgmIndex = index;
+
+    }
 
     private IEnumerator GameStartRoutine()
     {

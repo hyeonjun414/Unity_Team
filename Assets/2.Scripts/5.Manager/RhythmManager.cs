@@ -29,6 +29,7 @@ public class RhythmManager : Singleton<RhythmManager>
     [Header("Sound")]
     public AudioSource audioSource;
     public AudioClip beatsfx;
+    public int bgmIndex;
 
     private void Awake()
     {
@@ -56,6 +57,10 @@ public class RhythmManager : Singleton<RhythmManager>
     [PunRPC]
     public void RhythmStart()
     {
+        BGMData bgmData = SoundManager.Instance.inGameBgms.bgms[bgmIndex];
+        bpm = bgmData.bpm;
+        SoundManager.Instance.BGSoundPlay(bgmData.bgm, 0);
+        
         StartCoroutine("RhythmRoutine");
         
     }
@@ -74,12 +79,9 @@ public class RhythmManager : Singleton<RhythmManager>
 
     IEnumerator RhythmRoutine()
     {
-        print("리듬 시작");
-        yield return null;
         while (true)
         {
-            if (bpm < 10) bpm = 10;
-            if (PhotonNetwork.Time >= prevTime + (double)(60f / bpm))
+            if (PhotonNetwork.Time >= prevTime + (60f / bpm))
             {
                 prevTime = PhotonNetwork.Time;
                 CreateNote();
@@ -87,13 +89,14 @@ public class RhythmManager : Singleton<RhythmManager>
             yield return null;
         }
     }
-    [PunRPC]
     public void CreateNote()
     {
-        RhythmNote note = notePool.Find((x) => x.gameObject.activeSelf == false);
+        RhythmNote note = notePool.Find(
+            (x) => x.gameObject.activeSelf == false);
         if (note == null)
         {
-            note = Instantiate(rhythmNote, notePos[0].position, Quaternion.identity, notePos[0]);
+            note = Instantiate(rhythmNote, notePos[0].position,
+                Quaternion.identity, notePos[0]);
             notePool.Add(note);
         }
         note.SetUp(notePos[0], rhythmBox.gameObject, 1f / noteSpeed);

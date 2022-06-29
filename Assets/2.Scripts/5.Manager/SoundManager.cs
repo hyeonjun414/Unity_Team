@@ -16,6 +16,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioSource bgSound;
     public AudioClip[] bgSoundlist;
 
+    public BGMDB inGameBgms;
+
     private void Awake()
     {
         if (_instance == null) _instance = this;
@@ -70,6 +72,13 @@ public class SoundManager : Singleton<SoundManager>
     {
         bgSound.Play();
     }
+    public void Stop()
+    {
+        bgSound.Stop();
+    }
 
-
+    public int RandomBGMIndex()
+    {
+        return Random.Range(0, inGameBgms.bgms.Length);
+    }
 }
