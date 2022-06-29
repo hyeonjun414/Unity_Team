@@ -131,7 +131,7 @@ public class CharacterMove : MoveCommand
         yield return null;
 
 
-        TileNode destNode = MapManager.Instance.map.GetTileNode(new Point(x, y));
+        TileNode destNode = MapManager.Instance.map.GetTileNode(new Point(y, x));
 
 
         Vector3 middlePos = (transform.position + destNode.transform.position) * 0.5f;
