@@ -9723,8 +9723,8 @@ MonoBehaviour:
   idCreateField: {fileID: 1860293360}
   passwordCreateField: {fileID: 1005555230}
   passwordCreateFieldConfirm: {fileID: 343950304}
-  CreateIDBtn: {fileID: 2071972605}
-  CancelSignInPanelBtn: {fileID: 545578879}
+  createIDBtn: {fileID: 2071972605}
+  cancelSignInPanelBtn: {fileID: 545578879}
 --- !u!114 &1568594476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10449,7 +10449,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 272.5, y: 0}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1712463271

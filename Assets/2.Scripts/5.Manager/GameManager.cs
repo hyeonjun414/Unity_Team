@@ -74,6 +74,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     }
 
+    
+
     private IEnumerator GameStartRoutine()
     {
         yield return null;

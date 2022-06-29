@@ -49,6 +49,12 @@ public class SoundManager : Singleton<SoundManager>
         BGSoundPlay(bgSoundlist[0], 1f);
     }
 
+
+    public void PlayerRoomBGM()
+    {
+        BGSoundPlay(bgSoundlist[0], 0);
+    }
+
     public void BGSoundVolume(float volume)
     {
         mixer.SetFloat("BGSoundVolume", Mathf.Log10(volume) * 20);

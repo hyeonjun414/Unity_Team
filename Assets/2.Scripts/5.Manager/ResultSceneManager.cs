@@ -118,7 +118,6 @@ public class ResultSceneManager : MonoBehaviour
     {
         List<PlayerResultInfo> infos = resultInfoList;
 
-
         for (int i = 0; i < resultInfoList.Count; ++i)
         {
             StringBuilder builder = new StringBuilder();
@@ -252,7 +251,11 @@ public class ResultSceneManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         if (PhotonNetwork.IsMasterClient)
+        {
+            
             PhotonNetwork.LoadLevel("NewLobbyScene");
+
+        }
 
 
 
