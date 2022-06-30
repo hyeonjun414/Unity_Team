@@ -29,12 +29,12 @@ private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.UseRpcMonoBehaviourCache = true;
-
-        SoundManager.Instance.PlayerRoomBGM();
+        
         // 다시 로비씬으로 돌아왔을때 룸에 들어와있는 상태라면 룸을 켜준다.
         if(PhotonNetwork.CurrentRoom != null)
         {
             SetActivePanel(PANEL.Room);
+            SoundManager.Instance.PlayerRoomBGM();
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
         }
@@ -122,6 +122,7 @@ private void Start()
 
     public override void OnJoinedRoom()
     {
+        SoundManager.Instance.PlayerRoomBGM();
         SetActivePanel(PANEL.Room);
 
 
@@ -129,6 +130,7 @@ private void Start()
 
     public override void OnLeftRoom()
     {
+        SoundManager.Instance.TitleRoomBGM();
         SetActivePanel(PANEL.Connect);
     }
 

@@ -112,25 +112,7 @@ public class Character : MonoBehaviourPun, IPunObservable
         actionCommand = gameObject.AddComponent<CharacterAction>();
         actionCommand.SetUp(this);
 
-        Dir = PlayerDir.Right;
 
-        float angle = 0f;
-        switch (Dir)
-        {
-            case PlayerDir.Up:
-                angle = 0f;
-                break;
-            case PlayerDir.Right:
-                angle = 90f;
-                break;
-            case PlayerDir.Down:
-                angle = 180f;
-                break;
-            case PlayerDir.Left:
-                angle = 270f;
-                break;
-        }
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
         CamManager.Instance.miniMapCam.GetComponent<CameraLock>().EnableCamera(this);
     }
@@ -153,12 +135,47 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
         Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;
-        
 
-        
+
+        int playerNum = ownerPlayer.GetPlayerNumber();
 
         // 노드 위치 지정
-        Point vec = map.startPos[ownerPlayer.GetPlayerNumber()];
+        Point vec = map.startPos[playerNum];
+
+        switch(playerNum)
+        {
+            case 0:
+                Dir = PlayerDir.Right;
+                break;
+            case 1:
+                Dir = PlayerDir.Down;
+                break;
+            case 2:
+                Dir = PlayerDir.Left;
+                break;
+            case 3:
+                Dir = PlayerDir.Up;
+                break;
+        }
+
+        float angle = 0f;
+        switch (Dir)
+        {
+            case PlayerDir.Up:
+                angle = 0f;
+                break;
+            case PlayerDir.Right:
+                angle = 90f;
+                break;
+            case PlayerDir.Down:
+                angle = 180f;
+                break;
+            case PlayerDir.Left:
+                angle = 270f;
+                break;
+        }
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+
 
         // 자신의 최초 노드를 지정
         TileNode tile = map.GetTileNode(vec);
@@ -254,7 +271,8 @@ public class Character : MonoBehaviourPun, IPunObservable
         stat.hp -= damage;
         statusUI?.UpdateStatusUI();
         anim.SetTrigger("Hit");
-        BattleManager.Instance.PlayerAddScore(playerId);
+        if(damage != 0)
+            BattleManager.Instance.PlayerAddScore(playerId);
         audioSource.PlayOneShot(attackSound);
         UpdateStatus();
 

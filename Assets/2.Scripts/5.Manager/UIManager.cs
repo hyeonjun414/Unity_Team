@@ -12,6 +12,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Battle Result")]
     public BattleResultPanel battleResultPanel;
+    public ResultTextUI resultTextUI;
 
     [Header("Revive UI")]
     public RegenUI regenUI;
