@@ -112,8 +112,14 @@ public class ItemSpawnManager : Singleton<ItemSpawnManager>
 
     public int SetSpawnItemType()
     {
-        itemSpawnTypeNum = Random.Range(0, itemDB.itemList.Length);
-        //itemSpawnTypeNum = Random.Range(0, 3);
+        if(BattleManager.Instance.mode == ModeType.OneShot)
+        {
+            itemSpawnTypeNum = Random.Range(2, itemDB.itemList.Length);
+        }
+        else
+        {
+            itemSpawnTypeNum = Random.Range(0, itemDB.itemList.Length);
+        }
 
         return itemSpawnTypeNum;
     }

@@ -44,11 +44,10 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
-    private void Start()
+    public void TitleRoomBGM()
     {
-        BGSoundPlay(bgSoundlist[0], 1f);
+        BGSoundPlay(bgSoundlist[1], 0);
     }
-
 
     public void PlayerRoomBGM()
     {

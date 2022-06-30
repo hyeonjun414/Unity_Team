@@ -58,8 +58,9 @@ public class Map : MonoBehaviour
     {
         startPos.Add(new Point(0, 0));
         startPos.Add(new Point(0, mapSize - 1));
-        startPos.Add(new Point(mapSize - 1, 0));
         startPos.Add(new Point(mapSize - 1, mapSize - 1));
+        startPos.Add(new Point(mapSize - 1, 0));
+        
     }
 
     public TileNode GetTileNode(Point pos)

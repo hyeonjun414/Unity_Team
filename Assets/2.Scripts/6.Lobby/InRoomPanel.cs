@@ -77,10 +77,14 @@ public class InRoomPanel : MonoBehaviour
                 entry.localIcon.SetActive(true);
             }
 
-            object characterIndex;
-            if (p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out characterIndex))
+            object value;
+            if (p.CustomProperties.TryGetValue(GameData.PLAYER_INDEX, out value))
             {
-                entry.SetPlayerCharacter((int)characterIndex);
+                entry.SetPlayerCharacter((int)value);
+            }
+            if(p.CustomProperties.TryGetValue(GameData.PLAYER_READY, out value))
+            {
+                entry.SetPlayerReadyImage((bool)value);
             }
 
             playerListEntries.Add(p.ActorNumber, entry);
@@ -102,7 +106,6 @@ public class InRoomPanel : MonoBehaviour
         {
             // 마스터 클라이언트가 아니라면 게임시작 버튼을 비활성화 하고 
             localPlayerIsReady = false;
-            readyButtonText.text = "준비";
             roomOptionButton.interactable = false;
             startGameButton.gameObject.SetActive(false);
             readyGameButton.gameObject.SetActive(true);

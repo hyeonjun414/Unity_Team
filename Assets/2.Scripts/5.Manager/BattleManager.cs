@@ -100,7 +100,7 @@ public class BattleManager : MonoBehaviourPun
     }
     public void SetUpDeathMatch()
     {
-        TimeManager.Instance.limitTime = 60f;
+        TimeManager.Instance.limitTime = 90f;
 
         foreach (Character p in players)
         {
@@ -158,22 +158,7 @@ public class BattleManager : MonoBehaviourPun
     [PunRPC]
     public void BattleOverMessage()
     {
-        resultTextObj.SetActive(true);
-
-        string myNickName = PhotonNetwork.LocalPlayer.NickName;
-
-        //플레이어가 죽지 않았을 때
-        if (alivePlayer.Exists(player => player.nickName == myNickName))
-        {
-            resultText.text = "YOU WIN!";
-            return;
-        }
-        //플레이어가 죽었을 때
-        else if (deadPlayer.Exists(player => player.nickName == myNickName))
-        {
-            resultText.text = "YOU LOSE!";
-            return;
-        }
+        UIManager.Instance.resultTextUI.UpdateUI(mode);
     }
     private void SetBattleResult()
     {
@@ -190,6 +175,10 @@ public class BattleManager : MonoBehaviourPun
 
     public void GameOver()
     {
+        foreach(Character c in players)
+        {
+            c.stat.damage = 0;
+        }
         photonView.RPC("BattleOverMessage", RpcTarget.All);
         StartCoroutine("GameOverRoutine");
     }

@@ -39,6 +39,7 @@ public class AuthManager : Singleton<AuthManager>
     }
     private void Start()
     {
+        SoundManager.Instance.TitleRoomBGM();
         CheckAvailableFirebase();
     }
     public void CheckAvailableFirebase()
