@@ -177,6 +177,9 @@ private void Start()
 
         photonView.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + inRoomPanel.ChatInput.text);
         inRoomPanel.ChatInput.text = "";
+        inRoomPanel.chatScrollRect.verticalNormalizedPosition = 0;
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)inRoomPanel.chatScrollRect.transform);
+        
         //inRoomPanel.ChatInput.Select();
     }
 

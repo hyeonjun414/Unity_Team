@@ -14,6 +14,7 @@ public class InRoomPanel : MonoBehaviour
     [Header("RoomPanel")]
     public TMP_Text[] ChatText;
     public TMP_InputField ChatInput;
+    public ScrollRect chatScrollRect;
 
 
     public GameObject playerListContent;
