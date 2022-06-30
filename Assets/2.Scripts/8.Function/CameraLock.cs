@@ -12,8 +12,10 @@ public class CameraLock : MonoBehaviour
     {
         if (player.photonView.IsMine)
         {
-            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 20f, player.transform.position.z);
-            transform.SetParent(player.transform);
+            //transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 20f, player.transform.position.z);
+            transform.SetParent(player.transform, false);
+            transform.localPosition = Vector3.up * 20f;
+            transform.localRotation = Quaternion.AngleAxis(90, Vector3.right);
         }
     }
 }

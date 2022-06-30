@@ -114,7 +114,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
 
         photonView.RPC("SetUp", RpcTarget.AllBuffered);
-        CamManager.Instance.miniMapCam.GetComponent<CameraLock>().EnableCamera(this);
+        
     }
 
     [PunRPC]
@@ -124,25 +124,15 @@ public class Character : MonoBehaviourPun, IPunObservable
         playerId = photonView.Owner.ActorNumber;
         nameOnPlayer.SetNickName(nickName);
 
-        if (photonView.IsMine)
-        {
-            CamManager.Instance.FollowPlayerCam(this);
-            CamManager.Instance.ActiveCam(CamType.Player);
-            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-            UIManager.Instance.statusUI.SetUp(this);
-            nameOnPlayer.gameObject.SetActive(false);
-        }
         Player ownerPlayer = photonView.Owner;
         Map map = MapManager.Instance.map;
-
 
         int playerNum = ownerPlayer.GetPlayerNumber();
 
         // 노드 위치 지정
         Point vec = map.startPos[playerNum];
-
-        switch(playerNum)
+        
+        switch (playerNum)
         {
             case 0:
                 Dir = PlayerDir.Right;
@@ -175,6 +165,23 @@ public class Character : MonoBehaviourPun, IPunObservable
                 break;
         }
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+
+        
+
+        if (photonView.IsMine)
+        {
+            CamManager.Instance.FollowPlayerCam(this);
+            CamManager.Instance.ActiveCam(CamType.Player);
+            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { GameData.PLAYER_GEN, true } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+            UIManager.Instance.statusUI.SetUp(this);
+            nameOnPlayer.gameObject.SetActive(false);
+            CamManager.Instance.miniMapCam.GetComponent<CameraLock>().EnableCamera(this);
+        }
+        
+
+
+        
 
 
         // 자신의 최초 노드를 지정
@@ -342,12 +349,6 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
     }
 
-
-    [PunRPC]
-    public void RequestDeleteMe()
-    {
-        BattleManager.Instance.PlayerOut(this);
-    }
 
     [PunRPC]
     public void Revive(int y, int x)

@@ -9697,7 +9697,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 441096342}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &441096344
 Camera:
   m_ObjectHideFlags: 0
@@ -19898,7 +19898,6 @@ MonoBehaviour:
   - {fileID: 443232951}
   - {fileID: 1369290777}
   - {fileID: 958250076}
-  battleResultPanel: {fileID: 0}
   resultUnitPrefab: {fileID: 2146152106854971619, guid: edc05ee68f46b3248bd08e38a56c8df3,
     type: 3}
   resultContentPos: {fileID: 1991681829}

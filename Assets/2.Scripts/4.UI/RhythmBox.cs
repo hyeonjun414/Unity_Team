@@ -44,6 +44,7 @@ public class RhythmBox : MonoBehaviour
     {
         if(curNote != null)
         {
+            isBeat = false;
             curNote.anim.SetTrigger("Hit");
             curNote.coll.enabled = false;
             curNote = null;

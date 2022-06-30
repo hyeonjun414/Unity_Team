@@ -864,7 +864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 120
-  hitAreaRate: 2
+  hitAreaRate: 1.7
   rhythmBox: {fileID: 212827366}
   notePos:
   - {fileID: 1981924218}
@@ -1090,6 +1090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemList: []
   maxCount: 2
+  wallsList: []
   wallMaterial: {fileID: 2100000, guid: 66e77000fa31b4b49acfd5ab2e94366e, type: 2}
 --- !u!114 &211671997
 MonoBehaviour:

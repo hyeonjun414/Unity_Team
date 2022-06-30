@@ -62,6 +62,8 @@ public class CharacterAction : ActionCommand
     public void ActionStop()
     {
         StopAllCoroutines();
+        player.anim.SetBool("Stunned", false);
+        player.anim.SetBool("Defend", false);
     }
 
 

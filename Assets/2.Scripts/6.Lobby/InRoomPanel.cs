@@ -286,7 +286,6 @@ public class InRoomPanel : MonoBehaviour
         {
             // 마스터 클라이언트가 아니라며 게임시작 버튼을 비활성화 하고 
             localPlayerIsReady = false;
-            readyButtonText.text = "준비";
             startGameButton.gameObject.SetActive(false);
         }
     }
