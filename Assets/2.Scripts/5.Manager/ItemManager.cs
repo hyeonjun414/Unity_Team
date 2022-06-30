@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public enum eBlendMode
 {
     Opaque,
@@ -20,6 +21,7 @@ public class ItemManager : Singleton<ItemManager>
     public List<ItemData> itemList = new List<ItemData>();
     private ItemSlotUI itemSlotUI;
     public int maxCount = 2;
+    public List<Wall> wallsList = new List<Wall>();
 
     public Material wallMaterial;
 
@@ -27,13 +29,13 @@ public class ItemManager : Singleton<ItemManager>
     private void Start()
     {
         itemSlotUI = UIManager.Instance.itemSlotUI;
-
     }
     private void Awake() {
         if (_instance == null){
             _instance = this;
         }
     }
+
 
     public void UseItem(Character player, ItemData data)
     {
@@ -215,9 +217,15 @@ public class ItemManager : Singleton<ItemManager>
     }
     IEnumerator TransparentTroughWall(float time)
     {
-        ChangeRender(eBlendMode.Transparent);
+        for(int i=0; i<wallsList.Count; ++i)
+        {
+            wallsList[i].UpdateMaterial(true);
+        }
         yield return new WaitForSeconds(time);
-        ChangeRender(eBlendMode.Opaque);
+        for(int i=0; i<wallsList.Count; ++i)
+        {
+            wallsList[i].UpdateMaterial(false);
+        }
     }
 
 }

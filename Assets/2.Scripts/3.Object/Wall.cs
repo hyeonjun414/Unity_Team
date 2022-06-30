@@ -18,6 +18,7 @@ public class Wall : MonoBehaviour
     }
     private void Start()
     {
+        ItemManager.Instance.wallsList.Add(this);
 //        curTile = MapManager.Instance.map.GetTileNode(transform.position);
 //        curTile.eOnTileObject = eTileOccupation.OCCUPIED;
     }
