@@ -69,7 +69,7 @@ public class SoundManager : Singleton<SoundManager>
         bgSound.outputAudioMixerGroup = mixer.FindMatchingGroups("BGSound")[0];
         bgSound.clip = clip;
         bgSound.loop = true;
-        bgSound.volume = 0.1f;
+        bgSound.volume = 0.2f;
         Invoke("Play", delay);
     }
 

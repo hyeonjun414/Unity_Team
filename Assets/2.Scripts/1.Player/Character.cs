@@ -227,7 +227,7 @@ public class Character : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        // 자기자신만 조작됨.
+        // 로컬 플레이어만 조작이 가능하도록 함.
         if (!photonView.IsMine) return;
 
         if (RhythmHit())
@@ -237,9 +237,12 @@ public class Character : MonoBehaviourPun, IPunObservable
             roteCommand.Execute();
             moveCommand.Execute();
 
-            // 액션은 각각의 기능을 RPC를 통해 수행하여 다른 클라이언트에게 같은 행위를 하도록 해준다.
+            // 액션은 각각의 기능을 RPC를 통해 수행하여
+            // 다른 클라이언트에게 같은 행위를 하도록 해준다.
             actionCommand.Execute();
         }
+
+        // 입력값 초기화
         eCurInput = ePlayerInput.NULL;
     }
     public bool RhythmHit()
@@ -315,6 +318,9 @@ public class Character : MonoBehaviourPun, IPunObservable
     public void SendDie(int playerId)
     {
         actionCommand.ActionStop();
+        stunEffect.SetActive(false);
+        shieldEffect.SetActive(false);
+
         anim.SetTrigger("Die");
         ++stat.deathCount;
         BattleManager.Instance.PlayerAddKill(playerId);

@@ -8944,6 +8944,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1445102294025056979, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
         type: 3}
+      propertyPath: bgSoundlist.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 80ed71510fb6dde479d0465aee7bbaa0, type: 3}
+    - target: {fileID: 1445102294025056979, guid: af270bc5dc6a41142a92ddd7c1c91dd0,
+        type: 3}
       propertyPath: bgSoundlist.Array.data[1]
       value: 
       objectReference: {fileID: 8300000, guid: b35a694558df26f47891dc059ed4549a, type: 3}
