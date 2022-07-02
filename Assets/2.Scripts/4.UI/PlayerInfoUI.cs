@@ -10,7 +10,7 @@ using Photon.Pun.UtilityScripts;
 public class PlayerInfoUI : MonoBehaviour
 {
 
-    public Character player;
+    public Character player; 
 
     [Header("Text")]
     public TMP_Text killNumText;

@@ -8,7 +8,6 @@ public class RhythmNote : MonoBehaviourPun
 
     public float time;
     public float velocity;
-    public float timing;
     public Animator anim;
     public BoxCollider2D coll;
     Vector3 destPos;

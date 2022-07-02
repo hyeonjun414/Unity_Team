@@ -7,6 +7,7 @@ using UnityEngine;
 public class CharacterMove : MoveCommand
 {
     public bool isMoving = false;
+    private ePlayerInput curMoveDir;
     public override void Execute()
     {
         MoveToNode();
@@ -70,6 +71,12 @@ public class CharacterMove : MoveCommand
                 destNode.transform.position + Vector3.up,
                 curTime / 0.2f);
 
+            if(CollisionRayPlayer())
+            {
+                print($"충돌해서 돌아감 tilePos : {player.curNode.tilePos.y}, {player.curNode.tilePos.x}");
+                photonView.RPC("CollidedPlayer", RpcTarget.All, player.curNode.tilePos.y, player.curNode.tilePos.x);
+            }
+
             yield return null;
         }
 
@@ -84,8 +91,56 @@ public class CharacterMove : MoveCommand
         player.stat.curPos = nextNode.tilePos;
         isMoving = false;
     }
+
+    public bool CollisionRayPlayer()
+    {
+        Vector3 dirVec = Vector3.zero;
+        switch (curMoveDir)
+        {
+            case ePlayerInput.MOVE_UP:
+                dirVec = transform.forward;
+                break;
+            case ePlayerInput.MOVE_DOWN:
+                dirVec = -transform.forward;
+                break;
+            case ePlayerInput.MOVE_RIGHT:
+                dirVec = transform.right;
+                break;
+            case ePlayerInput.MOVE_LEFT:
+                dirVec = -transform.right;
+                break;
+        }
+
+        Vector3 dirVecUp = Quaternion.Euler(0, 70, 0) * dirVec;
+        Vector3 dirVecDown = Quaternion.Euler(0, -70, 0) * dirVec;
+
+        RaycastHit hit;
+        Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + dirVec, Color.red, 10f);
+        Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + dirVecUp, Color.red, 10f);
+        Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + dirVecDown, Color.red, 10f);
+        
+        if (Physics.Raycast(transform.position + Vector3.up,
+            dirVec, out hit, 1f,LayerMask.GetMask("Player")))
+        {
+            return true;
+        }
+        if (Physics.Raycast(transform.position + Vector3.up,
+            dirVecUp, out hit, 1f, LayerMask.GetMask("Player")))
+        {
+            return true;
+        }
+        if (Physics.Raycast(transform.position + Vector3.up,
+            dirVecDown, out hit, 1f, LayerMask.GetMask("Player")))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public void MoveNextNode(Point movePoint)
     {
+        curMoveDir = player.eCurInput;
         Point resultDir = GetResultDir(movePoint);
         StartCoroutine("MoveRoutine", resultDir);
     }
@@ -119,9 +174,9 @@ public class CharacterMove : MoveCommand
     [PunRPC]
     public void CollidedPlayer(int y, int x)
     {
-        if (!isMoving)
-            return;
-
+/*        if (!isMoving)
+            return;*/
+        
         StopCoroutine("MoveRoutine");
         StartCoroutine(ReturnPosRoutine(y, x));
     }
@@ -143,8 +198,8 @@ public class CharacterMove : MoveCommand
                 break;
             curTime += Time.deltaTime;
             transform.position = GetBezierPos(
-                transform.position + Vector3.up,
-                middlePos + Vector3.up,
+                transform.position,
+                middlePos+ Vector3.up * 0.5f,
                 destNode.transform.position + Vector3.up,
                 curTime / 0.2f);
 

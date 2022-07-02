@@ -405,14 +405,14 @@ public class Character : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+/*    private void OnCollisionEnter(Collision other)
     {
         if (other.collider.CompareTag("Player"))
         {
             if (photonView.IsMine)
                 photonView.RPC("CollidedPlayer", RpcTarget.All, stat.curPos.y, stat.curPos.x);
         }
-    }
+    }*/
 
     public void OnTriggerEnter(Collider other){
         if(other.gameObject.tag == "Item"){
