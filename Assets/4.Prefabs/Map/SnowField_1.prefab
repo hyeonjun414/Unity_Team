@@ -1517,6 +1517,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallType4 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8921650853751116543, guid: aa002ad899c9acc40b47b24109cc84ca,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa002ad899c9acc40b47b24109cc84ca, type: 3}
 --- !u!4 &1140121453623884205 stripped

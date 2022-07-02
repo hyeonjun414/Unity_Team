@@ -340,6 +340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 48812976}
+  - component: {fileID: 48812977}
   m_Layer: 5
   m_Name: LoginPanel
   m_TagString: Untagged
@@ -361,7 +362,7 @@ RectTransform:
   - {fileID: 1396943726}
   - {fileID: 2096649909}
   - {fileID: 446426071}
-  - {fileID: 806454140}
+  - {fileID: 1389241936}
   - {fileID: 1517095071}
   m_Father: {fileID: 98911063}
   m_RootOrder: 0
@@ -371,6 +372,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -28}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &48812977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48812975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b31c64d286b3f784d8e3e4efef5afb35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idField: {fileID: 419952387}
+  passwordField: {fileID: 103126261}
+  signInBtn: {fileID: 1335243794}
+  loginPanel: {fileID: 1976800406}
 --- !u!1 &61553046
 GameObject:
   m_ObjectHideFlags: 0
@@ -4851,7 +4868,7 @@ GameObject:
   - component: {fileID: 806454139}
   - component: {fileID: 806454138}
   m_Layer: 5
-  m_Name: SignInPopUp
+  m_Name: SignInPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4901,7 +4918,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806454137}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4916,12 +4933,12 @@ RectTransform:
   - {fileID: 343950300}
   - {fileID: 1960784214}
   - {fileID: 1389906351}
-  m_Father: {fileID: 48812976}
-  m_RootOrder: 3
+  m_Father: {fileID: 1389241936}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -28.000008}
   m_SizeDelta: {x: 800, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &820211089
@@ -8818,6 +8835,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357926561}
   m_CullTransparentMesh: 0
+--- !u!1 &1389241935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1389241936}
+  - component: {fileID: 1389241937}
+  m_Layer: 5
+  m_Name: SignInPopUp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1389241936
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389241935}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 806454140}
+  m_Father: {fileID: 48812976}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 28.000008}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1389241937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389241935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cff7090060c83440989e0a873d81bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  signInPanel: {fileID: 806454137}
+  nickNameField: {fileID: 1389906355}
+  idCreateField: {fileID: 1860293360}
+  passwordCreateField: {fileID: 1005555230}
+  passwordCreateFieldConfirm: {fileID: 343950304}
+  createIDBtn: {fileID: 2071972605}
+  cancelSignInPanelBtn: {fileID: 545578879}
 --- !u!1 &1389906350
 GameObject:
   m_ObjectHideFlags: 0
@@ -9713,18 +9786,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c3855d0f30c9645abc925a76d5444e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idField: {fileID: 419952387}
-  passwordField: {fileID: 103126261}
-  signInBtn: {fileID: 1976800409}
+  loginPanel: {fileID: 48812977}
+  signInPanel: {fileID: 1389241937}
   errorTextPanel: {fileID: 1517095068}
-  loginPanel: {fileID: 1396943725}
-  signInPanel: {fileID: 806454137}
-  nickNameField: {fileID: 1389906355}
-  idCreateField: {fileID: 1860293360}
-  passwordCreateField: {fileID: 1005555230}
-  passwordCreateFieldConfirm: {fileID: 343950304}
-  createIDBtn: {fileID: 2071972605}
-  cancelSignInPanelBtn: {fileID: 545578879}
 --- !u!114 &1568594476
 MonoBehaviour:
   m_ObjectHideFlags: 0
